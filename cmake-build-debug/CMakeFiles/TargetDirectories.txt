@@ -1,3 +1,0 @@
-C:/Users/Denis/CLionProjects/Rtos/cmake-build-debug/CMakeFiles/Rtos.dir
-C:/Users/Denis/CLionProjects/Rtos/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/Denis/CLionProjects/Rtos/cmake-build-debug/CMakeFiles/rebuild_cache.dir
