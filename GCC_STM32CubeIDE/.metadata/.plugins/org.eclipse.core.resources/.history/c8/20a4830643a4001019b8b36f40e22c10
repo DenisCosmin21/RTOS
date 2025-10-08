@@ -1,0 +1,41 @@
+#include "uart.h"
+#include "stm32f4xx.h"
+
+#define GPIOAEN (1U<<0)
+#define UART2EN (1U << 17)
+static void compute_uart_bd(uint32_t periph_clk, uint32_t baudrate);
+
+
+void uart_tx_init(void)
+{
+	/*Enable clcok acces to GPIOA*/
+	RCC->AHB1ENR |= GPIOAEN;
+
+	/* Set PA2 mode to alternate function mode */
+	GPIOA->MODER &= ~(1U<<4);
+	GPIOA->MODER |= (1U<<5);
+
+	/* Set alternate function type to AF7 (UART)*/
+	GPIOA->AFR[0] |=(1U<<8);
+	GPIOA->AFR[0] |=(1U<<9);
+	GPIOA->AFR[0] |=(1U<<10);
+	GPIOA->AFR[0] &=~1U<<11;
+
+	/* Enable clock acces to UART2*/
+	RCC->APB1ENR |= UART2EN;
+
+	/* Configure baudrate*/
+
+	/* Configure transfer direction*/
+
+	/* Enable the UART module*/
+}
+
+static void uart_set_baudrate(uint32_t periph_clk, uint32_t baudrate){
+	USART2->BRR = compute_uart_bd(periph_clk, baudrate);
+}
+
+static void compute_uart_bd(uint32_t periph_clk, uint32_t baudrate)
+{
+	((periph_clk + (baudrate/2U))/baudrate);
+}
