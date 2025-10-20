@@ -11,7 +11,7 @@ typedef enum {
 }custom_mutex_state;
 
 typedef struct {
-
+    custom_mutex_state mutex_state;
 }custom_mutex_t;
 
 //Initializeaza un mutex
