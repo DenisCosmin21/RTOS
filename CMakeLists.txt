@@ -3,4 +3,8 @@ project(Rtos C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(Rtos main.c)
+add_executable(Rtos main.c
+        barrier.c
+        barrier.h
+        mutex.c
+        mutex.h)
