@@ -4,6 +4,7 @@
 
 #ifndef MUTEX_H
 #define MUTEX_H
+#include <pthread.h>
 
 typedef enum {
     MUTEX_LOCKED,
@@ -12,6 +13,7 @@ typedef enum {
 
 typedef struct {
     custom_mutex_state mutex_state;
+    pthread_mutex_t mutex;
 }custom_mutex_t;
 
 //Initializeaza un mutex
@@ -25,5 +27,4 @@ void custom_mutex_unlock(custom_mutex_t *mutex);
 
 //Elibereaza memoria ocupata de un mutex
 void custom_mutex_destroy(custom_mutex_t *mutex);
-
 #endif //MUTEX_H
