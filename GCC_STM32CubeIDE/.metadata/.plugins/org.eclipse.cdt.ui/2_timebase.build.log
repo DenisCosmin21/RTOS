@@ -1,0 +1,10 @@
+19:06:40 **** Incremental Build of configuration Debug for project 2_timebase ****
+make -j16 all 
+arm-none-eabi-size  2_timebase.elf 
+   text	   data	    bss	    dec	    hex	filename
+   5444	     96	   1912	   7452	   1d1c	2_timebase.elf
+Finished building: default.size.stdout
+ 
+
+19:06:40 Build Finished. 0 errors, 0 warnings. (took 64ms)
+
