@@ -17,4 +17,5 @@ typedef struct TCB {
     int value;
 } TCB_t;
 
+TCB_t newTask(priority_t priority, int value);
 #endif //TASK_H
