@@ -14,8 +14,12 @@ typedef enum {
 
 typedef struct TCB {
     priority_t priority;
-    int value;
+    void *stack_pointer;
+    void *base_stack_pointer;
+    int stack_size;
 } TCB_t;
 
-TCB_t newTask(priority_t priority, int value);
+TCB_t init_task(priority_t priority,const int stack_size);
+
+void destruct_task(TCB_t *task);
 #endif //TASK_H
