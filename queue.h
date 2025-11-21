@@ -4,7 +4,7 @@
 
 #ifndef QUEUE_H
 #define QUEUE_H
-#define QUEUE_SIZE 2
+#define QUEUE_SIZE 10
 #include "task.h"
 
 typedef struct {
