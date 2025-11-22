@@ -21,7 +21,7 @@ void task_queues_init(task_queues_t* tq) {
 }
 
 short task_queues_enqueue(task_queues_t* tq, const TCB_t task) {
-    if (task.priority < 0 || task.priority > 4) {
+    if (task.priority < VERY_HIGH || task.priority > LOW) {
         return 0;
     }
 
