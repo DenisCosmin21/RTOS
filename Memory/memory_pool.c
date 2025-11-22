@@ -2,89 +2,95 @@
 // Created by Denis on 11/5/2025.
 //
 #include "memory_pool.h"
-#include <stddef.h>
+#include <stdint.h>
 #include <stdio.h>
 
-#define LINE_SIZE 128
-#define LINES 100
+#define HEAP_SIZE 4096//Should be enough memory
 
-#define ADD_IF_NOT_DIVISIBLE(number, divizor) ((number) % (divizor) != 0 ? (number) / (divizor) + 1 : (number) / (divizor))
+#define GET_BLOCK_SIZE(memory_block) \
+    ((((uint16_t)memory_block[0] << 8) | memory_block[1]) >> 1)
 
-typedef struct{
-    int pool[LINES][LINE_SIZE];
-    char allocated_pools[ADD_IF_NOT_DIVISIBLE(LINES, sizeof(char) * 8)];
-}memory_pool_t;
+#define IS_BLOCK_OCUPPIED(memory_block) \
+    memory_block[1] & 0x01
 
-memory_pool_t memory_pool;
+#define OCUPY_BLOCK(memory_block, new_size) \
+    memory_block[0] = (new_size << 1) >> 8; \
+    memory_block[1] = (new_size << 1) | 0x01; \
 
-static int is_bit_set(size_t position) {
-    size_t array_position = position / sizeof(char);
-    size_t bit_position = position % sizeof(char);
+#define INITIALIZE_BLOCK(memory_block, size) \
+    memory_block[0] = (size << 1) >> 8; \
+    memory_block[1] = size << 1
 
-    return memory_pool.allocated_pools[array_position] & (1 << bit_position);
-}
+#define NEXT_BLOCK(memory_block) \
+    &memory_block[GET_BLOCK_SIZE(memory_block)]
 
-static void set_bit(size_t position) {
-    size_t array_position = position / (sizeof(char) * 8);
-    size_t bit_position = position % (sizeof(char) * 8);
+#define MERGE_BLOCKS(memory_block1, memory_block2) \
+    INITIALIZE_BLOCK(memory_block1, GET_BLOCK_SIZE(memory_block1) + GET_BLOCK_SIZE(memory_block2))
 
-    memory_pool.allocated_pools[array_position] |= (1 << bit_position);
-}
+typedef uint8_t memory_pool_t;
 
-static void reset_bit(size_t position) {
-    size_t array_position = position / sizeof(char);
-    size_t bit_position = position % sizeof(char);
+static memory_pool_t memory_pool[HEAP_SIZE] = {[0] = 0x20, [1] = 0x00};
 
-    memory_pool.allocated_pools[array_position] &= ~(1 << bit_position);
-}
+void *c_malloc(short size) {
+    uint8_t *last_element = &memory_pool[HEAP_SIZE];
+    uint8_t *current_element = memory_pool;
+    uint16_t block_size = 0;
 
-static int get_lines_count_from_buffer_size(const int buffer_size) {
-    return ADD_IF_NOT_DIVISIBLE(buffer_size, LINE_SIZE);
-}
+    while(1) {
+        block_size = GET_BLOCK_SIZE(current_element);
 
-void *get_buffer(const int buffer_size) {
-    int lines_count = get_lines_count_from_buffer_size(buffer_size);
-
-    int found = -1;
-    int lines_found = 0;
-
-    for(int i = 0; i < LINES; i++) {
-        //Looking for lines_count adiacent spaces
-        if(!is_bit_set(i) && found == -1) {
-            found = i;
-            lines_found++;
-            set_bit(found);
-            if(lines_found == lines_count)
-                return memory_pool.pool[found];
+        if (IS_BLOCK_OCUPPIED(current_element) || (block_size - sizeof(uint16_t))< size) {
+            if(current_element + block_size >= last_element)
+                return 0x00;
+            current_element = NEXT_BLOCK(current_element);
+            continue;
         }
-        else if(is_bit_set(i) && found != -1) {
-            found = -1;
 
-            while(lines_found) {
-                reset_bit(i - lines_found);
-                lines_found--;
-            }
+        if(block_size - sizeof(uint16_t) == size) {
+            OCUPY_BLOCK(current_element, size + sizeof(uint16_t));
+            return current_element;
         }
-        else if(!is_bit_set(i) && lines_found == lines_count - 1 && found != -1) {
-            set_bit(i);
-            return memory_pool.pool[found];
-        }
-        else {
-            set_bit(i);
-            lines_found++;
-        }
+
+        OCUPY_BLOCK(current_element, size + sizeof(uint16_t));
+        uint8_t *block_to_initialize = NEXT_BLOCK(current_element);
+        INITIALIZE_BLOCK(block_to_initialize, block_size - (size + sizeof(uint16_t)));
+        return current_element + sizeof(uint16_t);
     }
 
-    return NULL;
+    return 0x00;
 }
 
-void free_buffer(const void *buffer, const int buffer_size) {
-    int lines_count = get_lines_count_from_buffer_size(buffer_size);
+static uint8_t *find_ant_block(uint8_t *current_element) {
+    uint8_t *block = memory_pool;
+    uint8_t *ant = block;
 
-    ptrdiff_t position = (int *)buffer - memory_pool.pool[0];
+    while(block < current_element) {
+        ant = block;
+        block = NEXT_BLOCK(block);
+    }
 
-    position = position % LINE_SIZE;
-
-    for(ptrdiff_t i = position; i < lines_count; i++)
-        reset_bit(i);
+    return ant;
 }
+
+void c_free(void *ptr) {
+    if(!(ptr - sizeof(uint16_t) >= memory_pool && ptr < memory_pool + HEAP_SIZE))
+        return;
+
+    uint8_t *element_to_free = ptr;
+    element_to_free -= sizeof(uint16_t);
+
+    uint8_t *next_block = NEXT_BLOCK(element_to_free);
+
+    printf("Current element : %d; next element : %d\n", GET_BLOCK_SIZE(element_to_free), GET_BLOCK_SIZE(next_block));
+    printf("Ocuppied : %d\n", IS_BLOCK_OCUPPIED(next_block));
+    if(!(IS_BLOCK_OCUPPIED(next_block))) {
+        MERGE_BLOCKS(element_to_free, next_block);
+    }
+    else {
+        INITIALIZE_BLOCK(element_to_free, GET_BLOCK_SIZE(element_to_free));
+    }
+
+    printf("Block size : %d ; Ocuppied : %d\n", GET_BLOCK_SIZE(element_to_free), IS_BLOCK_OCUPPIED(element_to_free));
+}
+
+

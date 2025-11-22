@@ -5,7 +5,7 @@
 #ifndef MEMORY_POOL_H
 #define MEMORY_POOL_H
 
-void *get_buffer(const int buffer_size);
+void *c_malloc(const short);
 
-void free_buffer(const void *buffer, const int buffer_size);
+void c_free(void *);
 #endif //MEMORY_POOL_H
