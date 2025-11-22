@@ -30,11 +30,11 @@ static int return_task_from_template(const TCB_t *task) {
 }
 
 void rms_task_templates_init(rms_task_templates_t* templates) {
-    p_init(&templates->tasks);
+    h_init(&templates->tasks);
 }
 
 short rms_task_templates_add(rms_task_templates_t* templates,const TCB_t task) {
-    p_enqueue(&templates->tasks, task, new_task_condition);
+    h_enqueue(&templates->tasks, task, new_task_condition);
     utilization += (float)(task.execution_time) / (float)(task.period);
 #ifdef DEBUG
     printf("Utilization = %f\n", utilization);
@@ -43,7 +43,7 @@ short rms_task_templates_add(rms_task_templates_t* templates,const TCB_t task) {
     return 1;
 }
 
-float calculate_rms_bound(int number_of_tasks) {
+float calculate_rms_bound(size_t number_of_tasks) {
     return RMS_BOUNDS[number_of_tasks - 1];
 }
 
@@ -51,7 +51,7 @@ short is_schedulable(const rms_task_templates_t* templates) {
     if(utilization <= 0.69)
         return 1;
 
-    float rms_bound = calculate_rms_bound(p_get_size(&templates->tasks) - 1);
+    float rms_bound = calculate_rms_bound(h_get_size(&templates->tasks) - 1);
 #ifdef DEBUG
     printf("Utilization %f <= Max possible time %f", utilization, rms_bound);
 #endif
@@ -59,7 +59,7 @@ short is_schedulable(const rms_task_templates_t* templates) {
 }
 
 short start_scheduler(rms_task_templates_t* templates) {
-    if(!is_schedulable(templates) || p_is_empty(&templates->tasks))
+    if(!is_schedulable(templates) || h_is_empty(&templates->tasks))
         return 0;
 
     task_queues_init(&task_queues);
@@ -67,14 +67,14 @@ short start_scheduler(rms_task_templates_t* templates) {
     priority_t current_priority = LOW;
     int current_period = 0;
 
-    TCB_t task = p_dequeue(&templates->tasks, return_task_from_template);
+    TCB_t task = h_dequeue(&templates->tasks, return_task_from_template, new_task_condition);
     current_period =  task.period;
     task.priority = current_priority;
     task_queues_enqueue(&task_queues, task);
     periods_per_priority[current_priority] = current_period;
 
-    while(!p_is_empty(&templates->tasks)) {
-        task = p_dequeue(&templates->tasks, return_task_from_template);
+    while(!h_is_empty(&templates->tasks)) {
+        task = h_dequeue(&templates->tasks, return_task_from_template, new_task_condition);
         if(task.period != current_period) {
             current_period = task.period;
             current_priority--;

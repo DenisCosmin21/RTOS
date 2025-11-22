@@ -1,13 +1,13 @@
 #ifndef TASK_QUEUES_H
 #define TASK_QUEUES_H
 #include "queue.h"
-#include "priority_queue.h"
+#include "binary_heap_queue.h"
 #include "../Task/task.h"
 #define NUM_PRIORITY_LEVELS 4
 
 typedef struct {
     queue_t queues[NUM_PRIORITY_LEVELS];
-    linear_priority_queue_t pending;
+    heap_priority_queue_t pending;
 } task_queues_t;
 
 void task_queues_init(task_queues_t* tq);

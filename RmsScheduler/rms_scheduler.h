@@ -2,10 +2,10 @@
 #define RMS_SCHEDULER_H
 
 #include "../Task/task.h"
-#include "../Queue/priority_queue.h"
+#include "../Queue/binary_heap_queue.h"
 
 typedef struct {
-    linear_priority_queue_t tasks;
+    heap_priority_queue_t tasks;
 } rms_task_templates_t;
 
 void rms_task_templates_init(rms_task_templates_t* templates);

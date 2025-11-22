@@ -16,7 +16,7 @@ void task_queues_init(task_queues_t* tq) {
         queue_init(&tq->queues[i]);
     }
 
-    p_init(&tq->pending);
+    h_init(&tq->pending);
 }
 
 short task_queues_enqueue(task_queues_t* tq, const TCB_t task) {
@@ -49,7 +49,7 @@ TCB_t task_queues_dequeue(task_queues_t* tq) {
 }
 
 short task_queues_move_to_pending(task_queues_t* tq, const TCB_t task) {
-    p_enqueue(&tq->pending, task, pending_enqueue);
+    h_enqueue(&tq->pending, task, pending_enqueue);
 #ifdef DEBUG
     print_task_queues(tq);
 #endif
@@ -58,7 +58,7 @@ short task_queues_move_to_pending(task_queues_t* tq, const TCB_t task) {
 }
 
 short task_queues_restore_from_pending(task_queues_t* tq) {
-    TCB_t pending_task = p_dequeue(&tq->pending, should_restore);
+    TCB_t pending_task = h_dequeue(&tq->pending, should_restore, pending_enqueue);
 
     if(is_empty_task(&pending_task))
         return 0;
@@ -113,5 +113,5 @@ void print_task_queues(task_queues_t* tq) {
 
 
     printf("Printing pending queue: \n");
-    p_print_queue(&tq->pending);
+    h_print_queue(&tq->pending);
 }
