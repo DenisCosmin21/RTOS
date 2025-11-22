@@ -9,7 +9,6 @@
 
 typedef struct {
     TCB_t tcb[QUEUE_SIZE];
-    int front;
     int rear;
 } linear_priority_queue_t;
 
