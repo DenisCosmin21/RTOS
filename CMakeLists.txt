@@ -5,8 +5,10 @@ set(CMAKE_C_STANDARD 99)
 
 add_executable(Rtos main.c
         queue.c
-        queue.h
         task.c
-        task.h
         memory_pool.c
-        memory_pool.h)
+        task_queues.c
+        rms_scheduler.c
+        priority_queue.c
+        rtos.c)
+
