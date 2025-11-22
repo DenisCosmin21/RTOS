@@ -1,7 +1,15 @@
 #include "task.h"
-#include "memory_pool.h"
 
-TCB_t init_task(const priority_t priority,const int stack_size, const int execution_time, const int period) {
+#include <stdio.h>
+#include <string.h>
+
+#include "memory_pool.h"
+#include "rms_scheduler.h"
+#include "rtos.h"
+
+TCB_t running_task;
+
+TCB_t init_task(const priority_t priority,const int stack_size, const int execution_time, const int period, const char *name) {
     void *stack_pointer = get_buffer(stack_size);
     TCB_t new_task;
     new_task.priority = priority;
@@ -12,29 +20,46 @@ TCB_t init_task(const priority_t priority,const int stack_size, const int execut
     new_task.period = period;
     new_task.next_release_time = 0;
     new_task.remaining_time = execution_time;
+    strcpy(new_task.name, name);
     return new_task;
 }
 
-void destruct_task(TCB_t *task) {
+void destruct_task(const TCB_t *task) {
     free_buffer(task->base_stack_pointer, task->stack_size);
 }
 
 TCB_t empty_task(void) {
-    TCB_t task = {-1, 0, 0, 0, 0, 0, 0, 0};
+    TCB_t task = {{0}, EMPTY, 0, 0, 0, 0, 0, 0, 0};
 
     return task;
 }
 
 short is_empty_task(const TCB_t *task) {
-    return
-    task->priority == -1 &&
-    task->stack_pointer == 0 &&
-    task->base_stack_pointer == 0 &&
-    task->execution_time == 0 &&
-    task->period == 0 &&
-    task->remaining_time == 0;
+    return task->priority == EMPTY;
 }
 
 short task_is_ready(const TCB_t *task) {
     return task->next_release_time >= current_time;
+}
+
+TCB_t context_switch(TCB_t next_task) {
+    TCB_t waiting_task = running_task;
+    running_task = next_task;
+    if(!is_empty_task(&waiting_task) && waiting_task.remaining_time == 0) {
+        waiting_task.next_release_time = current_time + (waiting_task.period - (current_time % waiting_task.period));
+    }
+    return waiting_task;
+}
+
+short should_switch() {
+    running_task.remaining_time--;
+
+    if(is_empty_task(&running_task) || should_preempt(&running_task) || running_task.remaining_time == 0)
+        return 1;
+
+    return 0;
+}
+
+void print_task(const TCB_t *task) {
+    printf("%s, ", task->name);
 }
