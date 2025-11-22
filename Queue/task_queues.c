@@ -2,9 +2,8 @@
 #include <stdio.h>
 #include "../RtosApi/rtos.h"
 
-
 static int pending_enqueue(const TCB_t *task1, const TCB_t *task2) {
-    return task1->next_release_time < task2->next_release_time;
+    return task1->next_release_time > task2->next_release_time;
 }
 
 static int should_restore(const TCB_t *task) {

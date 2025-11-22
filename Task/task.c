@@ -10,7 +10,7 @@
 TCB_t running_task;
 
 TCB_t init_task(const priority_t priority,const int stack_size, const int execution_time, const int period, const char *name) {
-    void *stack_pointer = get_buffer(stack_size);
+    void *stack_pointer = c_malloc(stack_size * sizeof(int));
     TCB_t new_task;
     new_task.priority = priority;
     new_task.stack_size = stack_size;
@@ -25,7 +25,7 @@ TCB_t init_task(const priority_t priority,const int stack_size, const int execut
 }
 
 void destruct_task(const TCB_t *task) {
-    free_buffer(task->base_stack_pointer, task->stack_size);
+    c_free(task->base_stack_pointer);
 }
 
 TCB_t empty_task(void) {

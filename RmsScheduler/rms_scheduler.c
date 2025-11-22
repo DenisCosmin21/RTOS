@@ -22,7 +22,7 @@ static float utilization = 0;
 static task_queues_t task_queues;
 
 static int new_task_condition(const TCB_t* task, const TCB_t *task2) {
-    return task->period > task2->period;
+    return task->period < task2->period;
 }
 
 static int return_task_from_template(const TCB_t *task) {
