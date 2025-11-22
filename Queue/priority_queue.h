@@ -5,7 +5,7 @@
 #ifndef PRIORITY_QUEUE_H
 #define PRIORITY_QUEUE_H
 #define QUEUE_SIZE 10
-#include "task.h"
+#include "../Task/task.h"
 
 typedef struct {
     TCB_t tcb[QUEUE_SIZE];

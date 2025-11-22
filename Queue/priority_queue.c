@@ -2,7 +2,6 @@
 // Created by Denis on 11/22/2025.
 //
 #include "priority_queue.h"
-#include <stddef.h>
 #include <stdio.h>
 
 void p_init(linear_priority_queue_t *queue) {

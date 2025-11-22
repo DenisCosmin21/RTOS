@@ -6,12 +6,12 @@
 #include <stdio.h>
 
 #define LINE_SIZE 128
-#define LINES 10
+#define LINES 100
 
 #define ADD_IF_NOT_DIVISIBLE(number, divizor) ((number) % (divizor) != 0 ? (number) / (divizor) + 1 : (number) / (divizor))
 
 typedef struct{
-    char pool[LINES][LINE_SIZE];
+    int pool[LINES][LINE_SIZE];
     char allocated_pools[ADD_IF_NOT_DIVISIBLE(LINES, sizeof(char) * 8)];
 }memory_pool_t;
 
@@ -81,7 +81,7 @@ void *get_buffer(const int buffer_size) {
 void free_buffer(const void *buffer, const int buffer_size) {
     int lines_count = get_lines_count_from_buffer_size(buffer_size);
 
-    ptrdiff_t position = (char *)buffer - memory_pool.pool[0];
+    ptrdiff_t position = (int *)buffer - memory_pool.pool[0];
 
     position = position % LINE_SIZE;
 
