@@ -18,12 +18,12 @@ void task_queues_init(task_queues_t* tq) {
     h_init(&tq->pending);
 }
 
-short task_queues_enqueue(task_queues_t* tq, const TCB_t task) {
-    if (task.priority < VERY_HIGH || task.priority > LOW) {
+short task_queues_enqueue(task_queues_t* tq, TCB_t *task) {
+    if (task->priority < VERY_HIGH || task->priority > LOW) {
         return 0;
     }
 
-    enqueue(&tq->queues[task.priority], task);
+    enqueue(&tq->queues[task->priority], task);
 
 #ifdef DEBUG
     print_task_queues(tq);
@@ -31,12 +31,12 @@ short task_queues_enqueue(task_queues_t* tq, const TCB_t task) {
     return 1;
 }
 
-TCB_t task_queues_dequeue(task_queues_t* tq) {
-    TCB_t task;
+TCB_t *task_queues_dequeue(task_queues_t* tq) {
+    TCB_t *task;
 
     for (int i = 0; i < NUM_PRIORITY_LEVELS; i++) {
         task = dequeue(&tq->queues[i]);
-        if(!is_empty_task(&task)) {
+        if(task != 0x00) {
             #ifdef DEBUG
                 print_task_queues(tq);
             #endif
@@ -44,10 +44,10 @@ TCB_t task_queues_dequeue(task_queues_t* tq) {
         }
     }
 
-    return empty_task();
+    return 0x00;
 }
 
-short task_queues_move_to_pending(task_queues_t* tq, const TCB_t task) {
+short task_queues_move_to_pending(task_queues_t* tq, TCB_t *task) {
     h_enqueue(&tq->pending, task, pending_enqueue);
 #ifdef DEBUG
     print_task_queues(tq);
@@ -57,12 +57,12 @@ short task_queues_move_to_pending(task_queues_t* tq, const TCB_t task) {
 }
 
 short task_queues_restore_from_pending(task_queues_t* tq) {
-    TCB_t pending_task = h_dequeue(&tq->pending, should_restore, pending_enqueue);
+    TCB_t *pending_task = h_dequeue(&tq->pending, should_restore, pending_enqueue);
 
-    if(is_empty_task(&pending_task))
+    if(pending_task == 0x00)
         return 0;
 
-    pending_task.remaining_time = pending_task.execution_time;
+    pending_task->remaining_time = pending_task->execution_time;
     task_queues_enqueue(tq, pending_task);
 
 #ifdef DEBUG
@@ -75,8 +75,8 @@ short task_queues_restore_from_pending(task_queues_t* tq) {
 
 short exists_higher_priority_task(const task_queues_t* tq, const TCB_t *task) {
     for(size_t priority = 0; priority < task->priority && priority < NUM_PRIORITY_LEVELS; priority++) {
-        TCB_t priority_task = peek(&tq->queues[priority]);
-        if(!is_empty_task(&priority_task))
+        TCB_t *priority_task = peek(&tq->queues[priority]);
+        if(priority_task != 0x00)
             return 1;
     }
 

@@ -13,14 +13,14 @@ static void shift_right(linear_priority_queue_t *queue, size_t from) {
         queue->tcb[i] = queue->tcb[i - 1];
 }
 
-void p_enqueue(linear_priority_queue_t *queue, TCB_t task, int (*condition)(const TCB_t *, const TCB_t *)) {
-    if(is_empty_task(&task))
+void p_enqueue(linear_priority_queue_t *queue, TCB_t *task, int (*condition)(const TCB_t *, const TCB_t *)) {
+    if(task == 0x00)
         return;
 
     size_t i = 0;
 
     for(;i < queue->rear;i++) {
-        if(!condition(&queue->tcb[i], &task)) {
+        if(!condition(queue->tcb[i], task)) {
             shift_right(queue, i);
             break;
         }
@@ -39,11 +39,11 @@ static void shift_left(linear_priority_queue_t *queue) {
         queue->tcb[i] = queue->tcb[i + 1];
 }
 
-TCB_t p_dequeue(linear_priority_queue_t *queue, int (*condition)(const TCB_t *)) {
-    TCB_t task = p_peek(queue, condition);
+TCB_t *p_dequeue(linear_priority_queue_t *queue, int (*condition)(const TCB_t *)) {
+    TCB_t *task = p_peek(queue, condition);
 
-    if(is_empty_task(&task))
-        return task;
+    if(task == 0x00)
+        return 0x00;
 
     shift_left(queue);
     queue->rear--;
@@ -55,14 +55,14 @@ TCB_t p_dequeue(linear_priority_queue_t *queue, int (*condition)(const TCB_t *))
     return task;
 }
 
-TCB_t p_peek(const linear_priority_queue_t *queue, int (*condition)(const TCB_t *)) {
+TCB_t *p_peek(const linear_priority_queue_t *queue, int (*condition)(const TCB_t *)) {
     if(queue->rear == 0)
-        return empty_task();
+        return 0x00;
 
-    if(condition(&queue->tcb[0]))
+    if(condition(queue->tcb[0]))
         return queue->tcb[0];
 
-    return empty_task();
+    return 0x00;
 }
 
 int p_get_size(const linear_priority_queue_t *queue) {
@@ -76,6 +76,6 @@ short p_is_empty(const linear_priority_queue_t *queue) {
 void p_print_queue(const linear_priority_queue_t *queue) {
     printf("Printing priority queue with rear : %d: \n", queue->rear);
     for(size_t i = 0; i < queue->rear; i++)
-        print_task(&queue->tcb[i]);
+        print_task(queue->tcb[i]);
     printf("\n");
 }

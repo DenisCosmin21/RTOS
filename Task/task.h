@@ -26,21 +26,21 @@ typedef struct TCB {
     int next_release_time;
 } TCB_t;
 
-extern TCB_t running_task;
+extern TCB_t *running_task;
 
-TCB_t init_task(priority_t priority,const int stack_size, const int execution_time, const int period, const char *name);
+TCB_t *init_task(priority_t priority,const int stack_size, const int execution_time, const int period, const char *name);
 
-void destruct_task(const TCB_t *task);
+void destruct_task(TCB_t *);
 
 TCB_t empty_task(void);
 
-short is_empty_task(const TCB_t *task);
+short is_empty_task(const TCB_t *);
 
-short task_is_ready(const TCB_t *task);
+short task_is_ready(const TCB_t *);
 
-TCB_t context_switch(TCB_t next);
+TCB_t *context_switch(TCB_t *);
 
 short should_switch();
 
-void print_task(const TCB_t *task);
+void print_task(const TCB_t *);
 #endif //TASK_H

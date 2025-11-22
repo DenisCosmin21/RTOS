@@ -18,7 +18,7 @@ short rtos_task_create(const int execution_time, const int period,const char *na
         initialized = 1;
     }
 
-    TCB_t task = init_task(WAITING, 128, execution_time, period, name);
+    TCB_t *task = init_task(WAITING, 128, execution_time, period, name);
 
     rms_task_templates_add(&task_templates, task);
 
@@ -37,7 +37,7 @@ void simulate_rtos(void) {
     running_task = get_next_task();
     for(;current_time < max_simulation_time;current_time++) {
         printf("%d ", current_time);
-        print_task(&running_task);
+        print_task(running_task);
         printf("\n");
 
         release_tasks();
@@ -45,13 +45,14 @@ void simulate_rtos(void) {
         if(!should_switch())
             continue;
 
-        TCB_t next_task = get_next_task();
+        TCB_t *next_task = get_next_task();
 
-        TCB_t finished_task = context_switch(next_task);
-
-        if(finished_task.remaining_time == 0)
-            wait_task(finished_task);
-        else
-            store_back_task(&finished_task);
+        TCB_t *finished_task = context_switch(next_task);
+        if(finished_task) {
+            if(finished_task->remaining_time == 0)
+                wait_task(finished_task);
+            else
+                store_back_task(finished_task);
+        }
     }
 }

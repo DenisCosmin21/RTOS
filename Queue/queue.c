@@ -16,7 +16,7 @@ int queue_is_empty(const queue_t* queue) {
     return queue->size == 0;
 }
 
-void enqueue(queue_t* queue, const TCB_t task) {
+void enqueue(queue_t* queue, TCB_t *task) {
     queue->tcb[queue->rear] = task;
     queue->rear = (queue->rear + 1) % QUEUE_SIZE;
     queue->size++;
@@ -25,10 +25,10 @@ void enqueue(queue_t* queue, const TCB_t task) {
 #endif
 }
 
-TCB_t dequeue(queue_t* queue) {
-    TCB_t task = peek(queue);
+TCB_t *dequeue(queue_t* queue) {
+    TCB_t *task = peek(queue);
 
-    if(is_empty_task(&task))
+    if(task == 0x00)
         return task;
 
     queue->front = (queue->front + 1) % QUEUE_SIZE;
@@ -41,9 +41,9 @@ TCB_t dequeue(queue_t* queue) {
     return task;
 }
 
-TCB_t peek(const queue_t* queue) {
+TCB_t *peek(const queue_t* queue) {
     if(queue_is_empty(queue))
-        return empty_task();
+        return 0x00;
 
     return queue->tcb[queue->front];
 }
@@ -51,7 +51,7 @@ TCB_t peek(const queue_t* queue) {
 void print_queue(const queue_t* queue) {
     printf("Printing queue with front : %d and rear : %d: \n", queue->front, queue->rear);
     for(int i = queue->front;i != queue->rear;i = (i + 1) % QUEUE_SIZE)
-        print_task(&queue->tcb[i]);
+        print_task(queue->tcb[i]);
 
     printf("\n");
 }
