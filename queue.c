@@ -3,6 +3,7 @@
 //
 
 #include "queue.h"
+#include <stddef.h>
 #include "task.h"
 
 
@@ -24,14 +25,19 @@ void enqueue(queue_t* queue, const TCB_t task) {
 
 TCB_t dequeue(queue_t* queue) {
     TCB_t task = peek(queue);
+
+    if(is_empty_task(&task))
+        return task;
+
     queue->front = (queue->front + 1) % QUEUE_SIZE;
     queue->size--;
+
     return task;
 }
 
 TCB_t peek(const queue_t* queue) {
     if(queue_is_empty(queue))
-        return (TCB_t){LOW, -1};
+        return empty_task();
 
     return queue->tcb[queue->front];
 }
