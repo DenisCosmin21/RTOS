@@ -15,7 +15,3 @@ add_executable(Rtos main.c
         Queue/binary_heap_queue.c
         Queue/binary_heap_queue.h)
 
-target_compile_definitions(Rtos
-        PRIVATE
-        # Defines 'DEBUG' only if the configuration is 'Debug' (e.g., -DCMAKE_BUILD_TYPE=Debug)
-        $<$<CONFIG:Debug>:DEBUG>)

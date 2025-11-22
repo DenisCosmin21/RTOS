@@ -1,12 +1,8 @@
 #define DEBUG
 #include <stdio.h>
-
-#include "rtos.h"
+#include "RtosApi/rtos.h"
 
 int main(void) {
-#ifdef DEBUG
-    printf("Testing RTOS\n");
-    #endif
     rtos_task_create(3, 20, "1");
 
     rtos_task_create(2, 5, "2");
