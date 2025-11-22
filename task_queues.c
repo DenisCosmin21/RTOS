@@ -1,92 +1,118 @@
+#include "queue.h"
 #include "task_queues.h"
 #include <stdio.h>
+#include "priority_queue.h"
+#include "rtos.h"
 
-void task_queues_init(task_queues_t* tq) {
-    if (tq == NULL) {
-        return;
-    }
-
-    // Initialize priority queues
-    for (int i = 0; i < NUM_PRIORITY_LEVELS; i++) {
-        circular_queue_init(&tq->priority_queues[i]);
-    }
-
-    // Initialize pending queue
-    circular_queue_init(&tq->pending_queue);
+static int pending_enqueue(const TCB_t *task1, const TCB_t *task2) {
+    return task1->next_release_time < task2->next_release_time;
 }
 
-bool task_queues_enqueue(task_queues_t* tq, const TCB_t task) {
-    if (tq == NULL) {
-        printf("Task queues not initialized!\n");
-        return false;
+static int should_restore(const TCB_t *task) {
+    return task->next_release_time -1 == current_time;
+}
+
+void task_queues_init(task_queues_t* tq) {
+    for (int i = 0; i < NUM_PRIORITY_LEVELS; i++) {
+        queue_init(&tq->queues[i]);
     }
 
+    p_init(&tq->pending);
+}
+
+short task_queues_enqueue(task_queues_t* tq, const TCB_t task) {
     if (task.priority < 0 || task.priority > 4) {
-        printf("Invalid priority level!\n");
-        return false;
+        return 0;
     }
 
-    return circular_enqueue(&tq->priority_queues[task.priority], task);
+    enqueue(&tq->queues[task.priority], task);
+
+#ifdef DEBUG
+    print_task_queues(tq);
+#endif
+    return 1;
 }
 
 TCB_t task_queues_dequeue(task_queues_t* tq) {
-    TCB_t empty_task = createEmptyTask();
+    TCB_t task;
 
-    if (tq == NULL) {
-        printf("Task queues not initialized!\n");
-        return empty_task;
-    }
-
-    // Dequeue from highest priority queue first
     for (int i = 0; i < NUM_PRIORITY_LEVELS; i++) {
-        if (!circular_queue_is_empty(&tq->priority_queues[i])) {
-            return circular_dequeue(&tq->priority_queues[i]);
+        task = dequeue(&tq->queues[i]);
+        if(!is_empty_task(&task)) {
+            #ifdef DEBUG
+                print_task_queues(tq);
+            #endif
+            return task;
         }
     }
 
-    printf("All priority queues are empty!\n");
-    return empty_task;
+    return empty_task();
 }
 
-bool task_queues_move_to_pending(task_queues_t* tq, const TCB_t task) {
-    if (tq == NULL) {
-        printf("Task queues not initialized!\n");
-        return false;
-    }
+short task_queues_move_to_pending(task_queues_t* tq, const TCB_t task) {
+    p_enqueue(&tq->pending, task, pending_enqueue);
+#ifdef DEBUG
+    print_task_queues(tq);
+#endif
 
-    return circular_enqueue(&tq->pending_queue, task);
+    return 1;
 }
 
-bool task_queues_restore_from_pending(task_queues_t* tq) {
-    if (tq == NULL) {
-        printf("Task queues not initialized!\n");
-        return false;
-    }
+short task_queues_restore_from_pending(task_queues_t* tq) {
+    TCB_t pending_task = p_dequeue(&tq->pending, should_restore);
 
-    if (circular_queue_is_empty(&tq->pending_queue)) {
-        printf("Pending queue is empty!\n");
-        return false;
-    }
+    if(is_empty_task(&pending_task))
+        return 0;
 
-    TCB_t task = circular_dequeue(&tq->pending_queue);
-    return task_queues_enqueue(tq, task);
+    pending_task.remaining_time = pending_task.execution_time;
+    task_queues_enqueue(tq, pending_task);
+
+#ifdef DEBUG
+    print_task_queues(tq);
+    print_task(&pending_task);
+#endif
+
+    return 1;
 }
 
-void task_queues_print_status(const task_queues_t* tq) {
-    if (tq == NULL) {
-        printf("Task queues not initialized!\n");
-        return;
+short exists_higher_priority_task(const task_queues_t* tq, const TCB_t *task) {
+    for(size_t priority = 0; priority < task->priority && priority < NUM_PRIORITY_LEVELS; priority++) {
+        TCB_t priority_task = peek(&tq->queues[priority]);
+        if(!is_empty_task(&priority_task))
+            return 1;
     }
 
-    const char* priority_names[] = { "VERY_HIGH", "HIGH", "MEDIUM", "LOW" };
+    return 0;
+}
 
-    printf("\n=== Task Queues Status ===\n");
+void print_task_queues(task_queues_t* tq) {
+    printf("Printing task queues: \n");
     for (int i = 0; i < NUM_PRIORITY_LEVELS; i++) {
-        printf("%s queue: %d tasks\n",
-            priority_names[i],
-            circular_queue_get_size(&tq->priority_queues[i]));
+        switch(i) {
+            case 0: {
+                printf("Very high : ");
+                break;
+            }
+            case 1: {
+                printf("High : ");
+                break;
+            }
+            case 2: {
+                printf("Medium : ");
+                break;
+            }
+            case 3: {
+                printf("Low : ");
+                break;
+            }
+            default: {
+                printf("Unknown priority : %d\n", i);
+            }
+        }
+        print_queue(&tq->queues[i]);
     }
-    printf("PENDING queue: %d tasks\n",
-        circular_queue_get_size(&tq->pending_queue));
-    printf("========================\n\n");
+
+
+    printf("Printing pending queue: \n");
+    p_print_queue(&tq->pending);
 }
