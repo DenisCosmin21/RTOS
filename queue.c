@@ -4,6 +4,8 @@
 
 #include "queue.h"
 #include <stddef.h>
+#include <stdio.h>
+
 #include "task.h"
 
 
@@ -21,6 +23,9 @@ void enqueue(queue_t* queue, const TCB_t task) {
     queue->tcb[queue->rear] = task;
     queue->rear = (queue->rear + 1) % QUEUE_SIZE;
     queue->size++;
+#ifdef DEBUG
+    print_queue(queue);
+#endif
 }
 
 TCB_t dequeue(queue_t* queue) {
@@ -31,6 +36,10 @@ TCB_t dequeue(queue_t* queue) {
 
     queue->front = (queue->front + 1) % QUEUE_SIZE;
     queue->size--;
+#ifdef DEBUG
+    print_queue(queue);
+    print_task(&task);
+#endif
 
     return task;
 }
@@ -40,4 +49,12 @@ TCB_t peek(const queue_t* queue) {
         return empty_task();
 
     return queue->tcb[queue->front];
+}
+
+void print_queue(const queue_t* queue) {
+    printf("Printing queue with front : %d and rear : %d: \n", queue->front, queue->rear);
+    for(int i = queue->front;i != queue->rear;i = (i + 1) % QUEUE_SIZE)
+        print_task(&queue->tcb[i]);
+
+    printf("\n");
 }

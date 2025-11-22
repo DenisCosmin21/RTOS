@@ -26,4 +26,6 @@ TCB_t dequeue(queue_t *);
 TCB_t peek(const queue_t *);
 
 int queue_is_empty(const queue_t *);
+
+void print_queue(const queue_t *queue);
 #endif //QUEUE_H
