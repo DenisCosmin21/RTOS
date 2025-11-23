@@ -11,9 +11,9 @@ typedef struct TCB {
     void *stack_pointer;
     void *base_stack_pointer;
     int stack_size;
-    int execution_time;
+    int worst_case_execution_time;
     int period;
-    int remaining_time;
+    int budget_time;
     int next_release_time;
 } TCB_t;
 

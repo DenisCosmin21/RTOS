@@ -17,24 +17,24 @@ typedef struct {
     unsigned long bitmap; //Bitmap to specify if there is a task on a specific priority. bit for speicif cpriority 1 if exists else 0
 } scheduler_t;
 
-void scheduler_init(scheduler_t* scheduler, rms_task_templates_t* templates);
+void scheduler_init(void);
 
-short rms_task_templates_add(rms_task_templates_t* templates,TCB_t *task);
+short rms_task_templates_add(TCB_t *task);
 
-short is_schedulable(const rms_task_templates_t* templates);
+short is_schedulable(void);
 
-short start_scheduler(rms_task_templates_t* templates, scheduler_t *scheduler);
+short start_scheduler(void);
 
-TCB_t *scheduler_get_task(scheduler_t*);
+TCB_t *scheduler_get_task(void);
 
-short scheduler_add_task(scheduler_t*, TCB_t *task);
+short scheduler_add_task(TCB_t *task);
 
-short scheduler_sleep_task(scheduler_t*, TCB_t *task);
+short scheduler_sleep_task(TCB_t *task);
 
-short exists_higher_priority_task(const scheduler_t*, const TCB_t *task);
+short exists_higher_priority_task(const TCB_t *task);
 
-short scheduler_release_tasks(scheduler_t*);
+short scheduler_release_tasks(void);
 
-void print_scheduler(const scheduler_t* scheduler);
+void print_scheduler(void);
 
 #endif

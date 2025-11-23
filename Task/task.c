@@ -6,6 +6,7 @@
 #include "../RtosApi/rtos.h"
 #include "../Globals/globals.h"
 
+
 TCB_t *init_task(const unsigned long priority,const int stack_size, const int execution_time, const int period, const char *name) {
     TCB_t *task = c_malloc(sizeof(TCB_t));
     void *stack_pointer = c_malloc(stack_size * sizeof(int));
@@ -13,10 +14,10 @@ TCB_t *init_task(const unsigned long priority,const int stack_size, const int ex
     task->stack_size = stack_size;
     task->stack_pointer = stack_pointer;
     task->base_stack_pointer = stack_pointer;
-    task->execution_time = execution_time;
+    task->worst_case_execution_time = execution_time;
     task->period = period;
     task->next_release_time = 0;
-    task->remaining_time = execution_time;
+    task->budget_time = execution_time;
     strcpy(task->name, name);
     return task;
 }
@@ -33,7 +34,7 @@ short task_is_ready(const TCB_t *task) {
 TCB_t *context_switch() {
     TCB_t *waiting_task = running_task;
     running_task = next_task;
-    if(waiting_task != 0x00 && waiting_task->remaining_time == 0) {
+    if(waiting_task != 0x00 && waiting_task->budget_time == 0) {
         waiting_task->next_release_time = current_time + (waiting_task->period - (current_time % waiting_task->period));
     }
     return waiting_task;
@@ -43,9 +44,9 @@ short should_switch() {
     if(running_task == 0x00)
         return 1;
 
-    running_task->remaining_time--;
+    running_task->budget_time--;
 
-    if(exists_higher_priority_task(&scheduler, running_task) || running_task->remaining_time == 0)
+    if(exists_higher_priority_task(running_task) || running_task->budget_time == 0)
         return 1;
 
     return 0;

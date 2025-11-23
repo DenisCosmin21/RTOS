@@ -1,18 +1,27 @@
 ﻿#include "rms_scheduler.h"
 #include <stdio.h>
+
 #include "../Globals/globals.h"
 
 //Transforms a bit from 0 to 1
 #define SET_BIT(number, position) \
-number |= (1 << position);
+    number |= (1 << position);
 
 //Transforms a bit from 1 to 0
 #define RESET_BIT(number, position) \
-number &= ~(1 << position);
+    number &= ~(1 << position);
 
 //Gets the number of trailing zeros from number
 #define GET_TRAILING_ZEROS_COUNT(number) \
-((number > 0 ? __builtin_clz(number) : sizeof(long) * 8))
+    ((number > 0 ? ((MAX_PRIORITY_COUNT - 1) - __builtin_clz(number)) : sizeof(long) * 8))
+
+static float utilization = 0;//utilization of CPU to identify easily if rots is schedulable without computing the whole sum each time
+
+static scheduler_t global_scheduler; //global variable for scheduler
+
+static rms_task_templates_t global_task_templates; //global variable dor task templates
+
+static short started = 0; //Global flag to identify if rtos started or not, for new task logic
 
 const static float RMS_BOUNDS[10] = {
     1.0000,   // n=1
@@ -27,9 +36,7 @@ const static float RMS_BOUNDS[10] = {
     0.7177,   // n=10
 };
 
-static int periods_per_priority[4];
-
-static float utilization = 0;
+static int periods_per_priority[NUM_PRIORITY_LEVELS];
 
 static int new_task_condition(const TCB_t* task, const TCB_t *task2) {
     return task->period < task2->period;
@@ -47,8 +54,11 @@ static int should_restore(const TCB_t *task) {
     return task->next_release_time -1 == current_time;
 }
 
-void scheduler_init(scheduler_t* scheduler, rms_task_templates_t* templates) {
-    h_init(&templates->tasks);
+void scheduler_init(void) {
+    scheduler_t *scheduler = &global_scheduler;
+    rms_task_templates_t *task_templates = &global_task_templates;
+
+    h_init(&task_templates->tasks);
 
     for (int i = 0; i < NUM_PRIORITY_LEVELS; i++) {
         queue_init(&scheduler->queues[i]);
@@ -57,9 +67,10 @@ void scheduler_init(scheduler_t* scheduler, rms_task_templates_t* templates) {
     h_init(&scheduler->pending);
 }
 
-short rms_task_templates_add(rms_task_templates_t* templates,TCB_t *task) {
-    h_enqueue(&templates->tasks, task, new_task_condition);
-    utilization += (float)(task->execution_time) / (float)(task->period);
+short rms_task_templates_add(TCB_t *task) {
+    rms_task_templates_t *task_templates = &global_task_templates;
+    h_enqueue(&task_templates->tasks, task, new_task_condition);
+    utilization += (float)(task->worst_case_execution_time) / (float)(task->period);
 #ifdef DEBUG
     printf("Utilization = %f\n", utilization);
 #endif
@@ -71,40 +82,64 @@ float calculate_rms_bound(size_t number_of_tasks) {
     return RMS_BOUNDS[number_of_tasks - 1];
 }
 
-short is_schedulable(const rms_task_templates_t* templates) {
+short is_schedulable(void) {
     if(utilization <= 0.69)
         return 1;
 
-    float rms_bound = calculate_rms_bound(h_get_size(&templates->tasks) - 1);
+    if(!started) {
+        rms_task_templates_t *task_templates = &global_task_templates;
+        float rms_bound = calculate_rms_bound(h_get_size(&task_templates->tasks) - 1);
+        return utilization <= rms_bound;
+    }
 #ifdef DEBUG
     printf("Utilization %f <= Max possible time %f", utilization, rms_bound);
 #endif
-    return utilization <= rms_bound;
+
 }
 
-short start_scheduler(rms_task_templates_t* templates, scheduler_t *scheduler) {
-    if(!is_schedulable(templates) || h_is_empty(&templates->tasks))
+short start_scheduler(void) {
+    rms_task_templates_t *task_templates = &global_task_templates;
+
+    if(!is_schedulable() || h_is_empty(&task_templates->tasks))
         return 0;
 
+    //Lowest priority is MAX_PRIORITY_COUNT - 1
     unsigned long current_priority = 0;
+
     int current_period = 0;
 
-    TCB_t *task = h_dequeue(&templates->tasks, return_task_from_template, new_task_condition);
+    //Get a task, get it's period and assign it to lowest priority.
+    //This is a priority queue based on period, so first task will be lowest priority always
+    TCB_t *task = h_dequeue(&task_templates->tasks, return_task_from_template, new_task_condition);
     current_period =  task->period;
     task->priority = current_priority;
-    scheduler_add_task(scheduler, task);
+
+    scheduler_add_task(task);
+
+    //Add the period to priority for when i need to add a new task at runtime to know which priority to assign it to
     periods_per_priority[current_priority] = current_period;
 
-    while(!h_is_empty(&templates->tasks)) {
-        task = h_dequeue(&templates->tasks, return_task_from_template, new_task_condition);
+    //Execute while we still have tasks to add to scheduler
+    while(!h_is_empty(&task_templates->tasks)) {
+
+        task = h_dequeue(&task_templates->tasks, return_task_from_template, new_task_condition);
+
+        //If the period is different it means we have another priority
         if(task->period != current_period) {
+
             current_period = task->period;
-            current_priority--;
-            periods_per_priority[current_priority] = current_period;
+
+            //As a safety measure we can add higher period tasks to last priority if it exceds the biggest number. Maybe change the task period too?
+            //Maybe compute if the rtos can still run like this to know if it should accept it?
+            //Maybe return an error code regarding the error found?
+            if(current_priority < NUM_PRIORITY_LEVELS - 1) {
+                current_priority++;
+                periods_per_priority[current_priority] = current_period;
+            }
         }
 
         task->priority = current_priority;
-        scheduler_add_task(scheduler, task);
+        scheduler_add_task(task);
     }
 
     #ifdef DEBUG
@@ -114,8 +149,11 @@ short start_scheduler(rms_task_templates_t* templates, scheduler_t *scheduler) {
     return 1;
 }
 
-short scheduler_add_task(scheduler_t* scheduler, TCB_t *task) {
-    if (task->priority < 0 || task->priority > NUM_PRIORITY_LEVELS) {
+short scheduler_add_task(TCB_t *task) {
+    scheduler_t *scheduler = &global_scheduler;
+
+    //Chekcs if task has good priority
+    if (task->priority < 0 || task->priority >= NUM_PRIORITY_LEVELS) {
         return 0;
     }
 
@@ -125,33 +163,40 @@ short scheduler_add_task(scheduler_t* scheduler, TCB_t *task) {
     return 1;
 }
 
-TCB_t *scheduler_get_task(scheduler_t* scheduler) {
+TCB_t *scheduler_get_task(void) {
+    scheduler_t *scheduler = &global_scheduler;
+
     const unsigned long priority = GET_TRAILING_ZEROS_COUNT(scheduler->bitmap);
 
-    if(priority == 32)//It means 32 trailing zeros => number 0
+    if(priority == MAX_PRIORITY_COUNT)//It means 32 trailing zeros => number 0
         return 0x00;
 
-    RESET_BIT(scheduler->bitmap, priority);
+    TCB_t *task = dequeue(&scheduler->queues[priority]);
 
-    return dequeue(&scheduler->queues[priority]);
+    if(queue_is_empty(&scheduler->queues[priority]))
+        RESET_BIT(scheduler->bitmap, priority);
+
+    return task;
 }
 
-short scheduler_sleep_task(scheduler_t* scheduler, TCB_t *task) {
+short scheduler_sleep_task(TCB_t *task) {
+    scheduler_t *scheduler = &global_scheduler;
+
     h_enqueue(&scheduler->pending, task, pending_enqueue);
-#ifdef DEBUG
-    print_task_queues(tq);
-#endif
+
 
     return 1;
 }
 
-short scheduler_release_tasks(scheduler_t* scheduler) {
+short scheduler_release_tasks(void) {
+
+    scheduler_t *scheduler = &global_scheduler;
+
     TCB_t *pending_task = 0x00;
 
     while((pending_task = h_dequeue(&scheduler->pending, should_restore, pending_enqueue)) != 0x00) {
-        pending_task->remaining_time = pending_task->execution_time;
-        scheduler_add_task(scheduler, pending_task);
-        return 1;
+        pending_task->budget_time = pending_task->worst_case_execution_time;
+        scheduler_add_task(pending_task);
     }
 
 #ifdef DEBUG
@@ -159,17 +204,23 @@ short scheduler_release_tasks(scheduler_t* scheduler) {
     print_task(&pending_task);
 #endif
 
-    return 0x00;
+    return 0;
 }
 
-short exists_higher_priority_task(const scheduler_t* scheduler, const TCB_t *task) {
-    if(task->priority == GET_TRAILING_ZEROS_COUNT(scheduler->bitmap))
+short exists_higher_priority_task(const TCB_t *task) {
+    const scheduler_t *scheduler = &global_scheduler;
+
+    unsigned long max_priority = GET_TRAILING_ZEROS_COUNT(scheduler->bitmap);
+
+    if(max_priority == MAX_PRIORITY_COUNT || task->priority >= max_priority)
         return 0;
 
     return 1;
 }
 
-void print_scheduler(const scheduler_t* scheduler) {
+void print_scheduler() {
+    const scheduler_t *scheduler = &global_scheduler;
+
     printf("Printing task queues: \n");
     for (int i = 0; i < NUM_PRIORITY_LEVELS; i++) {
         switch(i) {
