@@ -3,23 +3,19 @@
 //
 
 #include "binary_heap_queue.h"
-
 #include <stdio.h>
+
+#define PARENT(position) \
+    ((position - 1) / 2)
+
+#define LEFT(position) \
+    (position * 2 + 1)
+
+#define RIGHT(position) \
+    (position * 2 + 2)
 
 void h_init(heap_priority_queue_t * queue) {
     queue->size = 0;
-}
-
-static size_t parent(const size_t position) {
-    return (position - 1) / 2;
-}
-
-static size_t left(const size_t position) {
-    return position * 2 + 1;
-}
-
-static size_t right(const size_t position) {
-    return position * 2 + 2;
 }
 
 static void swap_elements(TCB_t **task1, TCB_t **task2) {
@@ -29,8 +25,8 @@ static void swap_elements(TCB_t **task1, TCB_t **task2) {
 }
 
 static void shift_heap(heap_priority_queue_t * queue, size_t position, int (*condition)(const TCB_t *, const TCB_t *)) {
-    while(position != 0 && condition(queue->tcb[parent(position)], queue->tcb[position])) {
-        swap_elements(&queue->tcb[parent(position)], &queue->tcb[position]);
+    while(position != 0 && condition(queue->tcb[PARENT(position)], queue->tcb[position])) {
+        swap_elements(&queue->tcb[PARENT(position)], &queue->tcb[position]);
     }
 }
 
@@ -47,8 +43,8 @@ void h_enqueue(heap_priority_queue_t * queue,TCB_t *task, int (*priority_conditi
 }
 
 static void min_heapify(heap_priority_queue_t * queue, size_t position, int (*condition)(const TCB_t *, const TCB_t *)) {
-    const size_t l = left(position);
-    const size_t r = right(position);
+    const size_t l = LEFT(position);
+    const size_t r = RIGHT(position);
     size_t best_priority = position;
 
     if(l < queue->size && condition(queue->tcb[position], queue->tcb[l]))
