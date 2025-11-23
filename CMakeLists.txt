@@ -4,14 +4,13 @@ project(Rtos C)
 set(CMAKE_C_STANDARD 99)
 
 add_executable(Rtos main.c
+        Globals/globals.c
         Queue/queue.c
         Task/task.c
         Memory/memory_pool.c
-        Queue/task_queues.c
         RmsScheduler/rms_scheduler.c
         Queue/priority_queue.c
         RtosApi/rtos.c
         Queue/queue.c
-        Queue/binary_heap_queue.c
-        Queue/binary_heap_queue.h)
+        Queue/binary_heap_queue.c)
 
