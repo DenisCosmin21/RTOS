@@ -31,25 +31,29 @@ short task_is_ready(const TCB_t *task) {
     return task->next_release_time >= current_time;
 }
 
-TCB_t *context_switch() {
-    TCB_t *waiting_task = running_task;
-    running_task = next_task;
-    if(waiting_task != 0x00 && waiting_task->budget_time == 0) {
-        waiting_task->next_release_time = current_time + (waiting_task->period - (current_time % waiting_task->period));
-    }
-    return waiting_task;
+void reset_task(TCB_t *task) {
+    task->next_release_time = current_time + (task->period - (current_time % task->period));
 }
 
-short should_switch() {
-    if(running_task == 0x00)
-        return 1;
+void context_switch() {
+    running_task = next_task;
+}
+
+void should_switch() {
+    if(running_task == 0x00) {
+        if(exists_any_task())
+            rtos_task_wait();
+        return;
+    }
 
     running_task->budget_time--;
 
-    if(exists_higher_priority_task(running_task) || running_task->budget_time == 0)
-        return 1;
+    if(exists_higher_priority_task(running_task))
+        rtos_task_yeld();
 
-    return 0;
+    if(running_task->budget_time <= 0)
+        rtos_task_wait();
+
 }
 
 void print_task(const TCB_t *task) {

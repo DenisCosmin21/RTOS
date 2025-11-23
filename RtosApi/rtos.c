@@ -27,6 +27,26 @@ short rtos_start(void) {
     return start_scheduler();
 }
 
+//Tell the kernel that current running task finished execution, and should switch
+void rtos_task_wait(void) {
+    next_task = scheduler_get_task();
+
+    if(running_task != 0x00) {
+        reset_task(running_task);
+
+        scheduler_sleep_task(running_task);
+    }
+
+    context_switch();
+}
+
+//It stops the current running task to allow another task to run
+void rtos_task_yeld(void) {
+    next_task = scheduler_get_task();
+    scheduler_add_task(running_task);
+    context_switch();
+}
+
 void simulate_rtos(void) {
     running_task = scheduler_get_task();
     for(;current_time < max_simulation_time;current_time++) {
@@ -34,19 +54,10 @@ void simulate_rtos(void) {
         print_task(running_task);
         printf("\n");
 
+        //Would get called in systick handler
         scheduler_release_tasks();
 
-        if(!should_switch())
-            continue;
-
-        next_task = scheduler_get_task();
-
-        TCB_t *finished_task = context_switch();
-        if(finished_task) {
-            if(finished_task->budget_time == 0)
-                scheduler_sleep_task(finished_task);
-            else
-                scheduler_add_task(finished_task);
-        }
+        should_switch();
+        //
     }
 }

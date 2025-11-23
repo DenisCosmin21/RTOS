@@ -23,9 +23,11 @@ void destruct_task(TCB_t *);
 
 short task_is_ready(const TCB_t *);
 
-TCB_t *context_switch();
+void context_switch();
 
-short should_switch();
+void should_switch();
+
+void reset_task(TCB_t *);
 
 void print_task(const TCB_t *);
 #endif //TASK_H

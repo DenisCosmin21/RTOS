@@ -11,5 +11,9 @@ short rtos_task_create(const int execution_time,const int period, const char*);
 
 short rtos_start(void);
 
+void rtos_task_wait(void);
+
+void rtos_task_yeld(void);
+
 void simulate_rtos(void);
 #endif //RTOS_H
