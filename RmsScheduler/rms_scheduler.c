@@ -51,7 +51,7 @@ static int pending_enqueue(const TCB_t *task1, const TCB_t *task2) {
 }
 
 static int should_restore(const TCB_t *task) {
-    return task->next_release_time -1 == current_time;
+    return task->next_release_time -1 <= current_time;
 }
 
 void scheduler_init(void) {
@@ -188,7 +188,7 @@ short scheduler_sleep_task(TCB_t *task) {
     return 1;
 }
 
-short scheduler_release_tasks(void) {
+void scheduler_release_tasks(void) {
 
     scheduler_t *scheduler = &global_scheduler;
 
@@ -203,8 +203,6 @@ short scheduler_release_tasks(void) {
     print_task_queues(tq);
     print_task(&pending_task);
 #endif
-
-    return 0;
 }
 
 short exists_higher_priority_task(const TCB_t *task) {
@@ -216,6 +214,14 @@ short exists_higher_priority_task(const TCB_t *task) {
         return 0;
 
     return 1;
+}
+
+short exists_any_task(void) {
+    const scheduler_t *scheduler = &global_scheduler;
+
+    unsigned long max_priority = GET_TRAILING_ZEROS_COUNT(scheduler->bitmap);
+
+    return max_priority != MAX_PRIORITY_COUNT;
 }
 
 void print_scheduler() {

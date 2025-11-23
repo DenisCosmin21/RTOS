@@ -33,7 +33,9 @@ short scheduler_sleep_task(TCB_t *task);
 
 short exists_higher_priority_task(const TCB_t *task);
 
-short scheduler_release_tasks(void);
+void scheduler_release_tasks(void);
+
+short exists_any_task(void);
 
 void print_scheduler(void);
 
