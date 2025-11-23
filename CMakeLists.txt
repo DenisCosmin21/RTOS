@@ -12,5 +12,6 @@ add_executable(Rtos main.c
         Queue/priority_queue.c
         RtosApi/rtos.c
         Queue/queue.c
-        Queue/binary_heap_queue.c)
+        Queue/binary_heap_queue.c
+        rtos_config.h)
 

@@ -4,11 +4,11 @@
 
 #ifndef QUEUE_H
 #define QUEUE_H
-#define QUEUE_SIZE 10
+#define MAX_TASKS 10
 #include "../Task/task.h"
 
 typedef struct {
-    TCB_t *tcb[QUEUE_SIZE];
+    TCB_t *tcb[MAX_TASKS];
     int front;
     int rear;
     int size;

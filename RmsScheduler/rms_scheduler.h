@@ -1,11 +1,19 @@
 #ifndef RMS_SCHEDULER_H
 #define RMS_SCHEDULER_H
+
+#define NUM_PRIORITY_LEVELS 4
+
+#include "../rtos_config.h"
 #include "../Task/task.h"
 #include "../Queue/binary_heap_queue.h"
 #include "../Queue/queue.h"
 
-#define NUM_PRIORITY_LEVELS 4
 #define MAX_PRIORITY_COUNT sizeof(long) * 8
+
+#if NUM_PRIORITY_LEVELS > MAX_PRIORITY_COUNT
+#undef NUM_PRIORITY_LEVELS
+#define NUM_PRIORITY_LEVELS MAX_PRIORITY_COUNT
+#endif
 
 typedef struct {
     heap_priority_queue_t tasks;

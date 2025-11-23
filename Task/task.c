@@ -53,7 +53,6 @@ void should_switch() {
 
     if(running_task->budget_time <= 0)
         rtos_task_wait();
-
 }
 
 void print_task(const TCB_t *task) {

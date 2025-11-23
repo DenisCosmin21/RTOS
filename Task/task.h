@@ -4,9 +4,11 @@
 
 #ifndef TASK_H
 #define TASK_H
+#define MAX_NAME_SIZE 20
+#include "../rtos_config.h"
 
 typedef struct TCB {
-    char name[20];
+    char name[MAX_NAME_SIZE];
     unsigned long priority;
     void *stack_pointer;
     void *base_stack_pointer;

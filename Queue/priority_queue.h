@@ -4,11 +4,12 @@
 
 #ifndef PRIORITY_QUEUE_H
 #define PRIORITY_QUEUE_H
-#define QUEUE_SIZE 10
+#define MAX_TASKS 10
 #include "../Task/task.h"
+#include "../rtos_config.h"
 
 typedef struct {
-    TCB_t *tcb[QUEUE_SIZE];
+    TCB_t *tcb[MAX_TASKS];
     int rear;
 } linear_priority_queue_t;
 

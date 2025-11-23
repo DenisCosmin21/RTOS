@@ -16,7 +16,7 @@ void rtos_init(void) { //Will get called from the reset procedure
 
 short rtos_task_create(const int execution_time, const int period,const char *name) {
     //Assign lowest priority first when creating it,becouse in RMS it should'nt know exact priority on creation
-    TCB_t *task = init_task(0, 128, execution_time, period, name);
+    TCB_t *task = init_task(0, BASE_TASK_STACK_SIZE, execution_time, period, name);
 
     rms_task_templates_add(task);
 

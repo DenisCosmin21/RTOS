@@ -5,32 +5,54 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#define HEAP_SIZE 4096//Should be enough memory
+/*
+ *For allocation technique we will use a huge continous block.
+ *Each time the user asks for some memory, first we search for an empty block, then check it's size and the return it.
+ *If none exists we return 0.
+ *To know if a block is empty the first 2 bytes of the block will consist of it's size, and a flag like this.
+ *First 15 bits are the size, and next bit is the flag.
+ *then we padd up the metadata to align elements good, adn we return to the user the next address after the metadata.
+ *On free a block will first check the next block to check if it's ocuppied or not.
+ *If next block is not ocuppied it will merge with it to reduce the memory fragmentation.
+ *Then it checks the anterior block to check if it's empty or not.
+ *If it's empty it merges with it too.
+ *Like this if we have a block of 5 bytes in the middle of 2 free blocks, we will get a big continous block agaian out of these 3
+ *For the allocation technique explained above, it is the user responsability to give the first address of a mempry block.
+ *If the user won't do that, the memory might break. The comportament is unpredictable.
+ *becouse it might have some data inside the bytes considered metadata, which tells it that is have a size which is false.
+ */
 
+//Returns the block size as explained above
 #define GET_BLOCK_SIZE(memory_block)( \
     ((((uint16_t)memory_block[0] << 8) | memory_block[1]) >> 1))
 
+//Returns the flag as explained above.
 #define IS_BLOCK_OCUPPIED(memory_block)( \
     memory_block[1] & 0x01)
 
+//It ocupied the block, so it writes the size in the first 15 bits, and it sets the flag ocuppied
 #define OCUPY_BLOCK(memory_block, new_size) \
     memory_block[0] = (new_size << 1) >> 8; \
     memory_block[1] = (new_size << 1) | 0x01;
 
+//Initializes a block with a specific size, and resetes the flag.
 #define INITIALIZE_BLOCK(memory_block, size) \
     memory_block[0] = (size << 1) >> 8; \
     memory_block[1] = size << 1;
 
+//Gets the next block based on the current block
 #define NEXT_BLOCK(memory_block)( \
     &memory_block[GET_BLOCK_SIZE(memory_block)])
 
+//Merges 2 blocks
 #define MERGE_BLOCKS(memory_block1, memory_block2) \
     INITIALIZE_BLOCK(memory_block1, GET_BLOCK_SIZE(memory_block1) + GET_BLOCK_SIZE(memory_block2)) \
     INITIALIZE_BLOCK(memory_block2, 0)
 
 typedef uint8_t memory_pool_t;
 
-static memory_pool_t memory_pool[HEAP_SIZE] = {[0] = 0x20, [1] = 0x00};
+//First the memory will get initialized. The first metadata will have the full size.
+static memory_pool_t memory_pool[HEAP_SIZE] = {[0] = (HEAP_SIZE << 1) >> 8, [1] = HEAP_SIZE};
 
 void *c_malloc(short size) {
     uint8_t *last_element = &memory_pool[HEAP_SIZE];
