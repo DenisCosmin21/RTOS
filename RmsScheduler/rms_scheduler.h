@@ -8,7 +8,7 @@
 #include "../Queue/binary_heap_queue.h"
 #include "../Queue/queue.h"
 
-#define MAX_PRIORITY_COUNT sizeof(long) * 8
+#define MAX_PRIORITY_COUNT 32
 
 #if NUM_PRIORITY_LEVELS > MAX_PRIORITY_COUNT
 #undef NUM_PRIORITY_LEVELS
