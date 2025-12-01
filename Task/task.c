@@ -14,6 +14,8 @@ TCB_t *init_task(const unsigned long priority,const int stack_size, const int ex
     task->stack_size = stack_size;
     task->stack_pointer = stack_pointer;
     task->base_stack_pointer = stack_pointer;
+    task->blocked_by = 0x00;
+    task->temporary_priority = MAX_PRIORITY_COUNT;
     task->worst_case_execution_time = execution_time;
     task->period = period;
     task->next_release_time = 0;
@@ -33,6 +35,8 @@ short task_is_ready(const TCB_t *task) {
 
 void reset_task(TCB_t *task) {
     task->next_release_time = current_time + (task->period - (current_time % task->period));
+    task->temporary_priority = MAX_PRIORITY_COUNT;
+    task->blocked_by = 0x00;
 }
 
 void context_switch() {
@@ -55,6 +59,15 @@ void should_switch() {
         rtos_task_wait();
 }
 
+void inheritate_priority(TCB_t *task_that_inheritates, const TCB_t *task_inheritated) {
+    do {
+        task_that_inheritates->temporary_priority = task_inheritated->temporary_priority != MAX_PRIORITY_COUNT ? task_inheritated->temporary_priority : task_inheritated->priority;
+        TCB_t *temporary = task_that_inheritates;
+        task_that_inheritates = task_inheritated->blocked_by;
+        task_inheritated =  temporary;
+    }while(task_that_inheritates != 0x00 && task_inheritated != task_that_inheritates);
+}
+
 void print_task(const TCB_t *task) {
-    printf("%s, ", task->name);
+    printf("%s => %d, ", task->name, task != 0x00 ? task->temporary_priority : 32);
 }

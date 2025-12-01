@@ -5,11 +5,12 @@
 #ifndef TASK_H
 #define TASK_H
 #define MAX_NAME_SIZE 20
-#include "../rtos_config.h"
 
 typedef struct TCB {
     char name[MAX_NAME_SIZE];
     unsigned long priority;
+    unsigned long temporary_priority;
+    struct TCB *blocked_by;
     void *stack_pointer;
     void *base_stack_pointer;
     int stack_size;
@@ -30,6 +31,8 @@ void context_switch();
 void should_switch();
 
 void reset_task(TCB_t *);
+
+void inheritate_priority(TCB_t *task_that_inheritates, const TCB_t *task_inheritated);
 
 void print_task(const TCB_t *);
 #endif //TASK_H
