@@ -1,0 +1,6 @@
+../Src/rtos.c:13:6:rtos_init	1
+../Src/rtos.c:17:7:rtos_task_create	1
+../Src/rtos.c:26:7:rtos_start	1
+../Src/rtos.c:31:6:rtos_task_wait	2
+../Src/rtos.c:44:6:rtos_task_yeld	1
+../Src/rtos.c:50:6:simulate_rtos	2

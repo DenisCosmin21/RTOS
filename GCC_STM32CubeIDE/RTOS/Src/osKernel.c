@@ -1,7 +1,11 @@
 #include "osKernel.h"
+#include "task.h"
+#include "globals.h"
+#include "rtos.h"
+#include "rms_scheduler.h"
+#include "stm32u5xx.h"
 
-#define NUM_OF_THREADS			3
-#define STACKSIZE 				100
+
 #define BUS_FREQ 				4000000UL
 
 
@@ -13,25 +17,10 @@
 
 uint32_t MILIS_PRESCALER;
 
-struct TCB{
-	int32_t *stackPt;
-	struct tcb *nextPt;
-};
-
-
-typedef struct TCB tcbType;
-
-
-tcbType tcbs[NUM_OF_THREADS];
-tcbType *currentPt;
-
-
-int32_t TCB_STACK[NUM_OF_THREADS][STACKSIZE];
-
 
 
 void osSchedulerLaunch(void){
-	__asm("LDR R0,=currentPt");
+	__asm("LDR R0,=running_task");
 
 	__asm("LDR R2, [R0]");
 
@@ -47,7 +36,6 @@ void osSchedulerLaunch(void){
 
 	__asm("POP {LR}");
 
-
 	__asm("ADD SP, SP, #4");
 
 	__asm("CPSIE I");
@@ -56,47 +44,47 @@ void osSchedulerLaunch(void){
 
 }
 
-void osKernelStackInit(int i)
-{
-	tcbs[i].stackPt = &TCB_STACK[i][STACKSIZE -16];
+void osKernelStackInit(TCB_t *task, void (*taskFunc)(void)) {
+    uint32_t *stackBase = (uint32_t *)task->base_stack_pointer;
+    uint32_t *stackTop  = stackBase + task->stack_size;
 
 
-	TCB_STACK[i][STACKSIZE-1] = (1U<< 24);
+    uint32_t *sp = stackTop - 16;
 
-	TCB_STACK[i][STACKSIZE-3] = 0xAAAAAAAA;
-	TCB_STACK[i][STACKSIZE-4] = 0xAAAAAAAA;
-	TCB_STACK[i][STACKSIZE-5] = 0xAAAAAAAA;
-	TCB_STACK[i][STACKSIZE-6] = 0xAAAAAAAA;
-	TCB_STACK[i][STACKSIZE-7] = 0xAAAAAAAA;
-	TCB_STACK[i][STACKSIZE-8] = 0xAAAAAAAA;
-	TCB_STACK[i][STACKSIZE-9] = 0xAAAAAAAA;
-	TCB_STACK[i][STACKSIZE-10] = 0xAAAAAAAA;
-	TCB_STACK[i][STACKSIZE-11] = 0xAAAAAAAA;
-	TCB_STACK[i][STACKSIZE-12] = 0xAAAAAAAA;
-	TCB_STACK[i][STACKSIZE-13] = 0xAAAAAAAA;
-	TCB_STACK[i][STACKSIZE-14] = 0xAAAAAAAA;
-	TCB_STACK[i][STACKSIZE-15] = 0xAAAAAAAA;
-	TCB_STACK[i][STACKSIZE-16] = 0xAAAAAAAA;
+
+    sp[15] = (1U << 24); // XPSR on thumb mode 2
+    sp[14] = (uint32_t)taskFunc; // PC
+    sp[13] = (0xAAAAAAAA);   // dummy values
+    sp[12] = (0xAAAAAAAA);
+    sp[11] = (0xAAAAAAAA);
+    sp[10] = (0xAAAAAAAA);
+    sp[9] = (0xAAAAAAAA);
+    sp[8] = (0xAAAAAAAA);
+    sp[7] = (0xAAAAAAAA);
+    sp[6] = (0xAAAAAAAA);
+    sp[5] = (0xAAAAAAAA);
+    sp[4] = (0xAAAAAAAA);
+    sp[3] = (0xAAAAAAAA);
+    sp[2] = (0xAAAAAAAA);
+    sp[1] = (0xAAAAAAAA);
+    sp[0] = (0xAAAAAAAA);
+
+
+
+    task->stack_pointer = sp;     // where SchedulerLauncher loads SP from
 }
 
-uint8_t osKernelAddThreads(void(*task0)(void), void(*task1)(void), void(*task2)(void)){
+
+
+
+uint8_t osKernelAddThreads( void(*taskFunc)(void) , const int execution_time, const int period,const char *name){
 
 	__disable_irq();
-	tcbs[0].nextPt = &tcbs[1];
-	tcbs[1].nextPt = &tcbs[2];
-	tcbs[2].nextPt = &tcbs[0];
 
-	osKernelStackInit(0);
 
-	TCB_STACK[0][STACKSIZE-2] = (int32_t)(task0);
-
-	osKernelStackInit(1);
-	TCB_STACK[1][STACKSIZE-2] = (int32_t)(task1);
-
-	osKernelStackInit(2);
-	TCB_STACK[2][STACKSIZE-2] = (int32_t)(task2);
-
-	currentPt = &tcbs[0];
+	    TCB_t *task = init_task(0, BASE_TASK_STACK_SIZE, execution_time, period, name);
+	    osKernelStackInit(task, taskFunc);
+	    rms_task_templates_add(task);
 
 	__enable_irq();
  	return 1;
@@ -104,7 +92,9 @@ uint8_t osKernelAddThreads(void(*task0)(void), void(*task1)(void), void(*task2)(
 
 void osKernelInit(void){
 	MILIS_PRESCALER = (BUS_FREQ/1000);
+	rtos_init();
 }
+
 
 void osKernelLaunch(uint32_t quanta){
 	// Reset Systick
@@ -115,10 +105,17 @@ void osKernelLaunch(uint32_t quanta){
 	SysTick->LOAD = (quanta * MILIS_PRESCALER) - 1;
 
 	NVIC_SetPriority(SysTick_IRQn, 15);
+	NVIC_SetPriority(PendSV_IRQn, 15);
 
 	SysTick->CTRL = CTRL_CLCKSRC | CTRL_ENABLE;
 
 	SysTick->CTRL |= CTRL_TICKINT;
+
+	start_scheduler();
+
+
+	running_task = scheduler_get_task();
+
 
 	__enable_irq();
 
@@ -126,26 +123,34 @@ void osKernelLaunch(uint32_t quanta){
 
 }
 
+void SysTick_Handler(void){
+	current_time += 1;
+	scheduler_release_tasks();
+	should_switch();
 
+}
 
-__attribute__((naked)) void SysTick_Handler(void){
-
+__attribute__((naked)) void PendSV_Handler(void){
 	__asm("CPSID	I");
 
 	__asm("PUSH  {R4-R11}");
 
-	__asm("LDR R0, =currentPt");
+	__asm("LDR R0, =running_task");
 
 	__asm("LDR R1, [R0]");
 
 	__asm("STR SP, [R1]");
 
 
-	__asm("LDR R1, [R1, #4]");
+	__asm("LDR R2, =next_task");
 
-	__asm("STR R1,[R0]");
+	__asm("LDR R3, [R2]");
 
-	__asm("LDR SP, [R1]");
+	__asm("STR R3, [R0]");
+
+
+
+	__asm("LDR SP, [R3]");
 
 	__asm("POP {R4-R11}");
 
@@ -154,6 +159,8 @@ __attribute__((naked)) void SysTick_Handler(void){
 	__asm("BX LR");
 
 }
+
+
 
 
 

@@ -1,0 +1,10 @@
+//
+// Created by Denis on 11/23/2025.
+//
+
+#include "globals.h"
+#include "rms_scheduler.h"
+
+TCB_t *running_task = 0x00;
+TCB_t *next_task = 0x00;
+int current_time = 0;

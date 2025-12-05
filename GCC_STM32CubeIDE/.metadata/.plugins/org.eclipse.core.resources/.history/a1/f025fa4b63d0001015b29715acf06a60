@@ -1,0 +1,74 @@
+#include <stdint.h>
+#include "led.h"
+#include "uart.h"
+#include "timebase.h"
+#include "osKernel.h"
+
+#define QUANTA 1000
+typedef	uint32_t TaskProfiler;
+
+
+TaskProfiler Task0_Profiler, Task1_Profiler, Task2_Profiler;
+void motor_run(void);
+void motor_stop(void);
+void valve_open(void);
+void valve_close(void);
+
+void task0(void){
+	while(1){
+		Task0_Profiler++;
+
+	}
+}
+
+void task1(void){
+	while(1){
+		Task1_Profiler++;
+;
+	}
+}
+
+
+void task2(void){
+	while(1){
+		Task2_Profiler++;
+	}
+}
+
+
+int main(void){
+
+	uart_tx_init();
+
+
+	osKernelInit();
+
+	// execution_time, period (in ms or ticks - must be integers!)
+	// Total utilization must be <= 0.8284 for 2 tasks (RMS bound)
+	osKernelAddThreads(&task0, 4, 10, "task0");   // 4/10 = 0.4 utilization
+	osKernelAddThreads(&task1, 3, 10, "task1");   // 3/10 = 0.3 utilization
+	// Total: 0.4 + 0.3 = 0.7 <= 0.8284 ✓
+
+	osKernelLaunch(QUANTA);
+
+
+
+}
+
+void motor_run(void){
+	printf("The motor is running...\n\r");
+
+
+}
+void motor_stop(void)
+{
+	printf("The motor is stopped...\n\r");
+}
+
+
+void valve_open(void){
+	printf("The valve is open...\n\r");
+}
+void valve_close(void){
+	printf("The valve is closed...\n\r");
+}

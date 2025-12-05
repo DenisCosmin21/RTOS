@@ -1,0 +1,10 @@
+../Src/binary_heap_queue.c:17:6:h_init	16	static
+../Src/binary_heap_queue.c:21:13:swap_elements	24	static
+../Src/binary_heap_queue.c:27:13:shift_heap	24	static
+../Src/binary_heap_queue.c:33:6:h_enqueue	32	static
+../Src/binary_heap_queue.c:45:13:min_heapify	40	static
+../Src/binary_heap_queue.c:62:8:h_dequeue	32	static
+../Src/binary_heap_queue.c:85:8:h_peek	16	static
+../Src/binary_heap_queue.c:92:8:h_get_size	16	static
+../Src/binary_heap_queue.c:96:7:h_is_empty	16	static
+../Src/binary_heap_queue.c:100:6:h_print_queue	16	static

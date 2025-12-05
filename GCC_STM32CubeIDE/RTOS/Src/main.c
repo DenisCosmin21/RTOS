@@ -4,7 +4,7 @@
 #include "timebase.h"
 #include "osKernel.h"
 
-#define QUANTA 1000
+#define QUANTA 10000
 typedef	uint32_t TaskProfiler;
 
 
@@ -15,17 +15,12 @@ void valve_open(void);
 void valve_close(void);
 
 void task0(void){
-	while(1){
 		Task0_Profiler++;
-		motor_run();
-	}
+
 }
 
 void task1(void){
-	while(1){
 		Task1_Profiler++;
-		valve_open();
-	}
 }
 
 
@@ -40,9 +35,15 @@ int main(void){
 
 	uart_tx_init();
 
+
 	osKernelInit();
-	osKernelAddThreads(&task0, &task1, &task2);
+
+	osKernelAddThreads(&task0, 1, 5, "task1");
+
+	osKernelAddThreads(&task1, 2, 20, "task1");
+
 	osKernelLaunch(QUANTA);
+
 
 
 }

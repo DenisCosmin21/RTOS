@@ -60,7 +60,7 @@ main-build: RTOS.elf secondary-outputs
 
 # Tool invocations
 RTOS.elf RTOS.map: $(OBJS) $(USER_OBJS) /home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "RTOS.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+	arm-none-eabi-gcc -o "RTOS.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
