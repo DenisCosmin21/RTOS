@@ -15,7 +15,7 @@
 #define GET_TRAILING_ZEROS_COUNT(number) \
     ((number > 0 ? ((MAX_PRIORITY_COUNT - 1) - __builtin_clz(number)) : sizeof(long) * 8))
 
-static float utilization = 0;//utilization of CPU to identify easily if rots is schedulable without computing the whole sum each time
+static int utilization = 0;
 
 static scheduler_t global_scheduler; //global variable for scheduler
 
@@ -23,17 +23,36 @@ static rms_task_templates_t global_task_templates; //global variable dor task te
 
 static short started = 0; //Global flag to identify if rtos started or not, for new task logic
 
-const static float RMS_BOUNDS[10] = {
-    1.0000,   // n=1
-    0.8284,   // n=2
-    0.7798,   // n=3
-    0.7568,   // n=4
-    0.7435,   // n=5
-    0.7348,   // n=6
-    0.7286,   // n=7
-    0.7241,   // n=8
-    0.7206,   // n=9
-    0.7177,   // n=10
+const static int RMS_BOUNDS[30] = {
+    100,   // n=1
+    828,   // n=2
+    779,   // n=3
+    756,   // n=4
+    743,   // n=5
+    734,   // n=6
+    728,   // n=7
+    724,   // n=8
+    720,   // n=9
+    717,   // n=10
+    715,
+    713,
+    719,
+    710,
+    709,
+    708,
+    707,
+    706,
+    705,
+    704,
+    704,
+    703,
+    703,
+    702,
+    702,
+    702,
+    701,
+    701,
+    701,
 };
 
 static int periods_per_priority[NUM_PRIORITY_LEVELS];
@@ -70,7 +89,8 @@ void scheduler_init(void) {
 short rms_task_templates_add(TCB_t *task) {
     rms_task_templates_t *task_templates = &global_task_templates;
     h_enqueue(&task_templates->tasks, task, new_task_condition);
-    utilization += (float)(task->worst_case_execution_time) / (float)(task->period);
+    utilization += (task->worst_case_execution_time * 1000) / task->period;
+    printf("%d\n", utilization);
 #ifdef DEBUG
     printf("Utilization = %f\n", utilization);
 #endif
@@ -78,17 +98,20 @@ short rms_task_templates_add(TCB_t *task) {
     return 1;
 }
 
-float calculate_rms_bound(size_t number_of_tasks) {
+int calculate_rms_bound(size_t number_of_tasks) {
+    if(number_of_tasks > 30)
+        return 690;
+
     return RMS_BOUNDS[number_of_tasks - 1];
 }
 
 short is_schedulable(void) {
-    if(utilization <= 0.69)
+    if(utilization <= 690)
         return 1;
 
     if(!started) {
         rms_task_templates_t *task_templates = &global_task_templates;
-        float rms_bound = calculate_rms_bound(h_get_size(&task_templates->tasks) - 1);
+        int rms_bound = calculate_rms_bound(h_get_size(&task_templates->tasks) - 1);
         return utilization <= rms_bound;
     }
 #ifdef DEBUG
@@ -141,6 +164,8 @@ short start_scheduler(void) {
         task->priority = current_priority;
         scheduler_add_task(task);
     }
+
+    running_task = scheduler_get_task();
 
     #ifdef DEBUG
         printf("Finished setting up the scheduler\n");
