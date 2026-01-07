@@ -3,6 +3,7 @@
 "./Src/led.o"
 "./Src/main.o"
 "./Src/memory_pool.o"
+"./Src/mutex.o"
 "./Src/osKernel.o"
 "./Src/priority_queue.o"
 "./Src/queue.o"

@@ -47,4 +47,6 @@ short exists_any_task(void);
 
 void print_scheduler(void);
 
+void scheduler_set_idle_task(TCB_t *task);
+
 #endif

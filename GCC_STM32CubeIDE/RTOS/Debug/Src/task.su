@@ -2,7 +2,7 @@
 ../Src/task.c:28:6:destruct_task	16	static
 ../Src/task.c:33:7:task_is_ready	16	static
 ../Src/task.c:37:6:reset_task	32	static
-../Src/task.c:43:6:context_switch	4	static
-../Src/task.c:47:6:should_switch	8	static
+../Src/task.c:42:6:context_switch	4	static
+../Src/task.c:46:6:should_switch	8	static
 ../Src/task.c:63:6:inheritate_priority	24	static
 ../Src/task.c:72:6:print_task	16	static

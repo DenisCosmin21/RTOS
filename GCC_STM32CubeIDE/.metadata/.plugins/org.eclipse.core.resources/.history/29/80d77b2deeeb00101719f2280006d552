@@ -1,0 +1,101 @@
+#include <stdint.h>
+#include <stdio.h>
+#include "led.h"
+#include "uart.h"
+#include "mutex.h"
+#include "osKernel.h"
+
+// 1. Definim Mutex-ul Global
+mutex_t resource_mutex;
+
+// Variabile volatile pentru a evita optimizarea compilatorului la busy-wait
+volatile uint32_t work_dummy = 0;
+
+// Funcție simplă de delay (busy wait) pentru a simula "lucru"
+void hard_work(int iterations) {
+    for (int i = 0; i < iterations; i++) {
+        work_dummy++;
+    }
+}
+
+// --- TASK LOW PRIORITY (Period 100) ---
+// El ia mutexul și ține de el mult timp
+void task_low(void) {
+    while(1) {
+        // 1. Ia Mutex-ul
+        uart_print("LOW:  Trying Lock...\r\n");
+        mutex_lock(&resource_mutex);
+        uart_print("LOW:  LOCKED. Working (Critical Section)...\r\n");
+
+        // 2. Simulează o secțiune critică lungă
+        // Aici ar trebui să apară Task High care vrea mutexul
+        hard_work(100000);
+
+        // 3. Verificăm dacă suntem încă aici (sperăm că Medium nu ne-a întrerupt)
+        uart_print("LOW:  Finishing work. Unlocking...\r\n");
+        mutex_unlock(&resource_mutex);
+
+        // 4. Pauză lungă până la următoarea execuție
+        // Folosim un delay RTOS sau lăsăm scheduler-ul să ne pună la somn prin perioada RMS
+        hard_work(5000);
+    }
+}
+
+// --- TASK MEDIUM PRIORITY (Period 30) ---
+// El vrea doar să consume CPU. Nu folosește Mutex.
+// Rolul lui este să încerce să omoare Task Low.
+void task_med(void) {
+    while(1) {
+        // Dacă Priority Inheritance funcționează, acest mesaj NU ar trebui
+        // să apară între "LOW: LOCKED" și "LOW: Unlocking".
+        // Dacă apare, înseamnă că Low a fost întrerupt de Med (Priority Inversion).
+        uart_print("MED:  Running! I am annoying!\r\n");
+
+        hard_work(50000);
+    }
+}
+
+// --- TASK HIGH PRIORITY (Period 10) ---
+// El are nevoie disperată de Mutex.
+void task_high(void) {
+    while(1) {
+        // Facem un mic delay la start ca să fim siguri că Low apucă să ia mutexul primul
+        hard_work(10000);
+
+        uart_print("HIGH: I need Mutex NOW!\r\n");
+        mutex_lock(&resource_mutex);
+
+        // Dacă ajungem aici, înseamnă că Low a terminat și ne-a dat mutexul
+        uart_print("HIGH: Got Mutex! Thanks Low.\r\n");
+
+        hard_work(1000); // Muncă rapidă și importantă
+
+        mutex_unlock(&resource_mutex);
+        uart_print("HIGH: Done.\r\n");
+
+        hard_work(50000); // Pauză
+    }
+}
+
+int main(void) {
+    uart_tx_init();
+
+    // Initializare Mutex
+    mutex_init(&resource_mutex);
+
+    osKernelInit();
+
+    // Adăugăm Task-urile (RMS: Period mic = Prio Mare)
+
+    // Task HIGH: Exec 2, Period 10 (Cea mai mare prioritate)
+    osKernelAddThreads(&task_high, 2, 10, "HIGH");
+
+    // Task MED: Exec 5, Period 30 (Prioritate Medie)
+    osKernelAddThreads(&task_med, 5, 30, "MED");
+
+    // Task LOW: Exec 10, Period 100 (Cea mai mică prioritate)
+    // Îl punem primul în listă să aibă o șansă să pornească la t=0
+    osKernelAddThreads(&task_low, 10, 100, "LOW");
+
+    osKernelLaunch(QUANTA);
+}

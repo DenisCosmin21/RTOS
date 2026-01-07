@@ -1,0 +1,7 @@
+../Src/mutex.c:14:12:enqueue_condition	1
+../Src/mutex.c:18:12:dequeue_condition	1
+../Src/mutex.c:22:6:mutex_init	1
+../Src/mutex.c:27:13:locked_mutex	3
+../Src/mutex.c:45:13:unlocked_mutex	1
+../Src/mutex.c:50:6:mutex_lock	2
+../Src/mutex.c:57:6:mutex_unlock	4

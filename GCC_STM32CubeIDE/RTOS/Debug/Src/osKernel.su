@@ -1,8 +1,10 @@
 /home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include/core_cm33.h:2587:22:__NVIC_SetPriority	16	static
-../Src/osKernel.c:22:6:osSchedulerLaunch	4	static,ignoring_inline_asm
-../Src/osKernel.c:47:6:osKernelStackInit	32	static
-../Src/osKernel.c:80:9:osKernelAddThreads	40	static,ignoring_inline_asm
-../Src/osKernel.c:93:6:osKernelInit	8	static
-../Src/osKernel.c:99:6:osKernelLaunch	16	static,ignoring_inline_asm
-../Src/osKernel.c:126:6:SysTick_Handler	8	static
-../Src/osKernel.c:133:29:PendSV_Handler	0	static,ignoring_inline_asm
+../Src/osKernel.c:22:13:os_idle_thread	4	static
+../Src/osKernel.c:33:6:SystemCoreClockUpdate	4	static
+../Src/osKernel.c:39:6:osSchedulerLaunch	4	static,ignoring_inline_asm
+../Src/osKernel.c:64:6:osKernelStackInit	32	static
+../Src/osKernel.c:97:9:osKernelAddThreads	40	static,ignoring_inline_asm
+../Src/osKernel.c:110:6:osKernelInit	16	static
+../Src/osKernel.c:122:6:osKernelLaunch	16	static,ignoring_inline_asm
+../Src/osKernel.c:151:6:SysTick_Handler	8	static
+../Src/osKernel.c:159:29:PendSV_Handler	0	static,ignoring_inline_asm

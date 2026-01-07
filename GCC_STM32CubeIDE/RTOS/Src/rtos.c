@@ -6,7 +6,7 @@
 #include "rms_scheduler.h"
 #include "task.h"
 #include <stdio.h>
-
+#include "stm32u5xx.h"
 
 static int max_simulation_time = 40;
 
@@ -29,15 +29,19 @@ short rtos_start(void) {
 
 //Tell the kernel that current running task finished execution, and should switch
 void rtos_task_wait(void) {
+	__disable_irq();
+
     next_task = scheduler_get_task();
 
-    if(running_task != 0x00) {
+    if(running_task != 0x00 && running_task != internal_idle_task) {
         reset_task(running_task);
 
         scheduler_sleep_task(running_task);
     }
 
     context_switch();
+
+    __enable_irq();
 }
 
 //It stops the current running task to allow another task to run
