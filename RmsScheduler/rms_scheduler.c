@@ -21,7 +21,9 @@ static scheduler_t global_scheduler; //global variable for scheduler
 
 static rms_task_templates_t global_task_templates; //global variable dor task templates
 
-static short started = 0; //Global flag to identify if rtos started or not, for new task logic
+static TCB_t *task_to_add = 0x00;
+
+static int task_cnt = 0;
 
 const static int RMS_BOUNDS[30] = {
     100,   // n=1
@@ -86,7 +88,38 @@ void scheduler_init(void) {
     h_init(&scheduler->pending);
 }
 
+void prepare_next_task(TCB_t *task) {
+    task_to_add = task;
+}
+
+static long compute_task_priority(TCB_t *task) {
+    for(long i = 0;i < NUM_PRIORITY_LEVELS;i++) {
+        if(periods_per_priority[i] == 0) {
+            return i;
+        }
+
+        if(periods_per_priority[i] == task->period)
+            return i;
+
+        if(periods_per_priority[i] < task->period)
+            return i;
+    }
+
+    return 0;
+}
+
+void add_next_task() {
+    utilization += (task_to_add->worst_case_execution_time * 1000) / task_to_add->period;
+
+    task_cnt++;
+
+    task_to_add->priority = compute_task_priority(task_to_add);
+
+    scheduler_add_task(task_to_add);
+}
+
 short rms_task_templates_add(TCB_t *task) {
+    task_cnt++;
     rms_task_templates_t *task_templates = &global_task_templates;
     h_enqueue(&task_templates->tasks, task, new_task_condition);
     utilization += (task->worst_case_execution_time * 1000) / task->period;
@@ -110,10 +143,11 @@ short is_schedulable(void) {
         return 1;
 
     if(!started) {
-        rms_task_templates_t *task_templates = &global_task_templates;
-        int rms_bound = calculate_rms_bound(h_get_size(&task_templates->tasks) - 1);
+        int rms_bound = calculate_rms_bound(task_cnt - 1);
         return utilization <= rms_bound;
     }
+
+    return (utilization + ((task_to_add->worst_case_execution_time * 1000) / task_to_add->period)) < calculate_rms_bound(task_cnt + 1);
 #ifdef DEBUG
     printf("Utilization %f <= Max possible time %f", utilization, rms_bound);
 #endif
@@ -167,6 +201,7 @@ short start_scheduler(void) {
 
     running_task = scheduler_get_task();
 
+    started = 1;
     #ifdef DEBUG
         printf("Finished setting up the scheduler\n");
         print_task_queues(&task_queues);

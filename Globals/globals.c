@@ -3,8 +3,8 @@
 //
 
 #include "globals.h"
-#include "../RmsScheduler/rms_scheduler.h"
 
 TCB_t *running_task = 0x00;
 TCB_t *next_task = 0x00;
+short started = 0;
 int current_time = 0;

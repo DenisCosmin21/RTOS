@@ -47,4 +47,7 @@ short exists_any_task(void);
 
 void print_scheduler(void);
 
+void prepare_next_task(TCB_t *);
+
+void add_next_task();
 #endif
