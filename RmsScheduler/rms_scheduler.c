@@ -234,7 +234,7 @@ TCB_t *scheduler_get_task(void) {
     const unsigned long priority = GET_TRAILING_ZEROS_COUNT(scheduler->bitmap);
 
     if(priority == MAX_PRIORITY_COUNT)//It means 32 trailing zeros => number 0
-        return 0x00;
+        return internal_idle_task;
 
     TCB_t *task = dequeue(&scheduler->queues[priority]);
 
@@ -259,7 +259,7 @@ void scheduler_release_tasks(void) {
 
     TCB_t *pending_task = 0x00;
 
-    while((pending_task = h_dequeue(&scheduler->pending, should_restore, pending_enqueue)) != 0x00) {
+    while((pending_task = h_dequeue(&scheduler->pending, should_restore, pending_enqueue)) != internal_idle_task) {
         pending_task->budget_time = pending_task->worst_case_execution_time;
         scheduler_add_task(pending_task);
     }

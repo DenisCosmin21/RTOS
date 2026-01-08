@@ -40,7 +40,7 @@ short rtos_start(void) {
 void rtos_task_wait(void) {
     next_task = scheduler_get_task();
 
-    if(running_task != 0x00) {
+    if(running_task != internal_idle_task) {
         reset_task(running_task);
 
         scheduler_sleep_task(running_task);
