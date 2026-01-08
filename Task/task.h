@@ -6,11 +6,13 @@
 #define TASK_H
 #define MAX_NAME_SIZE 20
 
+typedef struct mutex mutex_t;
+
 typedef struct TCB {
     char name[MAX_NAME_SIZE];
     unsigned long priority;
     unsigned long temporary_priority;
-    struct TCB *blocked_by;
+    mutex_t *blocked_by;
     void *stack_pointer;
     void *base_stack_pointer;
     int stack_size;

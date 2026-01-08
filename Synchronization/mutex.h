@@ -6,10 +6,10 @@
 #define MUTEX_H
 #include "../rtos_config.h"
 #include "../Queue/binary_heap_queue.h"
-#include "../Task/task.h"
 
+typedef struct TCB TCB_t;
 
-typedef struct {
+typedef struct mutex{
     char status; //0 unlcoked, 1 locked
     heap_priority_queue_t tasks;
     TCB_t *current_task;

@@ -4,8 +4,6 @@
 
 #include "mutex.h"
 
-#include <stdio.h>
-
 #include "../Globals/globals.h"
 #include "../RmsScheduler/rms_scheduler.h"
 #include "../RtosApi/rtos.h"
@@ -29,14 +27,14 @@ static void locked_mutex(mutex_t *mutex) {
 
     h_enqueue(&mutex->tasks, running_task, enqueue_condition);
 
-    running_task->blocked_by = mutex->current_task;
+    running_task->blocked_by = mutex;
 
     if(mutex->current_task->priority < running_task->priority) {
         inheritate_priority(mutex->current_task, running_task);
     }
 
-    running_task = 0x00;
-    rtos_task_wait();
+    next_task = scheduler_get_task();
+    context_switch();
 }
 
 static void unlocked_mutex(mutex_t *mutex) {

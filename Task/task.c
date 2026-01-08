@@ -5,7 +5,7 @@
 #include "../RmsScheduler/rms_scheduler.h"
 #include "../RtosApi/rtos.h"
 #include "../Globals/globals.h"
-
+#include "../Synchronization/mutex.h"
 
 TCB_t *init_task(const unsigned long priority,const int stack_size, const int execution_time, const int period, const char *name) {
     TCB_t *task = c_malloc(sizeof(TCB_t));
@@ -36,7 +36,6 @@ short task_is_ready(const TCB_t *task) {
 void reset_task(TCB_t *task) {
     task->next_release_time = current_time + (task->period - (current_time % task->period));
     task->temporary_priority = MAX_PRIORITY_COUNT;
-    task->blocked_by = 0x00;
 }
 
 void context_switch() {
@@ -63,7 +62,7 @@ void inheritate_priority(TCB_t *task_that_inheritates, const TCB_t *task_inherit
     do {
         task_that_inheritates->temporary_priority = task_inheritated->temporary_priority != MAX_PRIORITY_COUNT ? task_inheritated->temporary_priority : task_inheritated->priority;
         TCB_t *temporary = task_that_inheritates;
-        task_that_inheritates = task_inheritated->blocked_by;
+        task_that_inheritates = task_inheritated->blocked_by->current_task;
         task_inheritated =  temporary;
     }while(task_that_inheritates != 0x00 && task_inheritated != task_that_inheritates);
 }
