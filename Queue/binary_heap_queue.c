@@ -56,7 +56,7 @@ static void min_heapify(heap_priority_queue_t * queue, size_t position, int (*co
         best_priority = r;
 
     if(best_priority != position) {
-        swap_elements(&queue->tcb[0], &queue->tcb[best_priority]);
+        swap_elements(&queue->tcb[position], &queue->tcb[best_priority]);
         min_heapify(queue, best_priority, condition);
     }
 }
