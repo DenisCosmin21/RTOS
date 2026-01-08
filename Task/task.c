@@ -20,6 +20,7 @@ TCB_t *init_task(const unsigned long priority,const int stack_size, const int ex
     task->period = period;
     task->next_release_time = 0;
     task->budget_time = execution_time;
+    task->went_to_sleep_time = 0;
     strcpy(task->name, name);
     return task;
 }
@@ -35,6 +36,7 @@ short task_is_ready(const TCB_t *task) {
 
 void reset_task(TCB_t *task) {
     task->next_release_time = current_time + (task->period - (current_time % task->period));
+    task->went_to_sleep_time = current_time;
     task->temporary_priority = MAX_PRIORITY_COUNT;
 }
 
@@ -43,7 +45,7 @@ void context_switch() {
 }
 
 void should_switch() {
-    if(running_task == 0x00) {
+    if(running_task == internal_idle_task) {
         if(exists_any_task())
             rtos_task_wait();
         return;
@@ -68,5 +70,5 @@ void inheritate_priority(TCB_t *task_that_inheritates, const TCB_t *task_inherit
 }
 
 void print_task(const TCB_t *task) {
-    printf("%s => %d, ", task->name, task != 0x00 ? task->temporary_priority : 32);
+    printf("%s", task->name);
 }

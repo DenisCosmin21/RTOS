@@ -1,6 +1,5 @@
 ﻿#include "rms_scheduler.h"
 #include <stdio.h>
-
 #include "../Globals/globals.h"
 
 //Transforms a bit from 0 to 1
@@ -68,7 +67,13 @@ static int return_task_from_template(const TCB_t *task) {
 }
 
 static int pending_enqueue(const TCB_t *task1, const TCB_t *task2) {
-    return task1->next_release_time > task2->next_release_time;
+    if(task1->next_release_time > task2->next_release_time)
+        return 1;
+
+    if(task1->next_release_time == task2->next_release_time)
+        return task1->went_to_sleep_time > task2->went_to_sleep_time;
+
+    return 0;
 }
 
 static int should_restore(const TCB_t *task) {

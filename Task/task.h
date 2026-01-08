@@ -20,6 +20,7 @@ typedef struct TCB {
     int period;
     int budget_time;
     int next_release_time;
+    int went_to_sleep_time; //We need it to determine the order in which tasks of the same priority will run
 } TCB_t;
 
 TCB_t *init_task(unsigned long priority,const int stack_size, const int execution_time, const int period, const char *name);
