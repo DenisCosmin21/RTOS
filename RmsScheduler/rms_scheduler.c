@@ -128,7 +128,6 @@ short rms_task_templates_add(TCB_t *task) {
     rms_task_templates_t *task_templates = &global_task_templates;
     h_enqueue(&task_templates->tasks, task, new_task_condition);
     utilization += (task->worst_case_execution_time * 1000) / task->period;
-    printf("%d\n", utilization);
 #ifdef DEBUG
     printf("Utilization = %f\n", utilization);
 #endif

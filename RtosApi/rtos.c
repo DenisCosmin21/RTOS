@@ -63,9 +63,16 @@ void simulate_rtos(void) {
         printf("\n");
 
         if(current_time == 1) {
-            rtos_task_create(1, 10, "4");
+            rtos_task_create(1, 20, "4");
         }
 
+        if(current_time == 9) {
+            printf("Time");
+        }
+
+        if(current_time == 19) {
+            printf("Time");
+        }
         //Would get called in systick handler
         scheduler_release_tasks();
 
