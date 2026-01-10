@@ -5,9 +5,9 @@
 #ifndef RTOS_CONFIG_H
 #define RTOS_CONFIG_H
 
-#define HEAP_SIZE 4096
+#define HEAP_SIZE 32768
 #define MAX_TASKS 10
 #define PRIORITY_COUNT 4 //Limited to 32. If bigger it will be set to 32
-#define BASE_TASK_STACK_SIZE 256
+#define BASE_TASK_STACK_SIZE 128
 
 #endif //RTOS_CONFIG_H

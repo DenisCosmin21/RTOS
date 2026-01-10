@@ -3,8 +3,9 @@
 ../Src/osKernel.c:33:6:SystemCoreClockUpdate	1
 ../Src/osKernel.c:39:6:osSchedulerLaunch	1
 ../Src/osKernel.c:64:6:osKernelStackInit	1
-../Src/osKernel.c:97:9:osKernelAddThreads	1
-../Src/osKernel.c:110:6:osKernelInit	1
-../Src/osKernel.c:122:6:osKernelLaunch	1
-../Src/osKernel.c:151:6:SysTick_Handler	1
-../Src/osKernel.c:159:29:PendSV_Handler	1
+../Src/osKernel.c:97:9:osKernelAddThreads	3
+../Src/osKernel.c:120:6:osKernelInit	1
+../Src/osKernel.c:132:6:osKernelLaunch	1
+../Src/osKernel.c:161:6:task_runtime	1
+../Src/osKernel.c:167:6:SysTick_Handler	2
+../Src/osKernel.c:178:29:PendSV_Handler	1

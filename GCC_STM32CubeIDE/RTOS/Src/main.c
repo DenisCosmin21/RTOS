@@ -29,8 +29,7 @@ void task_low(void) {
 
     	Task0_Profiler++;
 
-
-   /*    if(locked == 0){
+       if(locked == 0){
        printf("LOW:  Trying Lock...\r\n");
        mutex_lock(&resource_mutex);
 
@@ -46,7 +45,7 @@ void task_low(void) {
        }
 
        locked++;
-*/
+
 
 
     }
@@ -65,20 +64,13 @@ void task_med(void) {
 void task_high(void) {
     while(1) {
 
-     	Task2_Profiler++;
 
-
-    //printf("HIGH: I need Mutex NOW!\r\n");
-    // mutex_lock(&resource_mutex);
-
-
-
-
-
-
-    // mutex_unlock(&resource_mutex);
-    // printf("HIGH: Got Mutex! Thanks Low.\r\n");
-    // printf("HIGH: Done.\r\n");
+    Task2_Profiler++;
+    printf("HIGH: I need Mutex NOW!\r\n");
+    mutex_lock(&resource_mutex);
+    mutex_unlock(&resource_mutex);
+    printf("HIGH: Got Mutex! Thanks Low.\r\n");
+    printf("HIGH: Done.\r\n");
 
 
     }
