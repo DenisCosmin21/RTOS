@@ -36,8 +36,8 @@ short task_is_ready(const TCB_t *task) {
 
 void reset_task(TCB_t *task) {
     task->next_release_time = current_time + (task->period - (current_time % task->period));
+    task->went_to_sleep_time = current_time;
     task->temporary_priority = MAX_PRIORITY_COUNT;
-    task->blocked_by = 0x00;
 }
 
 void context_switch() {
@@ -45,7 +45,8 @@ void context_switch() {
 }
 
 void should_switch() {
-    if(running_task == 0x00) {
+
+    if(running_task == internal_idle_task) {
         if(exists_any_task())
             rtos_task_wait();
         return;
@@ -53,11 +54,11 @@ void should_switch() {
 
     running_task->budget_time--;
 
-    if(exists_higher_priority_task(running_task))
-        rtos_task_yeld();
-
     if(running_task->budget_time <= 0)
         rtos_task_wait();
+
+    if(exists_higher_priority_task(running_task))
+        rtos_task_yeld();
 }
 
 void inheritate_priority(TCB_t *task_that_inheritates, const TCB_t *task_inheritated) {

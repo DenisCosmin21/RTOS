@@ -33,6 +33,10 @@ short is_schedulable(void);
 
 short start_scheduler(void);
 
+void prepare_next_task(TCB_t *);
+
+void add_next_task();
+
 TCB_t *scheduler_get_task(void);
 
 short scheduler_add_task(TCB_t *task);

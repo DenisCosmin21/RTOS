@@ -4,6 +4,7 @@
 
 #include "queue.h"
 #include <stdio.h>
+#include "globals.h"
 
 
 void queue_init(queue_t* queue) {
@@ -28,7 +29,7 @@ void enqueue(queue_t* queue, TCB_t *task) {
 TCB_t *dequeue(queue_t* queue) {
     TCB_t *task = peek(queue);
 
-    if(task == 0x00)
+    if(task == internal_idle_task)
         return task;
 
     queue->front = (queue->front + 1) % MAX_TASKS;
@@ -43,7 +44,7 @@ TCB_t *dequeue(queue_t* queue) {
 
 TCB_t *peek(const queue_t* queue) {
     if(queue_is_empty(queue))
-        return 0x00;
+        return internal_idle_task;
 
     return queue->tcb[queue->front];
 }

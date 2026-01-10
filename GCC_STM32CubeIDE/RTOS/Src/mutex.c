@@ -4,7 +4,6 @@
 
 #include "mutex.h"
 
-#include <stdio.h>
 
 #include "globals.h"
 #include "rms_scheduler.h"
@@ -30,7 +29,7 @@ static void locked_mutex(mutex_t *mutex) {
 
     h_enqueue(&mutex->tasks, running_task, enqueue_condition);
 
-    running_task->blocked_by = mutex->current_task;
+    running_task->blocked_by = mutex;
 
     if(mutex->current_task->priority < running_task->priority) {
         inheritate_priority(mutex->current_task, running_task);

@@ -21,7 +21,9 @@ static scheduler_t global_scheduler; //global variable for scheduler
 
 static rms_task_templates_t global_task_templates; //global variable dor task templates
 
-static short started = 0; //Global flag to identify if rtos started or not, for new task logic
+static TCB_t *task_to_add = 0x00;
+
+static int task_cnt = 0; //Global flag to identify if rtos started or not, for new task logic
 
 const static float RMS_BOUNDS[10] = {
     1.0000,   // n=1
@@ -51,7 +53,11 @@ static int return_task_from_template(const TCB_t *task) {
 }
 
 static int pending_enqueue(const TCB_t *task1, const TCB_t *task2) {
-    return task1->next_release_time > task2->next_release_time;
+    if(task1->next_release_time > task2->next_release_time)
+        return 1;
+    if(task1->next_release_time == task2->next_release_time)
+        return task1->went_to_sleep_time > task2->went_to_sleep_time;
+    return 0;
 }
 
 static int should_restore(const TCB_t *task) {
@@ -59,9 +65,6 @@ static int should_restore(const TCB_t *task) {
 }
 
 void scheduler_init(void) {
-
-
-
     scheduler_t *scheduler = &global_scheduler;
     rms_task_templates_t *task_templates = &global_task_templates;
 
@@ -74,7 +77,31 @@ void scheduler_init(void) {
     h_init(&scheduler->pending);
 }
 
+void prepare_next_task(TCB_t *task) {
+
+    task_to_add = task;
+}
+
+
+
+static long compute_task_priority(TCB_t *task) {
+    for(long i = 0;i < NUM_PRIORITY_LEVELS;i++) {
+        if(periods_per_priority[i] == 0) {
+            return i;
+        }
+
+        if(periods_per_priority[i] == task->period)
+            return i;
+
+        if(periods_per_priority[i] < task->period)
+            return i;
+    }
+    return 0;
+}
+
+
 short rms_task_templates_add(TCB_t *task) {
+	task_cnt++;
     rms_task_templates_t *task_templates = &global_task_templates;
     h_enqueue(&task_templates->tasks, task, new_task_condition);
 
@@ -89,8 +116,21 @@ short rms_task_templates_add(TCB_t *task) {
     return 1;
 }
 
-float calculate_rms_bound(size_t number_of_tasks) {
+
+
+
+void add_next_task() {
+    utilization += (task_to_add->worst_case_execution_time * 1000) / task_to_add->period;
+    task_cnt++;
+    task_to_add->priority = compute_task_priority(task_to_add);
+    scheduler_add_task(task_to_add);
+}
+
+int calculate_rms_bound(size_t number_of_tasks) {
+    if(number_of_tasks > 30)
+        return 690;
     return RMS_BOUNDS[number_of_tasks - 1];
+
 }
 
 short is_schedulable(void) {
@@ -98,14 +138,15 @@ short is_schedulable(void) {
         return 1;
 
     if(!started) {
-        rms_task_templates_t *task_templates = &global_task_templates;
-        float rms_bound = calculate_rms_bound(h_get_size(&task_templates->tasks) - 1);
+        int rms_bound = calculate_rms_bound(task_cnt - 1);
+
         return utilization <= rms_bound;
     }
+
 #ifdef DEBUG
     printf("Utilization %f <= Max possible time %f", utilization, rms_bound);
 #endif
-     return 0;
+    return (utilization + ((task_to_add->worst_case_execution_time * 1000) / task_to_add->period)) < calculate_rms_bound(task_cnt + 1);
 }
 
 short start_scheduler(void) {
@@ -153,11 +194,14 @@ short start_scheduler(void) {
         scheduler_add_task(task);
     }
 
-    #ifdef DEBUG
-        printf("Finished setting up the scheduler\n");
-        print_task_queues(&task_queues);
-    #endif
-    return 1;
+    running_task = scheduler_get_task();
+
+      started = 1;
+      #ifdef DEBUG
+          printf("Finished setting up the scheduler\n");
+          print_task_queues(&task_queues);
+      #endif
+      return 1;
 }
 
 short scheduler_add_task(TCB_t *task) {
@@ -205,7 +249,7 @@ void scheduler_release_tasks(void) {
 
     TCB_t *pending_task = 0x00;
 
-    while((pending_task = h_dequeue(&scheduler->pending, should_restore, pending_enqueue)) != 0x00) {
+    while((pending_task = h_dequeue(&scheduler->pending, should_restore, pending_enqueue)) != internal_idle_task) {
         pending_task->budget_time = pending_task->worst_case_execution_time;
         scheduler_add_task(pending_task);
     }

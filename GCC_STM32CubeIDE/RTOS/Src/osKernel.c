@@ -112,7 +112,7 @@ void osKernelInit(void){
 	MILIS_PRESCALER = (SystemCoreClock / 1000);
 	rtos_init();
 
-	os_idle_tcb = init_task(4, 512, 0, 0, "idle");
+	os_idle_tcb = init_task(4, 32, 0, 0, "idle");
 
 	    osKernelStackInit(os_idle_tcb, os_idle_thread);
 	    scheduler_set_idle_task(os_idle_tcb);
@@ -139,7 +139,7 @@ void osKernelLaunch(uint32_t quanta){
 	start_scheduler();
 
 
-	running_task = scheduler_get_task();
+	//running_task = scheduler_get_task();
 
 
 	__enable_irq();

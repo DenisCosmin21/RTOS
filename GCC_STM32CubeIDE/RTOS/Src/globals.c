@@ -9,4 +9,5 @@ TCB_t *running_task = 0x00;
 TCB_t *next_task = 0x00;
 uint64_t current_time = 0;
 TCB_t *internal_idle_task = 0x00;
+short started = 0;
 uint32_t QUANTA = 10;

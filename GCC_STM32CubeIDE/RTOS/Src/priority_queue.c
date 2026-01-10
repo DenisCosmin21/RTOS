@@ -3,6 +3,7 @@
 //
 #include "priority_queue.h"
 #include <stdio.h>
+#include "globals.h"
 
 void p_init(linear_priority_queue_t *queue) {
     queue->rear = 0;
@@ -14,7 +15,7 @@ static void shift_right(linear_priority_queue_t *queue, size_t from) {
 }
 
 void p_enqueue(linear_priority_queue_t *queue, TCB_t *task, int (*condition)(const TCB_t *, const TCB_t *)) {
-    if(task == 0x00)
+    if(task == internal_idle_task)
         return;
 
     size_t i = 0;
@@ -42,8 +43,8 @@ static void shift_left(linear_priority_queue_t *queue) {
 TCB_t *p_dequeue(linear_priority_queue_t *queue, int (*condition)(const TCB_t *)) {
     TCB_t *task = p_peek(queue, condition);
 
-    if(task == 0x00)
-        return 0x00;
+    if(task == internal_idle_task)
+        return internal_idle_task;
 
     shift_left(queue);
     queue->rear--;
@@ -57,12 +58,12 @@ TCB_t *p_dequeue(linear_priority_queue_t *queue, int (*condition)(const TCB_t *)
 
 TCB_t *p_peek(const linear_priority_queue_t *queue, int (*condition)(const TCB_t *)) {
     if(queue->rear == 0)
-        return 0x00;
+        return internal_idle_task;
 
     if(condition(queue->tcb[0]))
         return queue->tcb[0];
 
-    return 0x00;
+    return internal_idle_task;
 }
 
 int p_get_size(const linear_priority_queue_t *queue) {

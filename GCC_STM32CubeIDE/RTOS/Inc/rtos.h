@@ -3,7 +3,6 @@
 //
 #ifndef RTOS_H
 #define RTOS_H
-#define BASE_TASK_STACK_SIZE 128
 #include "rtos_config.h"
 #include "globals.h"
 

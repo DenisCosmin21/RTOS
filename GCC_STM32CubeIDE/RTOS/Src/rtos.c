@@ -18,6 +18,16 @@ short rtos_task_create(const int execution_time, const int period,const char *na
     //Assign lowest priority first when creating it,becouse in RMS it should'nt know exact priority on creation
     TCB_t *task = init_task(0, BASE_TASK_STACK_SIZE, execution_time, period, name);
 
+    if(started) {
+        prepare_next_task(task);
+        if(is_schedulable()) {
+            add_next_task();
+            return 1;
+        }
+    }
+
+
+
     rms_task_templates_add(task);
 
     return 1;

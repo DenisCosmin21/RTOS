@@ -4,6 +4,7 @@
 
 #include "binary_heap_queue.h"
 #include <stdio.h>
+#include "globals.h"
 
 #define PARENT(position) \
     ((position - 1) / 2)
@@ -54,7 +55,7 @@ static void min_heapify(heap_priority_queue_t * queue, size_t position, int (*co
         best_priority = r;
 
     if(best_priority != position) {
-        swap_elements(&queue->tcb[0], &queue->tcb[best_priority]);
+    	 swap_elements(&queue->tcb[position], &queue->tcb[best_priority]);
         min_heapify(queue, best_priority, condition);
     }
 }
@@ -62,7 +63,7 @@ static void min_heapify(heap_priority_queue_t * queue, size_t position, int (*co
 TCB_t *h_dequeue(heap_priority_queue_t * queue, int (*pop_condition)(const TCB_t *), int (*priority_condition)(const TCB_t *, const TCB_t *)) {
     TCB_t *root = h_peek(queue, pop_condition);
 
-    if(root == 0x00)
+    if(root == internal_idle_task)
         return root;
 
     if(queue->size == 1) {
@@ -84,7 +85,7 @@ TCB_t *h_dequeue(heap_priority_queue_t * queue, int (*pop_condition)(const TCB_t
 
 TCB_t *h_peek(const heap_priority_queue_t * queue, int (*pop_condition)(const TCB_t *)) {
     if(queue->size == 0 || !pop_condition(queue->tcb[0]))
-        return 0x00;
+        return internal_idle_task;
 
     return queue->tcb[0];
 }
@@ -98,7 +99,7 @@ short h_is_empty(const heap_priority_queue_t *queue) {
 }
 
 void h_print_queue(const heap_priority_queue_t * queue) {
-    printf("size: %llu\n", queue->size);
+    printf("size: %u\n", queue->size);
     print_task(queue->tcb[0]);
     printf("\n");
 }
