@@ -1,0 +1,182 @@
+#include "uart.h"
+#include "stm32u5xx.h"
+#include <stdint.h>
+#include <stdarg.h>
+#include <stdio.h>
+
+// ===============================================================================
+//                MANUAL HARDWARE DEFINITIONS (STM32U5 NUCLEO)
+// ===============================================================================
+
+// 1. Define GPDMA Channel Structure manually to avoid header conflicts
+typedef struct {
+  volatile uint32_t CCR;   // Control
+  volatile uint32_t CTR1;  // Transfer 1
+  volatile uint32_t CTR2;  // Transfer 2
+  volatile uint32_t CBR1;  // Block 1
+  volatile uint32_t CSAR;  // Source Address
+  volatile uint32_t CDAR;  // Dest Address
+  volatile uint32_t CTR3;  // Transfer 3 (Offset)
+  volatile uint32_t CBR2;  // Block 2 (Repeat)
+  volatile uint32_t CLLR;  // Link List
+} My_GPDMA_Channel_TypeDef;
+
+// 2. Base Addresses
+#define MY_GPDMA1_BASE        0x40020000UL
+#define MY_GPDMA1_Channel0    ((My_GPDMA_Channel_TypeDef *)(MY_GPDMA1_BASE + 0x50UL))
+
+// 3. Global Configuration Registers (Critical for Security/Privilege)
+#define MY_GPDMA1_SECCFGR     (*(volatile uint32_t *)(MY_GPDMA1_BASE + 0x0CUL))
+#define MY_GPDMA1_PRIVCFGR    (*(volatile uint32_t *)(MY_GPDMA1_BASE + 0x10UL))
+
+// ===============================================================================
+
+#define UART_BUFFER_SIZE 256
+#define GPIOAEN     (1U << 0)
+#define UART1EN     (1U << 14)
+#define GPDMA1EN    (1U << 0)
+
+#define SYS_FREQ        4000000UL // Ensure this matches your actual clock!
+#define APB2_CLK        SYS_FREQ
+#define UART_BAUDRATE   115200
+
+#define CR1_TE      (1U << 3)
+#define CR1_UE      (1U << 0)
+#define CR3_DMAT    (1U << 7)
+
+#define ISR_TXE     (1U << 7)
+#define MY_DMA_CCR_EN      (1U << 0)
+#define USART1_TX_DMA_REQ_ID  25
+
+static uint16_t compute_uart_bd(uint32_t periph_clk, uint32_t baudrate);
+static void uart_set_baudrate(uint32_t periph_clk, uint32_t baudrate);
+static void uart_write(int ch);
+static uint8_t dma_buffer[UART_BUFFER_SIZE];
+
+// --- Cache Flush (Critical for DMA) ---
+static void my_CleanDCache(uint32_t *addr, int32_t dsize) {
+    if (dsize < 0) return;
+    uint32_t op_size = (uint32_t)dsize;
+    uint32_t op_addr = (uint32_t)addr;
+    int32_t linesize = 32;
+    op_size += (op_addr & (linesize - 1U));
+    op_addr &= ~(linesize - 1U);
+    while (op_size > 0U) {
+        *(volatile uint32_t *)0xE000EF68 = op_addr;
+        op_addr += linesize;
+        op_size -= (op_size >= linesize) ? linesize : op_size;
+    }
+    __asm volatile ("dsb 0xF":::"memory");
+}
+
+// --- Init ---
+void dma_init(void) {
+    /* 1. Enable GPDMA1 Clock */
+    RCC->AHB1ENR |= GPDMA1EN;
+
+    // Wait a short delay for clock to propagate
+    for(volatile int i=0; i<500; i++);
+
+    /* 2. SECURITY FIX: Set Channel 0 to Non-Secure */
+    // Default is 1 (Secure). If your CPU is in Non-Secure mode,
+    // it cannot start a Secure channel.
+    MY_GPDMA1_SECCFGR &= ~(1U << 0);
+
+    /* 3. PRIVILEGE FIX: Set Channel 0 to Unprivileged */
+    MY_GPDMA1_PRIVCFGR &= ~(1U << 0);
+
+    /* 4. Reset Channel 0 to known state */
+    MY_GPDMA1_Channel0->CCR &= ~MY_DMA_CCR_EN;
+}
+
+void uart_tx_init(void)
+{
+    RCC->AHB2ENR1 |= GPIOAEN;
+
+    // PA9 -> AF7 (USART1_TX)
+    GPIOA->MODER &= ~(1U << 18);
+    GPIOA->MODER |= (1U << 19);
+    GPIOA->AFR[1] |= (1U << 4) | (1U << 5) | (1U << 6);
+    GPIOA->AFR[1] &= ~(1U << 7);
+
+    RCC->APB2ENR |= UART1EN;
+
+    uart_set_baudrate(APB2_CLK, UART_BAUDRATE);
+    USART1->CR1 = CR1_TE;
+    USART1->CR3 |= CR3_DMAT; // Enable DMA request on UART side
+    USART1->CR1 |= CR1_UE;
+
+    dma_init();
+}
+
+static void uart_write(int ch){
+    while(!(USART1->ISR & ISR_TXE)){}
+    USART1->TDR = (ch & 0xFF);
+}
+
+// --- Send Function ---
+void uart_send_dma(uint8_t *data, uint16_t len)
+{
+    // 1. Flush Cache
+    my_CleanDCache((uint32_t*)data, len);
+
+    // 2. Disable Channel
+    MY_GPDMA1_Channel0->CCR &= ~MY_DMA_CCR_EN;
+    while(MY_GPDMA1_Channel0->CCR & MY_DMA_CCR_EN); // Wait for disable
+
+    // 3. Configure CTR1 (Control 1)
+    // - SAP=1 (Bit 30): Source is Port 1 (Memory Bus) -> MANDATORY for RAM
+    // - DAP=0 (Bit 31): Dest is Port 0 (Peripheral Bus) -> MANDATORY for UART
+    // - SINC=1 (Bit 16): Increment Source
+    // - DINC=0 (Bit 14): Fixed Destination
+    // - DDW=0, SDW=0 : Byte Transfer
+    MY_GPDMA1_Channel0->CTR1 = (1U << 30) | // SAP: Source is Memory
+                               (0U << 31) | // DAP: Dest is Periph
+                               (1U << 16) | // SINC: Increment
+                               (0U << 14);  // DINC: Fixed
+
+    // 4. Configure CTR2 - Request Selection
+    MY_GPDMA1_Channel0->CTR2 = (USART1_TX_DMA_REQ_ID << 0);
+
+    // 5. Configure CBR1 - Byte Count
+    MY_GPDMA1_Channel0->CBR1 = len;
+
+    // 6. Set Addresses
+    MY_GPDMA1_Channel0->CSAR = (uint32_t)data;
+    MY_GPDMA1_Channel0->CDAR = (uint32_t)&USART1->TDR;
+
+    // 7. Clear Link Register (Direct Mode)
+    MY_GPDMA1_Channel0->CLLR = 0;
+
+    // 8. Enable
+    MY_GPDMA1_Channel0->CCR |= MY_DMA_CCR_EN;
+}
+
+int __io_putchar(int ch){
+    uart_write(ch);
+    return ch;
+}
+
+static void uart_set_baudrate(uint32_t periph_clk, uint32_t baudrate){
+    USART1->BRR = compute_uart_bd(periph_clk, baudrate);
+}
+
+static uint16_t compute_uart_bd(uint32_t periph_clk, uint32_t baudrate)
+{
+    return ((periph_clk + (baudrate/2U))/baudrate);
+}
+
+void uart_printf(const char *format, ...) {
+    // Wait if busy
+    while(MY_GPDMA1_Channel0->CCR & MY_DMA_CCR_EN);
+
+    va_list args;
+    va_start(args, format);
+    int len = vsnprintf((char*)dma_buffer, UART_BUFFER_SIZE, format, args);
+    va_end(args);
+
+    if (len > 0) {
+        if (len > UART_BUFFER_SIZE) len = UART_BUFFER_SIZE;
+        uart_send_dma(dma_buffer, (uint16_t)len);
+    }
+}

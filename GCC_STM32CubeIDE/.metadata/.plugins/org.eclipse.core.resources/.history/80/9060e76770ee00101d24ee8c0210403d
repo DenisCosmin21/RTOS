@@ -1,0 +1,99 @@
+#include "uart.h"
+#include "stm32u5xx.h"
+#include <stdint.h>
+
+// --- Configuration ---
+// USART1 TX is on PA9 (AF7)
+// GPDMA1 Channel 0 will be used
+
+#define GPIOAEN     (1U << 0)
+#define USART1EN    (1U << 14) // APB2ENR bit 14
+#define GPDMA1EN    (1U << 0)  // AHB1ENR bit 0 (Fixed: Removed '1' suffix)
+
+#define SYS_FREQ    4000000UL
+#define APB2_CLK    SYS_FREQ
+#define UART_BAUDRATE 115200
+
+// GPDMA Request ID for USART1_TX (ID 37 for STM32U575)
+#define GPDMA1_REQUEST_USART1_TX 37
+
+static uint16_t compute_uart_bd(uint32_t periph_clk, uint32_t baudrate);
+static void uart_set_baudrate(uint32_t periph_clk, uint32_t baudrate);
+
+void uart_dma_init(void)
+{
+    /* 1. Enable Clock Access */
+    RCC->AHB2ENR1 |= GPIOAEN;          // GPIOA Clock
+    RCC->APB2ENR  |= USART1EN;         // USART1 Clock
+
+    // FIX 1: Use AHB1ENR (not AHB1ENR1) for GPDMA1
+    RCC->AHB1ENR  |= GPDMA1EN;
+
+    /* 2. Configure PA9 as Alternate Function 7 (USART1_TX) */
+    GPIOA->MODER &= ~(1U << 18);
+    GPIOA->MODER |= (1U << 19);
+
+    // AF7 setup for PA9
+    GPIOA->AFR[1] |= (1U << 4);
+    GPIOA->AFR[1] |= (1U << 5);
+    GPIOA->AFR[1] |= (1U << 6);
+    GPIOA->AFR[1] &= ~(1U << 7);
+
+    /* 3. Configure UART Baudrate */
+    uart_set_baudrate(APB2_CLK, UART_BAUDRATE);
+
+    /* 4. Enable UART DMA Transmit Request */
+    USART1->CR3 |= USART_CR3_DMAT;
+
+    /* 5. Enable UART Transmitter and Module */
+    USART1->CR1 = USART_CR1_TE | USART_CR1_UE;
+}
+
+void uart_send_dma(const uint8_t *buffer, uint16_t length)
+{
+    // Point to GPDMA1 Channel 0 struct
+    DMA_Channel_TypeDef *dma_channel = GPDMA1_Channel0;
+
+    /* 1. Reset/Disable the Channel */
+    if (dma_channel->CCR & DMA_CCR_EN) {
+        dma_channel->CCR |= DMA_CCR_SUSP;
+        dma_channel->CCR |= DMA_CCR_RESET;
+        dma_channel->CCR &= ~DMA_CCR_EN;
+    }
+
+    /* FIX 2: Clear flags using Channel Flag Clear Register (CFCR)
+       Note: The macros are generic (DMA_CFCR_TCF) not indexed (DMA_IFCR_TCF0) */
+    dma_channel->CFCR = (DMA_CFCR_TCF | DMA_CFCR_HTF | DMA_CFCR_DTEF | DMA_CFCR_ULEF);
+
+    /* 2. Configure Control Register 1 (CTR1) */
+    // SINC=1 (Increment Source), DINC=0 (Fixed Dest), DDW/SDW=0 (Byte width)
+    dma_channel->CTR1 = DMA_CTR1_SINC;
+
+    /* 3. Configure Control Register 2 (CTR2) */
+    // Select Request Source (USART1_TX)
+    dma_channel->CTR2 = (GPDMA1_REQUEST_USART1_TX << DMA_CTR2_REQSEL_Pos);
+
+    /* 4. Configure Addresses and Size */
+    // CBR1: Block size in bytes
+    dma_channel->CBR1 = length;
+    // CSAR: Source Address (Memory Buffer)
+    dma_channel->CSAR = (uint32_t)buffer;
+    // CDAR: Dest Address (USART TDR)
+    dma_channel->CDAR = (uint32_t)&USART1->TDR;
+
+    /* 5. Disable Linked List (Linear Mode) */
+    dma_channel->CLBAR = 0;
+
+    /* 6. Enable the DMA Channel */
+    dma_channel->CCR |= DMA_CCR_EN;
+}
+
+// --- Helper Functions ---
+static void uart_set_baudrate(uint32_t periph_clk, uint32_t baudrate){
+    USART1->BRR = compute_uart_bd(periph_clk, baudrate);
+}
+
+static uint16_t compute_uart_bd(uint32_t periph_clk, uint32_t baudrate)
+{
+    return ((periph_clk + (baudrate/2U))/baudrate);
+}

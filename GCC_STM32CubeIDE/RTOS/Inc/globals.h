@@ -3,6 +3,7 @@
 #include "task.h"
 #include "rms_scheduler.h"
 #include <stdint.h>
+#include "stm32u5xx.h"
 
 extern TCB_t *running_task;
 extern TCB_t *next_task;

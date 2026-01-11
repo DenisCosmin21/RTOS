@@ -3,8 +3,26 @@
 //
 #ifndef RTOS_H
 #define RTOS_H
+
 #include "rtos_config.h"
 #include "globals.h"
+
+typedef void (*timer_callback_t)(void);
+
+typedef struct {
+    int32_t time; // timpul ca t ruleaza
+
+    timer_callback_t callback;
+} soft_timer_t;
+
+
+extern soft_timer_t rtos_timer;
+
+void rtos_task_delay(uint16_t timeout);
+
+uint32_t rtos_now(void);
+
+void rtos_timer_start(uint32_t period, timer_callback_t function);
 
 void rtos_init(void);
 

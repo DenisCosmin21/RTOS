@@ -1,0 +1,186 @@
+#include "uart.h"
+#include "stm32u5xx.h"
+#include <stdint.h>
+#include <stddef.h> // for NULL
+
+// --- Configuration ---
+#define UART_BUFFER_SIZE 256
+static uint8_t usart_rx_dma_buffer[UART_BUFFER_SIZE]; // RX Circular Buffer
+static uint8_t dma_tx_buffer[UART_BUFFER_SIZE];       // TX Buffer
+
+// --- Hardware Definitions (STM32U5 GPDMA) ---
+#define GPDMA1_CLK_EN   (1U << 0)
+#define GPIOA_CLK_EN    (1U << 0)
+#define USART1_CLK_EN   (1U << 14)
+
+// GPDMA Requests (Check your specific datasheet, usually 25/24 for USART1)
+#define GPDMA_REQ_USART1_TX  25
+#define GPDMA_REQ_USART1_RX  24
+
+// CTR1 Register Bits
+#define CTR1_SAP_PORT1       (1U << 30) // Source on Port 1 (RAM)
+#define CTR1_DAP_PORT1       (1U << 31) // Dest on Port 1 (RAM)
+#define CTR1_SINC            (1U << 16) // Source Increment
+#define CTR1_DINC            (1U << 14) // Dest Increment
+#define CTR1_DDW_BYTE        (0U << 0)
+#define CTR1_SDW_BYTE        (0U << 14) // Actually bits 13:12 for source width? check RM.
+                                        // U5: DDATA=Bits 0-1, SDATA=Bits 4-5.
+#define CTR1_SDW_BYTE_VAL    (0U << 4)
+
+// CLLR Register Bits (The Update Mask)
+// We want to update everything when looping: TR1, TR2, BR1, SAR, DAR, LLR
+#define CLLR_UT1   (1U << 0)  // Update CTR1
+#define CLLR_UT2   (1U << 1)  // Update CTR2
+#define CLLR_UB1   (1U << 2)  // Update CBR1
+#define CLLR_USA   (1U << 3)  // Update CSAR
+#define CLLR_UDA   (1U << 4)  // Update CDAR
+#define CLLR_ULL   (1U << 15) // Update CLLR (Link Register)
+
+// Combined mask for full reload
+#define NODE_UPDATE_ALL (CLLR_UT1 | CLLR_UT2 | CLLR_UB1 | CLLR_USA | CLLR_UDA | CLLR_ULL)
+
+// --- 1. The Hardware Node Structure ---
+// This mimics the memory layout the GPDMA hardware fetches.
+// Must be 32-bit aligned.
+typedef struct {
+    uint32_t CTR1; // Control 1
+    uint32_t CTR2; // Control 2
+    uint32_t CBR1; // Block Size
+    uint32_t CSAR; // Source Addr
+    uint32_t CDAR; // Dest Addr
+    uint32_t CTR3; // Control 3 (Wait/Event) - Often 0
+    uint32_t CBR2; // Block 2 - Often 0
+    uint32_t CLLR; // Link Address + Update Flags
+} GPDMA_NodeTypeDef;
+
+// Align to 4 bytes is mandatory, 32 bytes recommended for cache lines
+static GPDMA_NodeTypeDef rx_circular_node __attribute__((aligned(32)));
+
+
+// --- Helper: Cache Clean (From previous step) ---
+static void my_CleanDCache(uint32_t *addr, int32_t dsize) {
+    if (dsize < 0) return;
+    uint32_t op_size = (uint32_t)dsize;
+    uint32_t op_addr = (uint32_t)addr;
+    int32_t linesize = 32;
+    op_size += (op_addr & (linesize - 1U));
+    op_addr &= ~(linesize - 1U);
+    while (op_size > 0U) {
+        *(volatile uint32_t *)0xE000EF68 = op_addr;
+        op_addr += linesize;
+        op_size -= (op_size >= linesize) ? linesize : op_size;
+    }
+    __asm volatile ("dsb 0xF":::"memory");
+}
+
+// --- Init Function ---
+void uart_dma_init(void) {
+    // 1. Enable Clocks
+    RCC->AHB1ENR |= GPDMA1EN;
+    RCC->AHB2ENR1 |= GPIOA_CLK_EN;
+    RCC->APB2ENR |= USART1_CLK_EN;
+
+    // 2. GPIO Setup (PA9 TX, PA10 RX) - AF7
+    GPIOA->MODER &= ~((3U << 18) | (3U << 20)); // Clear
+    GPIOA->MODER |=  ((2U << 18) | (2U << 20)); // AF Mode
+    GPIOA->AFR[1] |= (7U << 4) | (7U << 8);     // AF7 for both
+
+    // 3. USART1 Setup
+    USART1->BRR = 4000000 / 115200; // Assuming 4MHz PCLK
+    USART1->CR3 |= (1U << 7) | (1U << 6); // DMAT (TX DMA) and DMAR (RX DMA)
+    USART1->CR1 |= (1U << 3) | (1U << 2) | (1U << 0); // TE | RE | UE
+
+    // ==========================================
+    // 4. SETUP RX CIRCULAR LINKED LIST (Channel 0)
+    // ==========================================
+
+    // A. Configure the NODE in RAM
+    // Source: UART RDR (Fixed), Dest: RAM Buffer (Inc)
+    rx_circular_node.CTR1 = CTR1_DINC |         // Increment Dest (RAM)
+                            CTR1_DAP_PORT1 |    // Dest is on Port 1 (RAM)
+                            (0U << 30) |        // Source is Port 0 (Periph)
+                            CTR1_SDW_BYTE_VAL;  // Byte width
+
+    rx_circular_node.CTR2 = (GPDMA_REQ_USART1_RX & 0x7F); // Request Selection
+
+    rx_circular_node.CBR1 = UART_BUFFER_SIZE;   // Length
+
+    rx_circular_node.CSAR = (uint32_t)&USART1->RDR;
+    rx_circular_node.CDAR = (uint32_t)usart_rx_dma_buffer;
+
+    rx_circular_node.CTR3 = 0; // No special block events
+    rx_circular_node.CBR2 = 0;
+
+    // THE MAGIC: Point CLLR to the node ITSELF
+    // The bottom 16 bits (0xFFFF) enable updating ALL registers when loading this node
+    rx_circular_node.CLLR = ((uint32_t)&rx_circular_node & 0xFFFF0000) | NODE_UPDATE_ALL;
+
+    // B. Push this configuration to the Hardware Channel Registers initially
+    GPDMA1_Channel0->CCR &= ~1U; // Disable first
+    while(GPDMA1_Channel0->CSR & 1U); // Wait for idle
+
+    // We load the linked list base address
+    GPDMA1_Channel0->CLBAR = (uint32_t)&rx_circular_node & 0xFFFF0000;
+
+    // We set the channel to "Link Step Mode" (LSM = 1 in CCR)
+    // Bit 16 in CCR is usually LSM (Check RM, sometimes named differently or implied by CLLR)
+    // In U5, setting CLLR register non-zero usually engages LL mode.
+    // Let's manually write the registers for the *first* transfer to kickstart it.
+
+    GPDMA1_Channel0->CTR1 = rx_circular_node.CTR1;
+    GPDMA1_Channel0->CTR2 = rx_circular_node.CTR2;
+    GPDMA1_Channel0->CBR1 = rx_circular_node.CBR1;
+    GPDMA1_Channel0->CSAR = rx_circular_node.CSAR;
+    GPDMA1_Channel0->CDAR = rx_circular_node.CDAR;
+    GPDMA1_Channel0->CLLR = rx_circular_node.CLLR; // Set the self-loop immediately
+
+    // Enable RX DMA
+    GPDMA1_Channel0->CCR |= 1U;
+
+    // ==========================================
+    // 5. SETUP TX NORMAL MODE (Channel 1)
+    // ==========================================
+    // Kept simple (Direct Mode) as requested, but optimized ports
+    GPDMA1_Channel1->CCR &= ~1U;
+}
+
+// --- TX Function (Direct Mode) ---
+void uart_send_dma(uint8_t *data, uint16_t len) {
+    my_CleanDCache((uint32_t*)data, len);
+
+    GPDMA1_Channel1->CCR &= ~1U; // Disable
+    while(GPDMA1_Channel1->CSR & 1U); // Wait
+
+    // Config for Normal Mode (No Linked List)
+    // Src: RAM (Port 1, Inc), Dest: UART (Port 0, Fixed)
+    GPDMA1_Channel1->CTR1 = CTR1_SINC |         // Inc Source
+                            CTR1_SAP_PORT1 |    // Source is Port 1 (RAM)
+                            (0U << 31) |        // Dest is Port 0 (Periph)
+                            CTR1_SDW_BYTE_VAL;
+
+    GPDMA1_Channel1->CTR2 = (GPDMA_REQ_USART1_TX & 0x7F);
+    GPDMA1_Channel1->CBR1 = len;
+    GPDMA1_Channel1->CSAR = (uint32_t)data;
+    GPDMA1_Channel1->CDAR = (uint32_t)&USART1->TDR;
+
+    GPDMA1_Channel1->CCR |= 1U; // Enable
+}
+
+// --- RX Helper: Read from Circular Buffer ---
+// Since DMA is writing in background, you need to track where you read up to.
+uint32_t uart_read_circular(void) {
+    static uint32_t old_pos = 0;
+
+    // Calculate current write position: Total Size - Remaining Bytes
+    // CBR1 decrements as data comes in.
+    uint32_t remaining = GPDMA1_Channel0->CBR1;
+    uint32_t pos = UART_BUFFER_SIZE - remaining;
+
+    if (pos != old_pos) {
+        // Return 1 byte (simple example) or handle block
+        // In real app, you loop from old_pos to pos handling wrapping
+        old_pos = pos;
+        return 1; // Data available
+    }
+    return 0;
+}

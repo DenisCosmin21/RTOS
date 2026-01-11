@@ -205,6 +205,7 @@ short start_scheduler(void) {
 }
 
 short scheduler_add_task(TCB_t *task) {
+	__disable_irq();
     scheduler_t *scheduler = &global_scheduler;
 
     //Chekcs if task has good priority
@@ -215,6 +216,7 @@ short scheduler_add_task(TCB_t *task) {
     enqueue(&scheduler->queues[task->priority], task);
     SET_BIT(scheduler->bitmap, task->priority);
 
+    __enable_irq();
     return 1;
 }
 
@@ -232,6 +234,11 @@ TCB_t *scheduler_get_task(void) {
         RESET_BIT(scheduler->bitmap, priority);
 
     return task;
+}
+
+void scheduler_dequeue_prio(unsigned long priority){
+    scheduler_t *scheduler = &global_scheduler;
+	dequeue(&scheduler->queues[priority]);
 }
 
 short scheduler_sleep_task(TCB_t *task) {

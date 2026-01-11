@@ -7,6 +7,7 @@
 
 
 
+
 #define CTRL_ENABLE (1U<<0)
 #define CTRL_CLCKSRC (1U<<2)
 #define CTRL_TICKINT (1U<<1)
@@ -65,7 +66,7 @@ void osKernelStackInit(TCB_t *task, void (*taskFunc)(void)) {
     uint32_t *stackBase = (uint32_t *)task->base_stack_pointer;
     uint32_t *stackTop  = stackBase + task->stack_size;
 
-
+    stackTop = (uint32_t *)((uint32_t)stackTop & ~0x7);
     uint32_t *sp = stackTop - 16;
 
 
@@ -118,11 +119,14 @@ uint8_t osKernelAddThreads( void(*taskFunc)(void) , const int execution_time, co
 }
 
 void osKernelInit(void){
+	SCB->CPACR &= ~(0xF << 20);
+	    __DSB();
+	    __ISB();
 	SystemCoreClockUpdate();
 	MILIS_PRESCALER = (SystemCoreClock / 1000);
 	rtos_init();
 
-	os_idle_tcb = init_task(4, 32, 0, 0, "idle");
+	os_idle_tcb = init_task(4, 126	, 0, 0, "idle");
 
 	    osKernelStackInit(os_idle_tcb, os_idle_thread);
 	    scheduler_set_idle_task(os_idle_tcb);
@@ -158,6 +162,18 @@ void osKernelLaunch(uint32_t quanta){
 
 }
 
+// Check Soft Timers
+void OsKernelCST(){
+    __disable_irq();
+    if(rtos_timer.callback!= NULL && current_time >= rtos_timer.time){
+        timer_callback_t func = rtos_timer.callback;
+        rtos_timer.callback = NULL;
+        __enable_irq();
+        func();
+    } else {
+        __enable_irq();
+    }
+}
 void task_runtime(){
 	while(1){
 	Runtime_Task_Profiler++;
@@ -167,9 +183,7 @@ void task_runtime(){
 void SysTick_Handler(void){
 
 	current_time += 1;
-	if(current_time == 50){
-	osKernelAddThreads(&task_runtime, 1, 50, "RUNTIME");
-	}
+	OsKernelCST();
 	scheduler_release_tasks();
 	should_switch();
 

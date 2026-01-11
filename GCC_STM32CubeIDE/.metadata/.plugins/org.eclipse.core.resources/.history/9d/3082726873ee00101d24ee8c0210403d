@@ -1,0 +1,179 @@
+#include "uart.h"
+#include "stm32u5xx.h"
+#include <stdint.h>
+#include <stdarg.h>
+#include <stdio.h>
+
+// --- Definitions for NUCLEO-U575ZI-Q ---
+#define UART_BUFFER_SIZE 256
+
+#define GPIOAEN     (1U << 0)
+#define UART1EN     (1U << 14) // APB2ENR bit 14 is USART1
+#define GPDMA1EN    (1U << 0)  // AHB1ENR bit 0 is GPDMA1
+
+#define SYS_FREQ 160000000UL
+#define APB2_CLK        SYS_FREQ
+#define UART_BAUDRATE   115200
+
+#define CR1_TE      (1U << 3)
+#define CR1_UE      (1U << 0)
+#define CR3_DMAT    (1U << 7)  // DMA Enable Transmitter
+
+#define ISR_TXE     (1U << 7)
+
+// --- GPDMA Register Bit Definitions (STM32U5) ---
+// We define these manually to ensure they match your board's hardware even if headers vary.
+#define GPDMA_CCR_EN      (1U << 0)   // Channel Enable
+#define GPDMA_CSR_IDLEF   (1U << 0)   // Idle Flag
+#define GPDMA_CTR2_REQSEL_POS (0U)    // Request Selection Position
+
+// GPDMA Request ID for USART1_TX on STM32U575 is 25
+#define USART1_TX_DMA_REQ_ID  25
+
+static uint16_t compute_uart_bd(uint32_t periph_clk, uint32_t baudrate);
+static void uart_set_baudrate(uint32_t periph_clk, uint32_t baudrate);
+static void uart_write(int ch);
+static uint8_t dma_buffer[UART_BUFFER_SIZE];
+
+// --- Cache Maintenance ---
+// Manual implementation of Cache Clean by Address for Cortex-M33
+static void my_CleanDCache(uint32_t *addr, int32_t dsize) {
+    if (dsize < 0) return;
+
+    uint32_t op_size = (uint32_t)dsize;
+    uint32_t op_addr = (uint32_t)addr;
+    int32_t linesize = 32; // Cortex-M33 usually has 32-byte cache lines
+
+    // Align address to cache line
+    op_size += (op_addr & (linesize - 1U));
+    op_addr &= ~(linesize - 1U);
+
+    while (op_size > 0U) {
+        // DCCMVAC: Data Cache Clean by MVA to PoC
+        *(volatile uint32_t *)0xE000EF68 = op_addr;
+        op_addr += linesize;
+        op_size -= (op_size >= linesize) ? linesize : op_size;
+    }
+
+    // Memory Barrier to ensure operation finishes
+    __asm volatile ("dsb 0xF":::"memory");
+}
+
+// --- Initialization Functions ---
+void dma_init(void) {
+    /* 1. Enable GPDMA1 Clock */
+    RCC->AHB1ENR |= GPDMA1EN;
+
+    /* 2. Reset GPDMA1 Channel 0 configuration */
+    GPDMA1_Channel0->CCR &= ~GPDMA_CCR_EN;
+}
+
+void uart_tx_init(void)
+{
+    /* Enable clock access to GPIOA */
+    RCC->AHB2ENR1 |= GPIOAEN;
+
+    /* Set PA9 mode to alternate function mode (AF7 = USART1_TX) */
+    GPIOA->MODER &= ~(1U << 18);
+    GPIOA->MODER |= (1U << 19);
+
+    /* Set alternate function type to AF7 (USART1) for PA9 */
+    // Pin 9 is in AFR[1] (AFRH).
+    GPIOA->AFR[1] |= (1U << 4);
+    GPIOA->AFR[1] |= (1U << 5);
+    GPIOA->AFR[1] |= (1U << 6);
+    GPIOA->AFR[1] &= ~(1U << 7);
+
+    /* Enable clock access to USART1 */
+    RCC->APB2ENR |= UART1EN;
+
+    /* Configure baudrate */
+    uart_set_baudrate(APB2_CLK, UART_BAUDRATE);
+
+    /* Configure transfer direction */
+    USART1->CR1 = CR1_TE;
+
+    /* Enable DMA Mode for Transmitter */
+    USART1->CR3 |= CR3_DMAT;
+
+    /* Enable the UART module */
+    USART1->CR1 |= CR1_UE;
+
+    /* Initialize the DMA controller */
+    dma_init();
+}
+
+// --- Polling Write (Used for single char / __io_putchar) ---
+static void uart_write(int ch){
+    while(!(USART1->ISR & ISR_TXE)){}
+    USART1->TDR = (ch & 0xFF);
+}
+
+// --- DMA Write Function ---
+void uart_send_dma(uint8_t *data, uint16_t len)
+{
+    // 1. Flush Cache so DMA sees the correct data in RAM
+    my_CleanDCache((uint32_t*)data, len);
+
+    // 2. Disable DMA Channel (must be disabled to configure)
+    GPDMA1_Channel0->CCR &= ~GPDMA_CCR_EN;
+
+    // 3. Wait for the channel to become IDLE
+    // Loop continues while (CSR & IDLEF) is 0 (i.e., while BUSY)
+    while( !(GPDMA1_Channel0->CSR & GPDMA_CSR_IDLEF) );
+
+    // 4. Configure Control Register 1 (CTR1)
+    // SINC=1 (bit 16), DINC=0 (bit 14), DDATA/SDATA=0 (Byte)
+    GPDMA1_Channel0->CTR1 = (1U << 16) |  // SINC: Increment source
+                            (0U << 14) |  // DINC: Fixed dest
+                            (0U << 0);    // Width: Byte
+
+    // 5. Configure Control Register 2 (CTR2) - Request Selection
+    // Set Request ID (25) and SWREQ=0
+    GPDMA1_Channel0->CTR2 = (USART1_TX_DMA_REQ_ID << GPDMA_CTR2_REQSEL_POS);
+
+    // 6. Configure Block Register 1 (CBR1) - Transfer Length
+    GPDMA1_Channel0->CBR1 = len;
+
+    // 7. Set Source and Destination Addresses
+    GPDMA1_Channel0->CSAR = (uint32_t)data;         // Source: RAM buffer
+    GPDMA1_Channel0->CDAR = (uint32_t)&USART1->TDR; // Dest: UART TDR
+
+    // 8. Enable the Channel
+    GPDMA1_Channel0->CCR |= GPDMA_CCR_EN;
+}
+
+int __io_putchar(int ch){
+    uart_write(ch);
+    return ch;
+}
+
+static void uart_set_baudrate(uint32_t periph_clk, uint32_t baudrate){
+    USART1->BRR = compute_uart_bd(periph_clk, baudrate);
+}
+
+static uint16_t compute_uart_bd(uint32_t periph_clk, uint32_t baudrate)
+{
+    return ((periph_clk + (baudrate/2U))/baudrate);
+}
+
+void uart_printf(const char *format, ...) {
+    // 1. Wait if DMA is currently Busy (Blocking safety)
+    // Checks if Enable bit is still set
+    while(GPDMA1_Channel0->CCR & GPDMA_CCR_EN);
+
+    // 2. Initialize the argument list
+    va_list args;
+    va_start(args, format);
+
+    // 3. Format the string into static buffer
+    int len = vsnprintf((char*)dma_buffer, UART_BUFFER_SIZE, format, args);
+
+    va_end(args);
+
+    // 4. Send via DMA if valid
+    if (len > 0) {
+        if (len > UART_BUFFER_SIZE) len = UART_BUFFER_SIZE;
+        uart_send_dma(dma_buffer, (uint16_t)len);
+    }
+}

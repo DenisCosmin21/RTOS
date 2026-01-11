@@ -1,7 +1,15 @@
 Src/binary_heap_queue.o: ../Src/binary_heap_queue.c \
  ../Inc/binary_heap_queue.h ../Inc/task.h ../Inc/rtos_config.h \
  ../Inc/globals.h ../Inc/rms_scheduler.h ../Inc/binary_heap_queue.h \
- ../Inc/queue.h
+ ../Inc/queue.h \
+ /home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include/stm32u5xx.h \
+ /home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include/stm32u575xx.h \
+ /home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include/core_cm33.h \
+ /home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include/cmsis_version.h \
+ /home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include/cmsis_compiler.h \
+ /home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include/cmsis_gcc.h \
+ /home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include/mpu_armv8.h \
+ /home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include/system_stm32u5xx.h
 ../Inc/binary_heap_queue.h:
 ../Inc/task.h:
 ../Inc/rtos_config.h:
@@ -9,3 +17,11 @@ Src/binary_heap_queue.o: ../Src/binary_heap_queue.c \
 ../Inc/rms_scheduler.h:
 ../Inc/binary_heap_queue.h:
 ../Inc/queue.h:
+/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include/stm32u5xx.h:
+/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include/stm32u575xx.h:
+/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include/core_cm33.h:
+/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include/cmsis_version.h:
+/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include/cmsis_compiler.h:
+/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include/cmsis_gcc.h:
+/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include/mpu_armv8.h:
+/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include/system_stm32u5xx.h:

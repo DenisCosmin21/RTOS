@@ -52,7 +52,10 @@
 typedef uint8_t memory_pool_t;
 
 //First the memory will get initialized. The first metadata will have the full size.
-static memory_pool_t memory_pool[HEAP_SIZE] = {[0] = (HEAP_SIZE << 1) >> 8, [1] = HEAP_SIZE};
+static memory_pool_t memory_pool[HEAP_SIZE] = {
+    [0] = (uint8_t)(((HEAP_SIZE) << 1) >> 8),
+    [1] = (uint8_t)((HEAP_SIZE) << 1)
+};
 
 void *c_malloc(short size) {
     uint8_t *last_element = &memory_pool[HEAP_SIZE];

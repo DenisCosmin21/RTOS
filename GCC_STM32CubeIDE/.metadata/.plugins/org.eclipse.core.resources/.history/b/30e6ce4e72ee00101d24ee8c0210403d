@@ -1,0 +1,100 @@
+#include "uart.h"
+#include "stm32u5xx.h"
+
+/* GPIO / USART */
+#define GPIOAEN        (1U << 0)
+#define USART1EN       (1U << 14)
+
+/* DMA */
+#define GPDMA1EN       (1U << 11)
+#define USART1_TX_REQ  42
+
+/* Clock */
+#define SYSCLK         16000000UL
+#define UART_BAUDRATE  115200
+
+/* USART bits */
+#define CR1_TE         (1U << 3)
+#define CR1_UE         (1U << 0)
+
+static uint16_t compute_uart_bd(uint32_t clk, uint32_t baud);
+
+/* ---------------------------------------------------- */
+/* UART INIT                                            */
+/* ---------------------------------------------------- */
+void uart_tx_init(void)
+{
+    /* Enable clocks */
+    RCC->AHB2ENR1 |= GPIOAEN;
+    RCC->APB2ENR  |= USART1EN;
+    RCC->AHB1ENR  |= GPDMA1EN;
+
+    /* USART1 kernel clock = PCLK2 */
+    RCC->CCIPR1 &= ~(3U << 0);
+    RCC->CCIPR1 |=  (1U << 0);
+
+    /* PA9 = AF7 (USART1_TX) */
+    GPIOA->MODER &= ~(3U << 18);
+    GPIOA->MODER |=  (2U << 18);
+
+    GPIOA->AFR[1] &= ~(0xF << 4);
+    GPIOA->AFR[1] |=  (7U << 4);
+
+    /* Baudrate */
+    USART1->BRR = compute_uart_bd(SYSCLK, UART_BAUDRATE);
+
+    /* Enable TX + DMA */
+    USART1->CR1 = CR1_TE;
+    USART1->CR3 |= USART_CR3_DMAT;
+
+    /* Enable USART */
+    USART1->CR1 |= CR1_UE;
+}
+
+/* ---------------------------------------------------- */
+/* DMA INIT                                             */
+/* ---------------------------------------------------- */
+void uart_dma_tx_init(void)
+{
+    /* Disable channel */
+    GPDMA1_Channel0->CCR &= ~DMA_CCR_EN;
+
+    /* Source / Destination */
+    GPDMA1_Channel0->CSAR = 0;
+    GPDMA1_Channel0->CDAR = (uint32_t)&USART1->TDR;
+
+    /* Transfer config */
+    GPDMA1_Channel0->CTR1 =
+        (0U << 0) |   /* 8-bit source */
+        (0U << 4) |   /* 8-bit dest */
+        (1U << 6);    /* source increment */
+
+    GPDMA1_Channel0->CTR2 =
+        (1U << 0) |           /* MEM2PER */
+        (USART1_TX_REQ << 8); /* USART1 TX request */
+
+    /* No linked list */
+    GPDMA1_Channel0->CLLR = 0;
+}
+
+/* ---------------------------------------------------- */
+/* DMA SEND                                             */
+/* ---------------------------------------------------- */
+void uart_dma_send(const uint8_t *buffer, uint16_t len)
+{
+    /* Disable channel */
+    GPDMA1_Channel0->CCR &= ~DMA_CCR_EN;
+
+    /* Configure transfer */
+    GPDMA1_Channel0->CSAR = (uint32_t)buffer;
+    GPDMA1_Channel0->CBR1 = len;
+
+    /* Enable channel */
+    GPDMA1_Channel0->CCR |= DMA_CCR_EN;
+}
+
+/* ---------------------------------------------------- */
+static uint16_t compute_uart_bd(uint32_t clk, uint32_t baud)
+{
+    return (uint16_t)((clk + baud / 2U) / baud);
+}

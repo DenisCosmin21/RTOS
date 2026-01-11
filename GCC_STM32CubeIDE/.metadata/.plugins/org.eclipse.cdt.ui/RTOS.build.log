@@ -1,154 +1,28 @@
-20:11:05 **** Incremental Build of configuration Debug for project RTOS ****
+03:22:56 **** Incremental Build of configuration Debug for project RTOS ****
 make -j16 all 
-arm-none-eabi-gcc "../Src/binary_heap_queue.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/binary_heap_queue.d" -MT"Src/binary_heap_queue.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/binary_heap_queue.o"
-arm-none-eabi-gcc "../Src/globals.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/globals.d" -MT"Src/globals.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/globals.o"
-arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
-arm-none-eabi-gcc "../Src/memory_pool.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/memory_pool.d" -MT"Src/memory_pool.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/memory_pool.o"
-arm-none-eabi-gcc "../Src/mutex.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/mutex.d" -MT"Src/mutex.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/mutex.o"
-arm-none-eabi-gcc "../Src/osKernel.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/osKernel.d" -MT"Src/osKernel.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/osKernel.o"
-arm-none-eabi-gcc "../Src/priority_queue.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/priority_queue.d" -MT"Src/priority_queue.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/priority_queue.o"
-arm-none-eabi-gcc "../Src/queue.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/queue.d" -MT"Src/queue.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/queue.o"
-arm-none-eabi-gcc "../Src/rms_scheduler.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/rms_scheduler.d" -MT"Src/rms_scheduler.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/rms_scheduler.o"
-arm-none-eabi-gcc "../Src/rtos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/rtos.d" -MT"Src/rtos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/rtos.o"
-arm-none-eabi-gcc "../Src/task.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/task.d" -MT"Src/task.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/task.o"
-In file included from ../Inc/memory_pool.h:9,
-                 from ../Src/memory_pool.c:4:
-../Inc/rtos_config.h:8: warning: "HEAP_SIZE" redefined
-    8 | #define HEAP_SIZE 32768
-      | 
-../Inc/memory_pool.h:8: note: this is the location of the previous definition
-    8 | #define HEAP_SIZE 4096//Should be enough memory
-      | 
-../Src/rms_scheduler.c: In function 'rms_task_templates_add':
-../Src/rms_scheduler.c:109:18: warning: unused variable 'p' [-Wunused-variable]
-  109 |     volatile int p = task->period;
-      |                  ^
-../Src/rms_scheduler.c:108:18: warning: unused variable 'w' [-Wunused-variable]
-  108 |     volatile int w = task->worst_case_execution_time;
-      |                  ^
-In file included from ../Inc/memory_pool.h:9,
-                 from ../Src/task.c:4:
-../Inc/rtos_config.h:8: warning: "HEAP_SIZE" redefined
-    8 | #define HEAP_SIZE 32768
-      | 
-../Inc/memory_pool.h:8: note: this is the location of the previous definition
-    8 | #define HEAP_SIZE 4096//Should be enough memory
-      | 
-../Src/memory_pool.c:55:54: warning: unsigned conversion from 'int' to 'unsigned char' changes value from '256' to '0' [-Woverflow]
-   55 | static memory_pool_t memory_pool[HEAP_SIZE] = {[0] = (HEAP_SIZE << 1) >> 8, [1] = HEAP_SIZE};
-      |                                                      ^
-../Inc/rtos_config.h:8:19: warning: unsigned conversion from 'int' to 'unsigned char' changes value from '32768' to '0' [-Woverflow]
-    8 | #define HEAP_SIZE 32768
-      |                   ^~~~~
-../Src/memory_pool.c:55:83: note: in expansion of macro 'HEAP_SIZE'
-   55 | static memory_pool_t memory_pool[HEAP_SIZE] = {[0] = (HEAP_SIZE << 1) >> 8, [1] = HEAP_SIZE};
-      |                                                                                   ^~~~~~~~~
-../Src/memory_pool.c: In function 'c_malloc':
-../Src/memory_pool.c:76:54: warning: suggest parentheses around '+' inside '<<' [-Wparentheses]
-   76 |                    OCUPY_BLOCK(current_element, size + sizeof(uint32_t));
-      |                                                 ~~~~~^~~~~~~~~~~~~~~~~~
-../Src/memory_pool.c:35:24: note: in definition of macro 'OCUPY_BLOCK'
-   35 |     memory_block[0] = (new_size << 1) >> 8; \
-      |                        ^~~~~~~~
-../Src/memory_pool.c:76:54: warning: suggest parentheses around '+' inside '<<' [-Wparentheses]
-   76 |                    OCUPY_BLOCK(current_element, size + sizeof(uint32_t));
-      |                                                 ~~~~~^~~~~~~~~~~~~~~~~~
-../Src/memory_pool.c:36:24: note: in definition of macro 'OCUPY_BLOCK'
-   36 |     memory_block[1] = (new_size << 1) | 0x01;
-      |                        ^~~~~~~~
-../Src/memory_pool.c:80:43: warning: suggest parentheses around '+' inside '<<' [-Wparentheses]
-   80 |         OCUPY_BLOCK(current_element, size + sizeof(uint32_t));
-      |                                      ~~~~~^~~~~~~~~~~~~~~~~~
-../Src/memory_pool.c:35:24: note: in definition of macro 'OCUPY_BLOCK'
-   35 |     memory_block[0] = (new_size << 1) >> 8; \
-      |                        ^~~~~~~~
-../Src/memory_pool.c:80:43: warning: suggest parentheses around '+' inside '<<' [-Wparentheses]
-   80 |         OCUPY_BLOCK(current_element, size + sizeof(uint32_t));
-      |                                      ~~~~~^~~~~~~~~~~~~~~~~~
-../Src/memory_pool.c:36:24: note: in definition of macro 'OCUPY_BLOCK'
-   36 |     memory_block[1] = (new_size << 1) | 0x01;
-      |                        ^~~~~~~~
-../Src/memory_pool.c:82:58: warning: suggest parentheses around '-' inside '<<' [-Wparentheses]
-   82 |         INITIALIZE_BLOCK(block_to_initialize, block_size - (size + sizeof(uint32_t)));
-      |                                               ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
-../Src/memory_pool.c:40:24: note: in definition of macro 'INITIALIZE_BLOCK'
-   40 |     memory_block[0] = (size << 1) >> 8; \
-      |                        ^~~~
-../Src/memory_pool.c:82:58: warning: suggest parentheses around '-' inside '<<' [-Wparentheses]
-   82 |         INITIALIZE_BLOCK(block_to_initialize, block_size - (size + sizeof(uint32_t)));
-      |                                               ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
-../Src/memory_pool.c:41:23: note: in definition of macro 'INITIALIZE_BLOCK'
-   41 |     memory_block[1] = size << 1;
-      |                       ^~~~
-../Src/memory_pool.c: In function 'c_free':
-../Src/memory_pool.c:102:33: warning: comparison of distinct pointer types lacks a cast
-  102 |     if(!(ptr - sizeof(uint32_t) >= memory_pool && ptr < memory_pool + HEAP_SIZE))
-      |                                 ^~
-../Src/memory_pool.c:102:55: warning: comparison of distinct pointer types lacks a cast
-  102 |     if(!(ptr - sizeof(uint32_t) >= memory_pool && ptr < memory_pool + HEAP_SIZE))
-      |                                                       ^
-../Src/memory_pool.c:49:67: warning: suggest parentheses around '+' inside '<<' [-Wparentheses]
-   49 |     INITIALIZE_BLOCK(memory_block1, GET_BLOCK_SIZE(memory_block1) + GET_BLOCK_SIZE(memory_block2)) \
-      |                                                                   ^
-../Src/memory_pool.c:40:24: note: in definition of macro 'INITIALIZE_BLOCK'
-   40 |     memory_block[0] = (size << 1) >> 8; \
-      |                        ^~~~
-../Src/memory_pool.c:111:9: note: in expansion of macro 'MERGE_BLOCKS'
-  111 |         MERGE_BLOCKS(element_to_free, next_block);
-      |         ^~~~~~~~~~~~
-../Src/memory_pool.c:49:67: warning: suggest parentheses around '+' inside '<<' [-Wparentheses]
-   49 |     INITIALIZE_BLOCK(memory_block1, GET_BLOCK_SIZE(memory_block1) + GET_BLOCK_SIZE(memory_block2)) \
-      |                                                                   ^
-../Src/memory_pool.c:41:23: note: in definition of macro 'INITIALIZE_BLOCK'
-   41 |     memory_block[1] = size << 1;
-      |                       ^~~~
-../Src/memory_pool.c:111:9: note: in expansion of macro 'MERGE_BLOCKS'
-  111 |         MERGE_BLOCKS(element_to_free, next_block);
-      |         ^~~~~~~~~~~~
-../Src/memory_pool.c:49:67: warning: suggest parentheses around '+' inside '<<' [-Wparentheses]
-   49 |     INITIALIZE_BLOCK(memory_block1, GET_BLOCK_SIZE(memory_block1) + GET_BLOCK_SIZE(memory_block2)) \
-      |                                                                   ^
-../Src/memory_pool.c:40:24: note: in definition of macro 'INITIALIZE_BLOCK'
-   40 |     memory_block[0] = (size << 1) >> 8; \
-      |                        ^~~~
-../Src/memory_pool.c:123:5: note: in expansion of macro 'MERGE_BLOCKS'
-  123 |     MERGE_BLOCKS(ant, element_to_free);
-      |     ^~~~~~~~~~~~
-../Src/memory_pool.c:49:67: warning: suggest parentheses around '+' inside '<<' [-Wparentheses]
-   49 |     INITIALIZE_BLOCK(memory_block1, GET_BLOCK_SIZE(memory_block1) + GET_BLOCK_SIZE(memory_block2)) \
-      |                                                                   ^
-../Src/memory_pool.c:41:23: note: in definition of macro 'INITIALIZE_BLOCK'
-   41 |     memory_block[1] = size << 1;
-      |                       ^~~~
-../Src/memory_pool.c:123:5: note: in expansion of macro 'MERGE_BLOCKS'
-  123 |     MERGE_BLOCKS(ant, element_to_free);
-      |     ^~~~~~~~~~~~
-../Src/rtos.c: In function 'simulate_rtos':
-../Src/rtos.c:67:18: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint64_t' {aka 'long long unsigned int'} [-Wformat=]
-   67 |         printf("%d ", current_time);
-      |                 ~^    ~~~~~~~~~~~~
-      |                  |    |
-      |                  int  uint64_t {aka long long unsigned int}
-      |                 %lld
-../Src/task.c: In function 'inheritate_priority':
-../Src/task.c:68:31: warning: assignment to 'TCB_t *' {aka 'struct TCB *'} from incompatible pointer type 'mutex_t *' {aka 'struct mutex *'} [-Wincompatible-pointer-types]
-   68 |         task_that_inheritates = task_inheritated->blocked_by;
-      |                               ^
-../Src/main.c: In function 'task_low':
-../Src/main.c:40:8: warning: implicit declaration of function 'rtos_task_wait' [-Wimplicit-function-declaration]
-   40 |        rtos_task_wait();
-      |        ^~~~~~~~~~~~~~
+arm-none-eabi-gcc "../Src/uart.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/uart.d" -MT"Src/uart.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/uart.o"
+../Src/uart.c: In function 'uart_printf':
+../Src/uart.c:134:8: warning: this 'if' clause does not guard... [-Wmisleading-indentation]
+  134 |        if(len >UART_BUFFER_SIZE)
+      |        ^~
+../Src/uart.c:136:9: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+  136 |         uart_blocked_task = running_task;
+      |         ^~~~~~~~~~~~~~~~~
+../Src/uart.c: At top level:
+../Src/uart.c:119:13: warning: 'uart_send_dma_wait' defined but not used [-Wunused-function]
+  119 | static void uart_send_dma_wait(void) {
+      |             ^~~~~~~~~~~~~~~~~~
 arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: RTOS.elf
  
 arm-none-eabi-size  RTOS.elf 
 arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
    text	   data	    bss	    dec	    hex	filename
-  12572	    100	  35104	  47776	   baa0	RTOS.elf
+  12403	     96	  35432	  47931	   bb3b	RTOS.elf
 Finished building: default.size.stdout
  
 Finished building: RTOS.list
  
 
-20:11:05 Build Finished. 0 errors, 21 warnings. (took 219ms)
+03:22:56 Build Finished. 0 errors, 2 warnings. (took 229ms)
 

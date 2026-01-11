@@ -1,0 +1,120 @@
+
+#include "uart.h"
+#include "stm32u5xx.h"
+#include <stdint.h>
+
+// PA9 -Tx -PA10 -RX
+
+
+#define GPIOAEN (1U<<0)
+#define UART2EN (1U << 14)
+
+#define SYS_FREQ 4000000UL
+#define APB1_CLK SYS_FREQ
+#define UART_BAUDRATE 115200
+
+#define GPDMA1EN      (1U << 11)   // RCC AHB1
+#define USART1_TX_DMA_REQ  42      // DMAMUX request for USART1_TX (fixed value)
+
+
+#define CR1_TE (1U<<3)
+#define CR1_UE (1U<<0)
+
+#define ISR_TXE 	(1U<<7)
+
+
+static uint16_t compute_uart_bd(uint32_t periph_clk, uint32_t baudrate);
+static void uart_set_baudrate(uint32_t periph_clk, uint32_t baudrate);
+static void uart_write(int ch);
+
+int __io_putchar(int ch){
+	uart_write(ch);
+	return ch;
+}
+
+
+void uart_tx_init(void)
+{
+    /* Enable clock access */
+    RCC->AHB2ENR1 |= GPIOAEN;
+    RCC->APB2ENR  |= UART2EN;     // USART1
+    RCC->AHB1ENR  |= GPDMA1EN;
+
+    /* PA9 alternate function (USART1_TX) */
+    GPIOA->MODER &= ~(3U << 18);
+    GPIOA->MODER |=  (2U << 18);
+
+    GPIOA->AFR[1] &= ~(0xF << 4);
+    GPIOA->AFR[1] |=  (7U << 4);   // AF7 = USART1
+
+    /* Baudrate */
+    uart_set_baudrate(APB1_CLK, UART_BAUDRATE);
+
+    /* Enable TX + DMA TX */
+    USART1->CR1 = CR1_TE;
+    USART1->CR3 |= (1U << 7);     // DMAT
+
+    /* Enable USART */
+    USART1->CR1 |= CR1_UE;
+}
+
+
+void uart_dma_tx_init(void)
+{
+    /* Disable channel before config */
+    GPDMA1_Channel0->CCR &= ~1U;
+
+    /* Peripheral address = USART1 TDR */
+    GPDMA1_Channel0->CPAR = (uint32_t)&USART1->TDR;
+
+    /* Configure channel */
+    GPDMA1_Channel0->CCR =
+        (1U << 6) |    // MEM2PER
+        (0U << 4) |    // 8-bit peripheral
+        (0U << 2);     // 8-bit memory
+
+    /* Increment memory, no increment peripheral */
+    GPDMA1_Channel0->CTR1 =
+        (1U << 2);     // MINC
+
+    /* DMA request selection (DMAMUX integrated) */
+    GPDMA1_Channel0->CTR2 =
+        USART1_TX_DMA_REQ;
+}
+
+
+static void uart_write(int ch){
+	/*Transmit data resister -> empty*/
+	while(!(USART1->ISR & ISR_TXE)){}
+	/*Wrtie to transmit data register*/
+	USART1->TDR = (ch & 0xFF);
+}
+
+void uart_dma_send(uint8_t *buffer, uint16_t len)
+{
+    /* Disable channel */
+    GPDMA1_Channel0->CCR &= ~1U;
+
+    /* Source address */
+    GPDMA1_Channel0->CMAR = (uint32_t)buffer;
+
+    /* Number of bytes */
+    GPDMA1_Channel0->CNDTR = len;
+
+    /* Enable channel */
+    GPDMA1_Channel0->CCR |= 1U;
+}
+
+
+static void uart_set_baudrate(uint32_t periph_clk, uint32_t baudrate){
+	USART1->BRR = compute_uart_bd(periph_clk, baudrate);
+}
+
+static uint16_t compute_uart_bd(uint32_t periph_clk, uint32_t baudrate)
+{
+	return ((periph_clk + (baudrate/2U))/baudrate);
+}
+
+
+
+''

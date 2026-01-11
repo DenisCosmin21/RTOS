@@ -1,0 +1,9 @@
+#ifndef __UART_H__
+#define __UART_H__
+#include <stdio.h>
+#include <stdint.h>
+void uart_tx_init(void);
+void uart_dma_init(void);
+void uart_dma_send(const uint8_t *buffer, uint16_t length);
+
+#endif

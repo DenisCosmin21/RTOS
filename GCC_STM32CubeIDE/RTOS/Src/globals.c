@@ -4,6 +4,7 @@
 
 #include "globals.h"
 #include "rms_scheduler.h"
+#include "rtos.h"
 
 TCB_t *running_task = 0x00;
 TCB_t *next_task = 0x00;
@@ -12,3 +13,4 @@ TCB_t *internal_idle_task = 0x00;
 short started = 0;
 uint32_t QUANTA = 200;
 uint32_t Runtime_Task_Profiler = 0;
+soft_timer_t rtos_timer={-1, NULL};

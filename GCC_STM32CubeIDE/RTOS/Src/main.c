@@ -5,12 +5,13 @@
 #include "mutex.h"
 #include "osKernel.h"
 #include "globals.h"
+#include "rtos.h"
 
 typedef	uint32_t TaskProfiler;
 
 mutex_t resource_mutex;
 
-TaskProfiler Task0_Profiler, Task1_Profiler, Task2_Profiler;
+volatile TaskProfiler Task0_Profiler, Task1_Profiler, Task2_Profiler;
 
 volatile uint32_t work_dummy = 0;
 
@@ -28,8 +29,9 @@ void task_low(void) {
     while(1) {
 
     	Task0_Profiler++;
+    	   uart_printf("LOW\r\n");
 
-       if(locked == 0){
+   /*    if(locked == 0){
        printf("LOW:  Trying Lock...\r\n");
        mutex_lock(&resource_mutex);
 
@@ -44,7 +46,7 @@ void task_low(void) {
        mutex_unlock(&resource_mutex);
        }
 
-       locked++;
+       locked++;*/
 
 
 
@@ -57,7 +59,12 @@ void task_med(void) {
     // printf("MED:  Running! I am annoying!\r\n");
 
      Task1_Profiler++;
+      uart_printf("MED\r\n");
     }
+}
+
+void dummy_function(){
+	printf("TEST\r\n");
 }
 
 
@@ -66,20 +73,32 @@ void task_high(void) {
 
 
     Task2_Profiler++;
-    printf("HIGH: I need Mutex NOW!\r\n");
+    uart_printf("HIGH\r\n");
+/*
+    if(current_time > 9 && current_time < 21){
+        rtos_timer_start(100, dummy_function);
+        rtos_task_delay(100);
+    }
+    else{
+    	rtos_task_delay(10);
+    }*/
+
+ /*   printf("HIGH: I need Mutex NOW!\r\n");
     mutex_lock(&resource_mutex);
     mutex_unlock(&resource_mutex);
     printf("HIGH: Got Mutex! Thanks Low.\r\n");
     printf("HIGH: Done.\r\n");
-
+*/
 
     }
 }
 
+
 // 2 - > HIGH -> 7 -> MEDIUM -> LOW -> 10 -> 12 -> HIGH -> 12 + 7 = 19(idle) -> 20 -> HIGH
 
 int main(void) {
-    uart_tx_init();
+	 uart_tx_init();
+
 
 
     mutex_init(&resource_mutex);
