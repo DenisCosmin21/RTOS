@@ -6,7 +6,7 @@
 #include "globals.h"
 #include "rms_scheduler.h"
 #include "rtos.h"
-#include "mutex.h"
+#include "semaphore.h"
 
 #define UART_BUFFER_SIZE 256
 
@@ -30,8 +30,7 @@
 
 #define USART1_TX_DMA_REQ_ID  25
 
-mutex_t uart_mutex;
-TCB_t *uart_blocked_task = 0;
+semaphore_t uart_sem;
 
 static void uart_write(int ch);
 __attribute__((aligned(32)))
@@ -66,13 +65,13 @@ static void my_CleanDCache(uint32_t *addr, int32_t dsize) {
 void dma_init(void) {
     RCC->AHB1ENR |=GPDMA1EN;
     GPDMA1_Channel0->CCR &=  ~GPDMA_CCR_EN;
-    NVIC_SetPriority(GPDMA1_Channel0_IRQn, 15);
+    NVIC_SetPriority(GPDMA1_Channel0_IRQn, 5);
     NVIC_EnableIRQ(GPDMA1_Channel0_IRQn);
 }
 
 void uart_tx_init(void)
 {
-    mutex_init(&uart_mutex);
+    semaphore_init(&uart_sem, 1);
 
     RCC->AHB2ENR1 |= GPIOAEN;
 
@@ -116,6 +115,7 @@ void uart_send_dma(uint8_t *data, uint16_t  len)
     GPDMA1_Channel0->CCR |= (1U << 8) | (1U << 9) | GPDMA_CCR_EN;
 }
 
+/*
 static void uart_send_dma_wait(void) {
     if(uart_blocked_task == 0) {
     	return;
@@ -124,8 +124,11 @@ static void uart_send_dma_wait(void) {
   //  SCB->ICSR |=  SCB_ICSR_PENDSVSET_Msk;
        context_switch();
 }
+
+*/
+
 void uart_printf(const char *format, ...) {
-  // mutex_lock(&uart_mutex);
+   // semaphore_down(&uart_sem); // Wait until previous DMA is done
     va_list args;
     va_start(args, format);
     int len = vsnprintf((char*)dma_buffer, UART_BUFFER_SIZE, format, args);
@@ -133,11 +136,10 @@ void uart_printf(const char *format, ...) {
     if(len> 0) {
        if(len >UART_BUFFER_SIZE)
         len = UART_BUFFER_SIZE;
-        uart_blocked_task = running_task;
         uart_send_dma(dma_buffer, (uint16_t)len);
-      //  uart_send_dma_wait();
+    } else {
+        //semaphore_up(&uart_sem); // Release if nothing to send
     }
- //   mutex_unlock(&uart_mutex);
 }
 
 // aici o sa vina logica de semafor
@@ -146,15 +148,7 @@ void GPDMA1_CH0_IRQHandler(void) {
 
     if(status & ((1U << 8) | (1U << 9))) {
        GPDMA1_Channel0->CFCR = 0xFFFFFFFF;
-        if (uart_blocked_task != 0) {
-         //   mutex_unlock(&uart_mutex);
-        //    scheduler_add_task(uart_blocked_task);
-            uart_blocked_task = 0;
-           // next_task = scheduler_get_task();
-          //  if (next_task != running_task) {
-            //	SCB->ICSR |=  SCB_ICSR_PENDSVSET_Msk;
-            //}
-        }
+       semaphore_up(&uart_sem); // Signal transfer complete
     }
 }
 int __io_putchar(int ch){

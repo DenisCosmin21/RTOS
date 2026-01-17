@@ -9,7 +9,8 @@ Src/rtos.o: ../Src/rtos.c ../Inc/globals.h ../Inc/task.h \
  /home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include/cmsis_gcc.h \
  /home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include/mpu_armv8.h \
  /home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include/system_stm32u5xx.h \
- ../Inc/rtos.h ../Inc/globals.h ../Inc/rms_scheduler.h ../Inc/task.h
+ ../Inc/rtos.h ../Inc/globals.h ../Inc/rms_scheduler.h ../Inc/task.h \
+ ../Inc/osKernel.h ../Inc/mutex.h
 ../Inc/globals.h:
 ../Inc/task.h:
 ../Inc/rms_scheduler.h:
@@ -28,3 +29,5 @@ Src/rtos.o: ../Src/rtos.c ../Inc/globals.h ../Inc/task.h \
 ../Inc/globals.h:
 ../Inc/rms_scheduler.h:
 ../Inc/task.h:
+../Inc/osKernel.h:
+../Inc/mutex.h:

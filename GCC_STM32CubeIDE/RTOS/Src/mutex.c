@@ -47,13 +47,16 @@ static void unlocked_mutex(mutex_t *mutex) {
 }
 
 void mutex_lock(mutex_t *mutex) {
+    __disable_irq();
     if(mutex->status == 0)
         unlocked_mutex(mutex);
     else
         locked_mutex(mutex);
+    __enable_irq();
 }
 
 void mutex_unlock(mutex_t *mutex) {
+    __disable_irq();
     if(mutex->status == 1 && mutex->current_task == running_task) {
         if(!h_is_empty(&mutex->tasks)) {
             mutex->current_task = h_dequeue(&mutex->tasks, dequeue_condition, enqueue_condition);
@@ -65,5 +68,9 @@ void mutex_unlock(mutex_t *mutex) {
 
         running_task->temporary_priority = MAX_PRIORITY_COUNT;
         running_task->blocked_by = 0x00;
+
     }
+    __enable_irq();
 }
+
+

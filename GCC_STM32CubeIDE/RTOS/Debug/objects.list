@@ -9,6 +9,7 @@
 "./Src/queue.o"
 "./Src/rms_scheduler.o"
 "./Src/rtos.o"
+"./Src/semaphore.o"
 "./Src/syscalls.o"
 "./Src/sysmem.o"
 "./Src/task.o"

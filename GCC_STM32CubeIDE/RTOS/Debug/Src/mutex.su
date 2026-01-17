@@ -3,5 +3,5 @@
 ../Src/mutex.c:21:6:mutex_init	16	static
 ../Src/mutex.c:26:13:locked_mutex	16	static
 ../Src/mutex.c:44:13:unlocked_mutex	16	static
-../Src/mutex.c:49:6:mutex_lock	16	static
-../Src/mutex.c:56:6:mutex_unlock	16	static
+../Src/mutex.c:49:6:mutex_lock	16	static,ignoring_inline_asm
+../Src/mutex.c:58:6:mutex_unlock	16	static,ignoring_inline_asm

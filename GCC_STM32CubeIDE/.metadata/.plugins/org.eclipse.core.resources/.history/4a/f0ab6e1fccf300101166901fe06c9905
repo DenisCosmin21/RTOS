@@ -1,0 +1,50 @@
+#include "semaphore.h"
+
+
+#include "globals.h"
+
+
+#include "rms_scheduler.h"
+
+
+
+
+
+void semaphore_init(semaphore_t *sem, size_t size) {
+    sem->size = size;
+    queue_init(&sem->queue);
+}
+
+
+void semaphore_up(semaphore_t *sem) {
+    __disable_irq();
+    if(sem->size == 0) {
+        if(!queue_is_empty(&sem->queue)) {
+            TCB_t *waiting_task = dequeue(&sem->queue);
+            scheduler_add_task(waiting_task);
+            __enable_irq();
+            return;
+        }
+    }
+    sem->size++;
+    __enable_irq();
+}
+
+void semaphore_down(semaphore_t *sem) {
+    __disable_irq();
+    if(sem->size == 0) {
+        enqueue(&sem->queue, running_task);
+        next_task = scheduler_get_task();
+        __enable_irq(); // Enable before context switch to allow PendSV
+        context_switch();
+        return;
+    }
+    sem->size--;
+    __enable_irq();
+}
+
+void semaphore_clear(semaphore_t *sem) {
+    __disable_irq();
+    sem->size = 0;
+    __enable_irq();
+}

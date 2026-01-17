@@ -7,6 +7,6 @@ void osKernelInit(void);
 
 void osKernelLaunch(uint32_t quanta);
 
-uint8_t osKernelAddThreads( void(*taskFunc)(void) , const int execution_time, const int period,const char *name);
+uint8_t osKernelAddThreads( void(*taskFunc)(void) , const int execution_time, const int period,const char *name, int base_stack_size);
 
 #endif

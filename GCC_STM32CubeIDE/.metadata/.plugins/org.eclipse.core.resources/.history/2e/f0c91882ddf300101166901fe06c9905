@@ -1,0 +1,65 @@
+#include <stdint.h>
+#include <stdio.h>
+#include "led.h"
+#include "uart.h"
+#include "mutex.h"
+#include "semaphore.h"
+#include "osKernel.h"
+#include "globals.h"
+#include "rtos.h"
+
+typedef	uint32_t TaskProfiler;
+
+semaphore_t test_sem;
+
+volatile TaskProfiler Task0_Profiler, Task1_Profiler, Task2_Profiler;
+
+void task_low(void) {
+    while(1) {
+    	Task0_Profiler++;
+        uart_printf("LOW: Waiting for SEM...\r\n");
+        semaphore_down(&test_sem);
+        uart_printf("LOW: Acquired SEM! Working...\r\n");
+        // Simulate work
+        for(int i=0; i<10000; i++) {} 
+
+        uart_printf("LOW: Releasing SEM.\r\n");
+       // semaphore_up(&test_sem);
+    }
+}
+
+void task_med(void) {
+    while(1) {
+        Task1_Profiler++;
+        uart_printf("MED\r\n");
+    }
+}
+
+void task_high(void) {
+    while(1) {
+        Task2_Profiler++;
+        uart_printf("HIGH: Waiting for SEM...\r\n");
+     //  semaphore_down(&test_sem);
+        uart_printf("HIGH: Acquired SEM! Working...\r\n");
+
+        // Simulate work
+        for(int i=0; i<10000; i++) {}
+
+        uart_printf("HIGH: Releasing SEM.\r\n");
+      //  semaphore_up(&test_sem);
+    }
+}
+
+int main(void) {
+    uart_tx_init();
+
+    semaphore_init(&test_sem, 1); // Binary semaphore
+    
+    osKernelInit();
+
+    osKernelAddThreads(&task_high, 2, 10, "HIGH");
+    osKernelAddThreads(&task_med, 5, 30, "MED");
+    osKernelAddThreads(&task_low, 10, 100, "LOW");
+
+    osKernelLaunch(QUANTA);
+}

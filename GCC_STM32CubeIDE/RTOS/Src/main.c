@@ -3,115 +3,71 @@
 #include "led.h"
 #include "uart.h"
 #include "mutex.h"
+#include "semaphore.h"
 #include "osKernel.h"
 #include "globals.h"
 #include "rtos.h"
 
 typedef	uint32_t TaskProfiler;
 
-mutex_t resource_mutex;
+semaphore_t test_sem;
+
+int32_t has_finished_work=0;
 
 volatile TaskProfiler Task0_Profiler, Task1_Profiler, Task2_Profiler;
 
-volatile uint32_t work_dummy = 0;
-
-
-void hard_work(int iterations) {
-    for (int i = 0; i < iterations; i++) {
-        work_dummy++;
-    }
-}
-
-
-int locked = 0;
-
 void task_low(void) {
     while(1) {
-
     	Task0_Profiler++;
-    	   uart_printf("LOW\r\n");
+      //  uart_printf("LOW: waiting for semaforu puli\r\n");
+        semaphore_down(&test_sem);
+        //uart_printf("LOW: am luat semaforu\r\n");
+        // Simulate work
+        for(int i=0; i<10000; i++) {
+        	//uart_printf("LOW: fac munca.\r\n");
+        }
 
-   /*    if(locked == 0){
-       printf("LOW:  Trying Lock...\r\n");
-       mutex_lock(&resource_mutex);
-
-
-       printf("LOW:  LOCKED. Working (Critical Section)...\r\n");
-
-
-       rtos_task_wait();
-
-       printf("LOW:  Finishing work. Unlocking...\r\n");
-
-       mutex_unlock(&resource_mutex);
-       }
-
-       locked++;*/
-
-
-
+        //uart_printf("LOW: releasing semaphore\r\n");
+        semaphore_up(&test_sem);
     }
 }
 
 void task_med(void) {
     while(1) {
-
-    // printf("MED:  Running! I am annoying!\r\n");
-
-     Task1_Profiler++;
-      uart_printf("MED\r\n");
+        Task1_Profiler++;
     }
 }
-
-void dummy_function(){
-	printf("TEST\r\n");
-}
-
 
 void task_high(void) {
     while(1) {
+        Task2_Profiler++;
+        //uart_printf("HIGH: waiting for semaforu puli\r\n");
+        if(!has_finished_work){
+        semaphore_down(&test_sem);
+        }
+      //  uart_printf("HIGH: am luat semaforu\r\n");
 
+        // Simulate work
+        for(int i=0; i<1000; i++) {
+        //	   uart_printf("HIGH: fac munca.\r\n");
+        }
 
-    Task2_Profiler++;
-    uart_printf("HIGH\r\n");
-/*
-    if(current_time > 9 && current_time < 21){
-        rtos_timer_start(100, dummy_function);
-        rtos_task_delay(100);
-    }
-    else{
-    	rtos_task_delay(10);
-    }*/
-
- /*   printf("HIGH: I need Mutex NOW!\r\n");
-    mutex_lock(&resource_mutex);
-    mutex_unlock(&resource_mutex);
-    printf("HIGH: Got Mutex! Thanks Low.\r\n");
-    printf("HIGH: Done.\r\n");
-*/
-
+       if(!has_finished_work)
+       semaphore_up(&test_sem);
+       has_finished_work=1;
     }
 }
 
-
-// 2 - > HIGH -> 7 -> MEDIUM -> LOW -> 10 -> 12 -> HIGH -> 12 + 7 = 19(idle) -> 20 -> HIGH
-
 int main(void) {
-	 uart_tx_init();
+    uart_tx_init();
 
-
-
-    mutex_init(&resource_mutex);
-
+    semaphore_init(&test_sem, 1); // Binary semaphore
     osKernelInit();
 
+    rtos_task_create(&task_high, 2, 10, 512, "HIGH");
+    rtos_task_create(&task_med, 5, 30,512, "MED");
+    rtos_task_create(&task_low, 10, 100,512, "LOW");
 
-    osKernelAddThreads(&task_high, 2, 10, "HIGH");
-
-
-    osKernelAddThreads(&task_med, 5, 30, "MED");
-
-    osKernelAddThreads(&task_low, 10, 100, "LOW");
-
+    // delay(1);
     osKernelLaunch(QUANTA);
 }

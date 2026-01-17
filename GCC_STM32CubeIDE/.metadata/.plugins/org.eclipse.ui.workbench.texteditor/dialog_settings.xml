@@ -3,6 +3,8 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="false"/>
 	<list key="searchhistory">
+		<item value="osKernel"/>
+		<item value="uart_send"/>
 		<item value="USART2"/>
 		<item value="RCC"/>
 		<item value="da"/>

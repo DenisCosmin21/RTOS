@@ -1,28 +1,24 @@
-03:22:56 **** Incremental Build of configuration Debug for project RTOS ****
+22:38:44 **** Incremental Build of configuration Debug for project RTOS ****
 make -j16 all 
 arm-none-eabi-gcc "../Src/uart.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/uart.d" -MT"Src/uart.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/uart.o"
 ../Src/uart.c: In function 'uart_printf':
-../Src/uart.c:134:8: warning: this 'if' clause does not guard... [-Wmisleading-indentation]
-  134 |        if(len >UART_BUFFER_SIZE)
+../Src/uart.c:137:8: warning: this 'if' clause does not guard... [-Wmisleading-indentation]
+  137 |        if(len >UART_BUFFER_SIZE)
       |        ^~
-../Src/uart.c:136:9: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
-  136 |         uart_blocked_task = running_task;
-      |         ^~~~~~~~~~~~~~~~~
-../Src/uart.c: At top level:
-../Src/uart.c:119:13: warning: 'uart_send_dma_wait' defined but not used [-Wunused-function]
-  119 | static void uart_send_dma_wait(void) {
-      |             ^~~~~~~~~~~~~~~~~~
+../Src/uart.c:139:9: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+  139 |         uart_send_dma(dma_buffer, (uint16_t)len);
+      |         ^~~~~~~~~~~~~
 arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: RTOS.elf
  
 arm-none-eabi-size  RTOS.elf 
 arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
    text	   data	    bss	    dec	    hex	filename
-  12403	     96	  35432	  47931	   bb3b	RTOS.elf
+  12819	     96	  35432	  48347	   bcdb	RTOS.elf
 Finished building: default.size.stdout
  
 Finished building: RTOS.list
  
 
-03:22:56 Build Finished. 0 errors, 2 warnings. (took 229ms)
+22:38:44 Build Finished. 0 errors, 1 warnings. (took 225ms)
 

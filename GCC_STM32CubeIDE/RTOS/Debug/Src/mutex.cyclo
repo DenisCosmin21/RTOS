@@ -4,4 +4,4 @@
 ../Src/mutex.c:26:13:locked_mutex	3
 ../Src/mutex.c:44:13:unlocked_mutex	1
 ../Src/mutex.c:49:6:mutex_lock	2
-../Src/mutex.c:56:6:mutex_unlock	4
+../Src/mutex.c:58:6:mutex_unlock	4

@@ -84,7 +84,7 @@ void prepare_next_task(TCB_t *task) {
 
 
 
-static long compute_task_priority(TCB_t *task) {
+long compute_task_priority(TCB_t *task) {
     for(long i = 0;i < NUM_PRIORITY_LEVELS;i++) {
         if(periods_per_priority[i] == 0) {
             return i;
@@ -205,7 +205,6 @@ short start_scheduler(void) {
 }
 
 short scheduler_add_task(TCB_t *task) {
-	__disable_irq();
     scheduler_t *scheduler = &global_scheduler;
 
     //Chekcs if task has good priority
@@ -216,7 +215,6 @@ short scheduler_add_task(TCB_t *task) {
     enqueue(&scheduler->queues[task->priority], task);
     SET_BIT(scheduler->bitmap, task->priority);
 
-    __enable_irq();
     return 1;
 }
 
@@ -251,7 +249,7 @@ short scheduler_sleep_task(TCB_t *task) {
 }
 
 void scheduler_release_tasks(void) {
-
+    __disable_irq();
     scheduler_t *scheduler = &global_scheduler;
 
     TCB_t *pending_task = 0x00;
@@ -260,6 +258,8 @@ void scheduler_release_tasks(void) {
         pending_task->budget_time = pending_task->worst_case_execution_time;
         scheduler_add_task(pending_task);
     }
+    
+    __enable_irq();
 
 #ifdef DEBUG
     print_task_queues(tq);

@@ -6,6 +6,8 @@
 #include "rms_scheduler.h"
 #include "task.h"
 #include <stdio.h>
+#include "osKernel.h"
+#include "mutex.h"
 #include "stm32u5xx.h"
 #include <stdio.h>
 
@@ -18,10 +20,9 @@ void rtos_init(void) { //Will get called from the reset procedure
 }
 
 
-short rtos_task_create(const int execution_time, const int period,const char *name) {
+short rtos_task_create(void(*taskFunc)(void), const int execution_time, const int period, int base_stack_size ,const char *name) {
     //Assign lowest priority first when creating it,becouse in RMS it should'nt know exact priority on creation
-    TCB_t *task = init_task(0, BASE_TASK_STACK_SIZE, execution_time, period, name);
-
+  /*  TCB_t *task = init_task(0, BASE_TASK_STACK_SIZE, execution_time, period, name);
     if(started) {
         prepare_next_task(task);
         if(is_schedulable()) {
@@ -29,16 +30,15 @@ short rtos_task_create(const int execution_time, const int period,const char *na
             return 1;
         }
     }
-
-
-
-    rms_task_templates_add(task);
-
+    rms_task_templates_add(task);*/
+	uart_printf("LOG: Task %s added with %d EC, %d Period and %d BSS \r\r\n\n", name, execution_time, period, base_stack_size);
+	osKernelAddThreads(taskFunc, execution_time, period, name, base_stack_size);
     return 1;
 }
 
 short rtos_start(void) {
-    return start_scheduler();
+    osKernelLaunch(QUANTA);
+    uart_printf("LOG: RTOS started\r\r\n\n");
 }
 
 //Tell the kernel that current running task finished execution, and should switch

@@ -1,0 +1,126 @@
+/*
+ * semaphore.c
+ *
+ *  Created on: Jan 17, 2026
+ *      Author: traian
+ */
+
+
+@@ -0,0 +1,39 @@
+
+
+//
+
+
+// Created by Denis on 1/9/2026.
+
+
+//
+
+
+
+
+
+#include "semaphore.h"
+
+
+#include "../Globals/globals.h"
+
+
+#include "../RmsScheduler/rms_scheduler.h"
+
+
+
+
+
+void semaphore_init(semaphore_t *sem, size_t size) {
+
+
+    sem->size = size;
+
+
+    queue_init(&sem->queue);
+
+
+}
+
+
+
+
+
+void semaphore_up(semaphore_t *sem) {
+
+
+    if(sem->size == 0) {
+
+
+        if(!queue_is_empty(&sem->queue)) {
+
+
+            TCB_t *waiting_task = dequeue(&sem->queue);
+
+
+            scheduler_add_task(waiting_task);
+
+
+            return;
+
+
+        }
+
+
+    }
+
+
+
+
+
+    sem->size++;
+
+
+}
+
+
+
+
+
+void semaphore_down(semaphore_t *sem) {
+
+
+    if(sem->size == 0) {
+
+
+        enqueue(&sem->queue, running_task);
+
+
+        next_task = scheduler_get_task();
+
+
+        context_switch();
+
+
+        return;
+
+
+    }
+
+
+
+
+
+    sem->size--;
+
+
+}
+
+
+
+
+
+void semaphore_clear(semaphore_t *sem) {
+
+
+    sem->size = 0;
+
+
+}

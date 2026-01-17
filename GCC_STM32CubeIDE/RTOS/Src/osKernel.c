@@ -3,6 +3,7 @@
 #include "globals.h"
 #include "rtos.h"
 #include "rms_scheduler.h"
+#include "timebase.h"
 #include "stm32u5xx.h"
 
 
@@ -95,9 +96,14 @@ void osKernelStackInit(TCB_t *task, void (*taskFunc)(void)) {
 
 
 
-uint8_t osKernelAddThreads( void(*taskFunc)(void) , const int execution_time, const int period,const char *name){
+
+uint8_t osKernelAddThreads(void(*taskFunc)(void) , const int execution_time, const int period, const char *name, int base_stack_size){
 
 	__disable_irq();
+
+	if(base_stack_size < 0 || base_stack_size < 128 || ((base_stack_size % 32) != 0)){
+		base_stack_size = BASE_TASK_STACK_SIZE;
+	}
 
 
 	    TCB_t *task = init_task(0, BASE_TASK_STACK_SIZE, execution_time, period, name);
@@ -188,6 +194,7 @@ void SysTick_Handler(void){
 	should_switch();
 
 }
+
 
 __attribute__((naked)) void PendSV_Handler(void){
 	__asm("CPSID	I");

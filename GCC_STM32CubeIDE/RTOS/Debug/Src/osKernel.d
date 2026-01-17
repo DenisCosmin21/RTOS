@@ -9,7 +9,7 @@ Src/osKernel.o: ../Src/osKernel.c ../Inc/osKernel.h \
  /home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include/system_stm32u5xx.h \
  ../Inc/task.h ../Inc/globals.h ../Inc/task.h ../Inc/rms_scheduler.h \
  ../Inc/rtos_config.h ../Inc/binary_heap_queue.h ../Inc/queue.h \
- ../Inc/rtos.h ../Inc/globals.h ../Inc/rms_scheduler.h
+ ../Inc/rtos.h ../Inc/globals.h ../Inc/rms_scheduler.h ../Inc/timebase.h
 ../Inc/osKernel.h:
 /home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include/stm32u5xx.h:
 /home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include/stm32u575xx.h:
@@ -29,3 +29,4 @@ Src/osKernel.o: ../Src/osKernel.c ../Inc/osKernel.h \
 ../Inc/rtos.h:
 ../Inc/globals.h:
 ../Inc/rms_scheduler.h:
+../Inc/timebase.h:

@@ -26,7 +26,7 @@ void rtos_timer_start(uint32_t period, timer_callback_t function);
 
 void rtos_init(void);
 
-short rtos_task_create(const int execution_time,const int period, const char*);
+short rtos_task_create( void(*taskFunc)(void), const int execution_time,const int period,int base_stack_size, const char*);
 
 short rtos_start(void);
 

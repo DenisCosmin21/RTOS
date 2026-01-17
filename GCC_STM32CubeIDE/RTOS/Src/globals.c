@@ -11,6 +11,6 @@ TCB_t *next_task = 0x00;
 uint64_t current_time = 0;
 TCB_t *internal_idle_task = 0x00;
 short started = 0;
-uint32_t QUANTA = 200;
+uint32_t QUANTA = 1;
 uint32_t Runtime_Task_Profiler = 0;
 soft_timer_t rtos_timer={-1, NULL};
