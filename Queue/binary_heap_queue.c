@@ -29,7 +29,7 @@ static void swap_elements(TCB_t **task1, TCB_t **task2) {
 static void shift_heap(heap_priority_queue_t * queue, size_t position, int (*condition)(const TCB_t *, const TCB_t *)) {
     while(position != 0 && condition(queue->tcb[PARENT(position)], queue->tcb[position])) {
         swap_elements(&queue->tcb[PARENT(position)], &queue->tcb[position]);
-        position = PARENT(position)
+        position = PARENT(position);
     }
 }
 
