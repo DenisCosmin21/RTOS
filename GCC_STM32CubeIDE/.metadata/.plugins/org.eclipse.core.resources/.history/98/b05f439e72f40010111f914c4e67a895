@@ -1,0 +1,74 @@
+#include "semaphore.h"
+#include "globals.h"
+#include "rms_scheduler.h"
+#include "task.h"
+#include "rtos.h"
+
+void semaphore_init(semaphore_t *sem, size_t size) {
+    sem->size = size;
+    queue_init(&sem->queue);
+}
+
+void semaphore_up(semaphore_t *sem) {
+    __disable_irq();
+
+    // Check if tasks are waiting in the semaphore queue
+    if (sem->size == 0 && !queue_is_empty(&sem->queue)) {
+        TCB_t *waiting_task = dequeue(&sem->queue);
+
+        // Add the waiting task back to the Ready Queue so it can be scheduled
+        scheduler_add_task(waiting_task);
+
+        // Preemption check:
+        // User Logic: Priority 2 (High) > Priority 0 (Low).
+        // If the task we just woke up has a HIGHER priority than the currently running task,
+        // we should yield immediately to let it run.
+        if (waiting_task->priority > running_task->priority) {
+
+				rtos_task_wait();
+			}
+
+        __enable_irq();
+        return;
+    }
+
+    // No tasks waiting, just increment size
+    sem->size++;
+    __enable_irq();
+}
+
+void semaphore_down(semaphore_t *sem) {
+    __disable_irq();
+
+    // If semaphore is available, take it and continue
+    if (sem->size > 0) {
+        sem->size--;
+        __enable_irq();
+        return;
+    }
+
+    // Semaphore is unavailable: Block the current task.
+    // 1. Add current task to the Semaphore's blocked queue.
+    enqueue(&sem->queue, running_task);
+
+    // 2. Select the next task to run from the Scheduler.
+    // Note: We do NOT add running_task back to scheduler_add_task(), effectively blocking it.
+    next_task = scheduler_get_task();
+
+    // 3. Trigger Context Switch.
+    // The PendSV handler will save current context (which is now blocked)
+    // and restore 'next_task'.
+    context_switch();
+
+    // 4. Interrupts will be re-enabled when this task triggers again (is woken up)
+    // and its context (including xPSR with IRQ enabled) is restored.
+    __enable_irq();
+}
+
+void semaphore_clear(semaphore_t *sem) {
+    __disable_irq();
+    sem->size = 0;
+    // Potentially should also clear queue? 
+    // Standard clear usually just resets count.
+    __enable_irq();
+}

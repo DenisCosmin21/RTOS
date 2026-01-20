@@ -1,0 +1,151 @@
+#include "globals.h"
+#include "mutex.h"
+#include "osKernel.h"
+#include "rtos.h"
+#include "uart.h"
+#include <stdio.h>
+
+// Driver Headers
+#include "button.h"
+#include "led.h"
+#include "motor.h"
+#include "servo.h"
+#include "seven_segment.h"
+#include "ultrasonic.h"
+
+// Mutex for printing
+mutex_t print_mutex;
+volatile int pi_enabled = 0;
+
+// --- Test Tasks ---
+
+// 1. 7-Segment Display Task (Needs high refresh rate for multiplexing)
+// This task multiplexes the display. It must run fairly often (e.g., every
+// 5-10ms) But RTOS tick might be 1ms. 5ms period is good.
+void display_task(void) {
+  int counter = 0;
+  int sub_count = 0;
+
+  seven_seg_init();
+
+  while (1) {
+    // State Machine for Multiplexing
+    static int mux_state = 0;
+
+    // Increment Counter Logic
+    sub_count++;
+    if (sub_count >= 250) { // Approx 0.5s if tick is 2ms (1ms * 2 states)
+      counter++;
+      if (counter > 99)
+        counter = 0;
+      sub_count = 0;
+    }
+
+    if (mux_state == 0) {
+      seven_seg_display_digit(1, (counter / 10) % 10); // Show Tens
+      mux_state = 1;
+    } else {
+      seven_seg_display_digit(2, counter % 10); // Show Units
+      mux_state = 0;
+    }
+
+    // Hold this state for one RTOS tick (allows other tasks to run)
+    rtos_task_wait();
+  }
+}
+
+// 2. LED & Button Task
+void led_button_task(void) {
+  led_init();    // Blue LED PB7
+  button_init(); // User Button PC13
+
+  while (1) {
+    if (button_read()) {
+      led_on();
+      mutex_lock(&print_mutex);
+      uart_printf("[BTN] Pressed! LED ON\r\n");
+      mutex_unlock(&print_mutex);
+    } else {
+      led_off();
+      // led_toggle(); // Optional: Blink when idle?
+    }
+    rtos_task_wait();
+  }
+}
+
+// 3. Ultrasonic Task
+void ultrasonic_task(void) {
+  ultrasonic_init();
+
+  while (1) {
+    float dist = ultrasonic_read();
+
+    mutex_lock(&print_mutex);
+    if (dist < 0) {
+      uart_printf("[US] Timeout/Error\r\n");
+    } else {
+      uart_printf("[US] Dist: %.2f cm\r\n", dist);
+    }
+    mutex_unlock(&print_mutex);
+
+    rtos_task_wait();
+  }
+}
+
+// 4. Actuator Task (Motor & Servo)
+void actuator_task(void) {
+  motor_init();
+  servo_init();
+
+  int speed = 0;
+  int angle = 0;
+  int direction = 1;
+
+  while (1) {
+    // Sweep Servo 0-180
+    servo_set_angle(angle);
+    angle += 50;
+    if (angle > 180)
+      angle = 0;
+
+    // Ramp Motor -100 to 100
+    motor_set_speed(speed);
+    speed += (20 * direction);
+    if (speed > 100 || speed < -100) {
+      direction *= -1; // Reverse ramp direction
+    }
+    mutex_lock(&print_mutex);
+    uart_printf("[ACT] Servo: %d deg, Motor: %d%%\r\n", angle, speed);
+    mutex_unlock(&print_mutex);
+
+    rtos_task_wait();
+  }
+}
+
+// Busy wait helper (preserved)
+void busy_wait(int loops) {
+  for (volatile int i = 0; i < loops; i++)
+    ;
+}
+
+int main(void) {
+  SystemCoreClockUpdate();
+
+  uart_tx_init();
+
+  mutex_init(&print_mutex);
+  osKernelInit();
+
+  uart_printf("SystemCoreClock: %lu Hz\r\n", SystemCoreClock);
+
+
+  rtos_task_create(display_task, 2, 10, 1024, "DISP");
+  rtos_task_create(led_button_task, 1, 50, 1024, "BTN");
+  rtos_task_create(ultrasonic_task, 5, 200, 1024, "US");
+  rtos_task_create(actuator_task, 5, 1000, 1024, "ACT");
+
+  uart_printf("Starting Scheduler...\r\n");
+  rtos_start();
+
+  return 0;
+}

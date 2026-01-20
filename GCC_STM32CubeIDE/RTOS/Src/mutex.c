@@ -4,73 +4,85 @@
 
 #include "mutex.h"
 
-
 #include "globals.h"
 #include "rms_scheduler.h"
 #include "rtos.h"
 #include "stm32u5xx.h"
 
-static int enqueue_condition(const TCB_t *existent_task, const TCB_t *task_to_add) {
-    return existent_task->priority < task_to_add->priority;
+static int enqueue_condition(const TCB_t *existent_task,
+                             const TCB_t *task_to_add) {
+  return existent_task->priority < task_to_add->priority;
 }
 
-static int dequeue_condition(const TCB_t *task_to_delete) {
-    return 1;
-}
+static int dequeue_condition(const TCB_t *task_to_delete) { return 1; }
 
 void mutex_init(mutex_t *mutex) {
-    h_init(&mutex->tasks);
-    mutex->status = 0;
+  h_init(&mutex->tasks);
+  mutex->status = 0;
 }
 
 static void locked_mutex(mutex_t *mutex) {
-    if(running_task == mutex->current_task)
-        return;
+	__disable_irq();
+  if (running_task == mutex->current_task)
+    return;
 
-    h_enqueue(&mutex->tasks, running_task, enqueue_condition);
+  h_enqueue(&mutex->tasks, running_task, enqueue_condition);
 
-    running_task->blocked_by = mutex;
+  running_task->blocked_by = mutex;
 
-    if(mutex->current_task->priority < running_task->priority) {
-        inheritate_priority(mutex->current_task, running_task);
-    }
+  // Remove PI flag usage
+  extern volatile int pi_enabled;
+  if (pi_enabled && mutex->current_task->priority < running_task->priority) {
+    inheritate_priority(mutex->current_task, running_task);
+    scheduler_add_task(mutex->current_task); // this->
+  }
 
-
-    next_task = scheduler_get_task();
-    context_switch();
-
+  next_task = scheduler_get_task();
+  context_switch();
+  __enable_irq();
 }
 
 static void unlocked_mutex(mutex_t *mutex) {
-    mutex->status = 1;
-    mutex->current_task = running_task;
+  mutex->status = 1;
+  mutex->current_task = running_task;
 }
 
 void mutex_lock(mutex_t *mutex) {
-    __disable_irq();
-    if(mutex->status == 0)
-        unlocked_mutex(mutex);
-    else
-        locked_mutex(mutex);
-    __enable_irq();
+  __disable_irq();
+  if (mutex->status == 0)
+    unlocked_mutex(mutex);
+  else
+    locked_mutex(mutex);
+  __enable_irq();
 }
 
 void mutex_unlock(mutex_t *mutex) {
-    __disable_irq();
-    if(mutex->status == 1 && mutex->current_task == running_task) {
-        if(!h_is_empty(&mutex->tasks)) {
-            mutex->current_task = h_dequeue(&mutex->tasks, dequeue_condition, enqueue_condition);
-            mutex->current_task->temporary_priority = mutex->current_task->priority;
-            scheduler_add_task(mutex->current_task);
-        }
-        else
-            mutex->status = 0;
+  __disable_irq();
+  if (mutex->status == 1 && mutex->current_task == running_task) {
+    if (!h_is_empty(&mutex->tasks)) {
+      // 1. Get the waiting task (High Task)
+      TCB_t *next_owner = h_dequeue(&mutex->tasks, dequeue_condition, enqueue_condition);
 
+      // 2. Clear ITS blocked status so the scheduler knows it's ready
+      next_owner->blocked_by = 0x00;
+
+      // 3. Update mutex ownership
+      mutex->current_task = next_owner;
+
+      // Handle Priority Inheritance restoration for the CURRENT running task
+      if (running_task->temporary_priority != MAX_PRIORITY_COUNT) {
+        running_task->priority = running_task->temporary_priority;
         running_task->temporary_priority = MAX_PRIORITY_COUNT;
-        running_task->blocked_by = 0x00;
+      }
 
+      // 4. Add the NEW owner to the scheduler
+      scheduler_add_task(mutex->current_task);
+
+      // OPTIONAL: Call context_switch() here if you want immediate preemption
+    } else {
+      mutex->status = 0;
     }
-    __enable_irq();
+    // No need to clear running_task->blocked_by, it is already 0
+  }
+  __enable_irq();
 }
-
-

@@ -27,3 +27,8 @@ void led_off(void){
 	/*Set led pin LOW(PB7)*/
 	GPIOB->ODR &= ~LED_PIN;
 }
+
+void led_toggle(void){
+    GPIOB->ODR ^= LED_PIN;
+}
+

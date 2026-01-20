@@ -1,0 +1,3 @@
+../Src/ultrasonic.c:4:6:ultrasonic_init	4	static
+../Src/ultrasonic.c:14:13:delay_us	24	static
+../Src/ultrasonic.c:21:7:ultrasonic_read	40	static

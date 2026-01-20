@@ -1,5 +1,5 @@
 Src/globals.o: ../Src/globals.c ../Inc/globals.h ../Inc/task.h \
- ../Inc/rms_scheduler.h ../Inc/rtos_config.h ../Inc/binary_heap_queue.h \
+ ../Inc/rms_scheduler.h ../Inc/binary_heap_queue.h ../Inc/rtos_config.h \
  ../Inc/queue.h \
  /home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include/stm32u5xx.h \
  /home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include/stm32u575xx.h \
@@ -13,8 +13,8 @@ Src/globals.o: ../Src/globals.c ../Inc/globals.h ../Inc/task.h \
 ../Inc/globals.h:
 ../Inc/task.h:
 ../Inc/rms_scheduler.h:
-../Inc/rtos_config.h:
 ../Inc/binary_heap_queue.h:
+../Inc/rtos_config.h:
 ../Inc/queue.h:
 /home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include/stm32u5xx.h:
 /home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include/stm32u575xx.h:

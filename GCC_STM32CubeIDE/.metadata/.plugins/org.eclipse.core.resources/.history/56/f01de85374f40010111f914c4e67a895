@@ -1,0 +1,52 @@
+#include "message_queue.h"
+
+void msg_queue_init(message_queue_t *queue) {
+    queue->head = 0;
+    queue->tail = 0;
+
+    semaphore_init(&queue->lock, 1);               // mutex
+    semaphore_init(&queue->not_empty, 0);          // empty
+    semaphore_init(&queue->not_full, MSG_QUEUE_SIZE); // full of slots
+}
+
+int msg_queue_send(message_queue_t *queue, void *message, uint32_t timeout_ms) {
+    (void)timeout_ms; // unused for now
+
+    // Wait for space
+    semaphore_down(&queue->not_full);
+
+    // Lock queue
+    semaphore_down(&queue->lock);
+
+    queue->buffer[queue->tail] = message;
+    queue->tail = (queue->tail + 1) % MSG_QUEUE_SIZE;
+
+    // Unlock
+    semaphore_up(&queue->lock);
+
+    // Signal data available
+    semaphore_up(&queue->not_empty);
+
+    return 1;
+}
+
+int msg_queue_receive(message_queue_t *queue, void **message, uint32_t timeout_ms) {
+    (void)timeout_ms; // unused for now
+
+    // Wait for data
+    semaphore_down(&queue->not_empty);
+
+    // Lock queue
+    semaphore_down(&queue->lock);
+
+    *message = queue->buffer[queue->head];
+    queue->head = (queue->head + 1) % MSG_QUEUE_SIZE;
+
+    // Unlock
+    semaphore_up(&queue->lock);
+
+    // Signal free slot
+    semaphore_up(&queue->not_full);
+
+    return 1;
+}

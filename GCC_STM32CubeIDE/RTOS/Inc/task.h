@@ -36,7 +36,7 @@ void should_switch();
 
 void reset_task(TCB_t *);
 
-void inheritate_priority(TCB_t *task_that_inheritates, const TCB_t *task_inheritated);
+void inheritate_priority(TCB_t *task_that_inheritates,  TCB_t *task_inheritated);
 
 void print_task(const TCB_t *);
 #endif //TASK_H

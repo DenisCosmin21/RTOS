@@ -42,6 +42,11 @@ uint32_t get_tick(void)
 	return g_curr_tick_p;
 }
 
+uint32_t get_time_us(void) {
+    return DWT->CYCCNT / 4;
+}
+
+
 void timebase_init(void)
 {
 	/*Reload the timer with number of cycles per second*/

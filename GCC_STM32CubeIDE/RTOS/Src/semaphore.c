@@ -1,73 +1,60 @@
 #include "semaphore.h"
-#include "globals.h"
 #include "rms_scheduler.h"
+#include "globals.h"
 
-
-
-
-
-void semaphore_init(semaphore_t *sem, size_t size) {
-    sem->size = size;
+void semaphore_init(semaphore_t *sem, size_t initial) {
+    sem->size = initial;
     queue_init(&sem->queue);
 }
 
-
 void semaphore_up(semaphore_t *sem) {
+    MEASURE_LATENCY_START();
     __disable_irq();
 
-    // Check if tasks are waiting
-    if (sem->size == 0 && !queue_is_empty(&sem->queue)) {
-        TCB_t *waiting_task = dequeue(&sem->queue);
+    sem->size++;
 
-        // Task state must be changed from BLOCKED to READY
-
-        scheduler_add_task(waiting_task);
-
-        // Preemption logic
-        if (waiting_task->priority > running_task->priority) {
-            scheduler_add_task(running_task); // Put current task back in ready queue
-            next_task = scheduler_get_task();
-
-            // CONTEXT SWITCH:
-            // Do not enable IRQ here if the switch handles it.
-            // If you MUST enable, use a specific 'yield' function
-            // that handles the atomic window.
-            context_switch();
+    if(!queue_is_empty(&sem->queue)) {
+        TCB_t *task = dequeue(&sem->queue);
+        scheduler_add_task(task);
+        
+        if(task->priority > running_task->priority) {
+             scheduler_add_task(running_task);
+             next_task = scheduler_get_task();
+             context_switch();
         }
-
-        __enable_irq(); // Only reached if no context switch occurred, or after we return
-        return;
     }
 
-    sem->size++;
+    MEASURE_LATENCY_STOP();
     __enable_irq();
 }
 
 void semaphore_down(semaphore_t *sem) {
+    MEASURE_LATENCY_START();
     __disable_irq();
 
-    if (sem->size > 0) {
+
+    if(sem->size > 0) {
         sem->size--;
+        MEASURE_LATENCY_STOP();
         __enable_irq();
         return;
     }
 
-    // Block the task
-
     enqueue(&sem->queue, running_task);
-
     next_task = scheduler_get_task();
-
-    // CRITICAL FIX: Do not enable IRQs here.
-    // Let the context switch handler restore the IRQ state
-    // of the *next* task when it loads its PSR (Program Status Register).
     context_switch();
+    
 
-    // When we return here, interrupts are usually enabled by the restored task context
-    __enable_irq();
+    MEASURE_LATENCY_STOP();
+    __enable_irq(); 
 }
+
 void semaphore_clear(semaphore_t *sem) {
+    MEASURE_LATENCY_START();
     __disable_irq();
     sem->size = 0;
+    MEASURE_LATENCY_STOP();
     __enable_irq();
 }
+
+

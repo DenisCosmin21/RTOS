@@ -1,0 +1,85 @@
+
+#include <stdint.h>
+#include <stdio.h>
+#include "led.h"
+#include "uart.h"
+#include "mutex.h"
+#include "semaphore.h"
+#include "osKernel.h"
+#include "globals.h"
+#include "rtos.h"
+#include "message_queue.h"
+
+typedef	uint32_t TaskProfiler;
+
+message_queue_t logging_queue;
+uint32_t do_work=0;
+
+volatile TaskProfiler Task0_Profiler, Task1_Profiler, Task2_Profiler;
+
+void task_logger(void) {
+    void *msg;
+    while(1) {
+    	Task0_Profiler++;
+        
+
+        if(logging_queue.count > 0) {
+            while(logging_queue.count > 0) {
+                 if(msg_queue_receive(&logging_queue, &msg, 0)) {
+                    if(msg != NULL) {
+
+                      uart_printf("%s", (char*)msg);
+                        led_toggle(); 
+                    }
+                 }
+            }
+        } 
+        rtos_task_wait();
+    }
+}
+
+// T2: Periodic 20ms (~2ms execution)
+void task_periodic_20ms(){
+    while(1) {
+        Task1_Profiler++;
+
+        char log_buf[50];
+        msg_queue_send(&logging_queue, "[T2] Run (20ms)\r\n", 0);
+        
+        for(volatile int i=0; i<800; i++){
+        	do_work++;
+        }
+        
+        rtos_task_wait();
+    }
+}
+
+void task_periodic_5ms(void) {
+    while(1) {
+        Task2_Profiler++;
+        
+        msg_queue_send(&logging_queue, "[T1] Run (5ms)\r\n", 0);
+        
+        for(volatile int i=0; i<300; i++){
+        	do_work++;
+        }
+        
+        rtos_task_wait();
+    }
+}
+
+
+int main(void) {
+    uart_tx_init();
+    led_init();
+
+    msg_queue_init(&logging_queue);
+    
+    osKernelInit();
+
+    rtos_task_create(&task_periodic_5ms, 1, 5, 1024, "T1_5ms");
+    
+    rtos_task_create(&task_periodic_20ms, 2, 20, 1024, "T2_20ms");
+    rtos_task_create(&task_logger, 20, 100, 1024, "Logger");
+    rtos_start(QUANTA);
+}

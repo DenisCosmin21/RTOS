@@ -1,0 +1,15 @@
+#ifndef SEVEN_SEGMENT_H
+#define SEVEN_SEGMENT_H
+
+#include "stm32u5xx.h"
+
+// Pmod SSD (2-Digit) Driver
+// Segments: A0-A5, D11
+// Select: D12
+
+void seven_seg_init(void);
+// Display a number (0-9) on the specified digit (1 or 2)
+void seven_seg_display_digit(int digit, int number);
+void seven_seg_clear(void);
+
+#endif

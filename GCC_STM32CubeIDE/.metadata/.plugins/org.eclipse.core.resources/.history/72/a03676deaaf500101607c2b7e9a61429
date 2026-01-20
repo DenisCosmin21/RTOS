@@ -1,0 +1,179 @@
+#include "globals.h"
+#include "mutex.h"
+#include "osKernel.h"
+#include "rtos.h"
+#include "uart.h"
+#include <stdio.h>
+
+// Driver Headers
+#include "button.h"
+#include "led.h"
+#include "motor.h"
+#include "servo.h"
+#include "seven_segment.h"
+#include "ultrasonic.h"
+
+// Mutex for printing
+mutex_t print_mutex;
+volatile int pi_enabled = 0;
+
+// --- Test Tasks ---
+
+// 1. 7-Segment Display Task (Needs high refresh rate for multiplexing)
+// This task multiplexes the display. It must run fairly often (e.g., every
+// 5-10ms) But RTOS tick might be 1ms. 5ms period is good.
+void display_task(void) {
+  int counter = 0;
+  int sub_count = 0;
+
+  seven_seg_init();
+
+  while (1) {
+    // Increment number every 100 cycles (approx 0.5s if period is 5ms)
+    sub_count++;
+    if (sub_count >= 100) {
+      counter++;
+      if (counter > 9999)
+        counter = 0;
+      sub_count = 0;
+    }
+
+    // Multiplexing Loop (Show one digit per call would be too slow if call is
+    // 5ms? No, 5ms per digit = 20ms frame = 50Hz. Acceptable flickering.)
+    // Better: Valid RTOS approach for multiplexing is often a Timer Interrupt.
+    // But here we use a high priority task.
+
+    // Show Digit 1
+    seven_seg_display_digit(1, (counter / 1000) % 10);
+    busy_wait(2000); // Small delay to keep it lit (blocking!) - Bad for RTOS
+                     // but needed for brightness if no timer used.
+
+    // Show Digit 2
+    seven_seg_display_digit(2, (counter / 100) % 10);
+    busy_wait(2000);
+
+    // Show Digit 3
+    seven_seg_display_digit(3, (counter / 10) % 10);
+    busy_wait(2000);
+
+    // Show Digit 4
+    seven_seg_display_digit(4, counter % 10);
+    busy_wait(2000);
+
+    // Turn off to prevent ghosting before sleep?
+    // seven_seg_clear();
+
+    rtos_task_wait(); // Wait for next period
+  }
+}
+
+// 2. LED & Button Task
+void led_button_task(void) {
+  led_init();    // Blue LED PB7
+  button_init(); // User Button PC13
+
+  while (1) {
+    if (button_read()) {
+      led_on();
+      mutex_lock(&print_mutex);
+      uart_printf("[BTN] Pressed! LED ON\r\n");
+      mutex_unlock(&print_mutex);
+    } else {
+      led_off();
+      // led_toggle(); // Optional: Blink when idle?
+    }
+    rtos_task_wait();
+  }
+}
+
+// 3. Ultrasonic Task
+void ultrasonic_task(void) {
+  ultrasonic_init();
+
+  while (1) {
+    float dist = ultrasonic_read();
+
+    mutex_lock(&print_mutex);
+    if (dist < 0) {
+      uart_printf("[US] Timeout/Error\r\n");
+    } else {
+      uart_printf("[US] Dist: %.2f cm\r\n", dist);
+    }
+    mutex_unlock(&print_mutex);
+
+    rtos_task_wait();
+  }
+}
+
+// 4. Actuator Task (Motor & Servo)
+void actuator_task(void) {
+  motor_init();
+  servo_init();
+
+  int speed = 0;
+  int angle = 0;
+  int direction = 1;
+
+  while (1) {
+    // Sweep Servo 0-180
+    servo_set_angle(angle);
+    angle += 10;
+    if (angle > 180)
+      angle = 0;
+
+    // Ramp Motor -100 to 100
+ /*   motor_set_speed(speed);
+    speed += (20 * direction);
+    if (speed > 100 || speed < -100) {
+      direction *= -1; // Reverse ramp direction
+    }
+*/
+    mutex_lock(&print_mutex);
+    uart_printf("[ACT] Servo: %d deg, Motor: %d%%\r\n", angle, speed);
+    mutex_unlock(&print_mutex);
+
+    rtos_task_wait();
+  }
+}
+
+// Busy wait helper (preserved)
+void busy_wait(int loops) {
+  for (volatile int i = 0; i < loops; i++)
+    ;
+}
+
+/* ================= MAIN ================= */
+int main(void) {
+  // Update SystemCoreClock variable to match current hardware state
+  SystemCoreClockUpdate();
+
+  uart_tx_init(); // Initialize UART first for logging
+
+  mutex_init(&print_mutex);
+  osKernelInit();
+
+  uart_printf("\r\n=== NUCLEO-U575ZI-Q Hardware Test Suite ===\r\n");
+  uart_printf("SystemCoreClock: %lu Hz\r\n", SystemCoreClock);
+  uart_printf("Initializing Drivers...\r\n");
+
+  // Create Tasks
+
+  // Display Task: High Priority, Short Period (5ms) for multiplexing visibility
+  // Note: Blocking delays inside might affect CPU load.
+  // period=5ms, execution=2ms?
+  rtos_task_create(display_task, 2, 10, 1024, "DISP");
+
+  // Button/LED: Medium Period (50ms)
+  rtos_task_create(led_button_task, 1, 50, 1024, "BTN");
+
+  // Ultrasonic: Slower (200ms)
+  rtos_task_create(ultrasonic_task, 5, 200, 1024, "US");
+
+  // Actuators: Slow (1000ms)
+  rtos_task_create(actuator_task, 5, 1000, 1024, "ACT");
+
+  uart_printf("Starting Scheduler...\r\n");
+  rtos_start();
+
+  return 0;
+}

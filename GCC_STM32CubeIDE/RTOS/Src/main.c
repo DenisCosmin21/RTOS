@@ -1,73 +1,113 @@
-#include <stdint.h>
-#include <stdio.h>
-#include "led.h"
-#include "uart.h"
-#include "mutex.h"
-#include "semaphore.h"
-#include "osKernel.h"
 #include "globals.h"
+#include "mutex.h"
+#include "osKernel.h"
 #include "rtos.h"
+#include "uart.h"
+#include <stdio.h>
+#include "button.h"
+#include "led.h"
+#include "motor.h"
+#include "servo.h"
+#include "seven_segment.h"
+#include "ultrasonic.h"
 
-typedef	uint32_t TaskProfiler;
+mutex_t print_mutex;
+volatile int pi_enabled = 0;
 
-semaphore_t test_sem;
+void display_task(void) {
+  int counter = 0;
+  int sub_count = 0;
 
-int32_t has_finished_work=0;
+  seven_seg_init();
 
-volatile TaskProfiler Task0_Profiler, Task1_Profiler, Task2_Profiler;
+  while(1) {
+    static int mux_state = 0;
 
-void task_low(void) {
-    while(1) {
-    	Task0_Profiler++;
-      //  uart_printf("LOW: waiting for semaforu puli\r\n");
-        semaphore_down(&test_sem);
-        //uart_printf("LOW: am luat semaforu\r\n");
-        // Simulate work
-        for(int i=0; i<10000; i++) {
-        	//uart_printf("LOW: fac munca.\r\n");
-        }
-
-        //uart_printf("LOW: releasing semaphore\r\n");
-        semaphore_up(&test_sem);
+    sub_count++;
+    if(sub_count >= 250) {
+      counter++;
+      if(counter > 99)
+        counter = 0;
+      sub_count = 0;
     }
+
+    if(mux_state == 0) {
+      seven_seg_display_digit(1, (counter / 10) % 10);
+      mux_state = 1;
+    } else {
+      seven_seg_display_digit(2, counter % 10);
+      mux_state = 0;
+    }
+    rtos_task_wait();
+  }
 }
 
-void task_med(void) {
-    while(1) {
-        Task1_Profiler++;
+
+void led_button_task(void) {
+  led_init();
+  button_init();
+
+  while (1) {
+    if (button_read()) {
+      led_on();
+      mutex_lock(&print_mutex);
+      uart_printf("[BTN] Pressed! LED ON\r\n");
+      mutex_unlock(&print_mutex);
+    } else {
+      led_off();
     }
+    rtos_task_wait();
+  }
 }
 
-void task_high(void) {
-    while(1) {
-        Task2_Profiler++;
-        //uart_printf("HIGH: waiting for semaforu puli\r\n");
-        if(!has_finished_work){
-        semaphore_down(&test_sem);
-        }
-      //  uart_printf("HIGH: am luat semaforu\r\n");
+void actuator_task(void) {
+  motor_init();
+  servo_init();
 
-        // Simulate work
-        for(int i=0; i<1000; i++) {
-        //	   uart_printf("HIGH: fac munca.\r\n");
-        }
+  int speed = 0;
+  int angle = 0;
+  int direction = 1;
 
-       if(!has_finished_work)
-       semaphore_up(&test_sem);
-       has_finished_work=1;
+  while (1) {
+    servo_set_angle(angle);
+    angle += 50;
+    if (angle > 180)
+      angle = 0;
+    motor_set_speed(speed);
+    speed += (20 * direction);
+    if (speed > 100 || speed < -100) {
+      direction *= -1;
     }
+    mutex_lock(&print_mutex);
+    uart_printf("[PWM] Servo: %d deg, Motor:%d%%\r\r\n", angle, speed);
+    mutex_unlock(&print_mutex);
+
+    rtos_task_wait();
+  }
+}
+
+void busy_wait(int loops) {
+  for (volatile int i = 0; i < loops; i++)
+    ;
 }
 
 int main(void) {
-    uart_tx_init();
+  SystemCoreClockUpdate();
 
-    semaphore_init(&test_sem, 1); // Binary semaphore
-    osKernelInit();
+  uart_tx_init();
 
-    rtos_task_create(&task_high, 2, 10, 512, "HIGH");
-    rtos_task_create(&task_med, 5, 30,512, "MED");
-    rtos_task_create(&task_low, 10, 100,512, "LOW");
+  mutex_init(&print_mutex);
+  osKernelInit();
 
-    // delay(1);
-    osKernelLaunch(QUANTA);
+  uart_printf("SystemCoreClock: %lu Hz\r\n", SystemCoreClock);
+
+
+  rtos_task_create(display_task, 2, 10, 1024, "DISP");
+  rtos_task_create(led_button_task, 1, 50, 1024, "BTN");
+  rtos_task_create(actuator_task, 5, 1000, 1024, "ACT");
+
+  uart_printf("Starting Scheduler...\r\n");
+  rtos_start();
+
+  return 0;
 }

@@ -8,5 +8,5 @@
 ../Src/uart.c:96:13:uart_write	16	static
 ../Src/uart.c:101:6:uart_send_dma	16	static
 ../Src/uart.c:130:6:uart_printf	16	static
-../Src/uart.c:146:6:GPDMA1_CH0_IRQHandler	16	static
-../Src/uart.c:154:5:__io_putchar	16	static
+../Src/uart.c:148:6:GPDMA1_CH0_IRQHandler	16	static
+../Src/uart.c:156:5:__io_putchar	16	static

@@ -1,0 +1,5 @@
+../Src/seven_segment.c:19:13:set_pin	2
+../Src/seven_segment.c:26:13:config_pin_output	1
+../Src/seven_segment.c:31:6:seven_seg_init	1
+../Src/seven_segment.c:47:6:seven_seg_clear	1
+../Src/seven_segment.c:58:6:seven_seg_display_digit	6

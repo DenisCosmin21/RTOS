@@ -1,0 +1,25 @@
+
+#ifndef MESSAGE_QUEUE_H
+#define MESSAGE_QUEUE_H
+
+#include <stdint.h>
+#include "semaphore.h"
+#include "rtos_config.h"
+
+#define MSG_QUEUE_SIZE 8 // Minimum 8 elements as per requirements
+
+typedef struct {
+    void* buffer[MSG_QUEUE_SIZE];
+    uint32_t head;
+    uint32_t tail;
+    uint32_t count;
+    semaphore_t lock;      // Mutex for protection
+    semaphore_t not_empty; // Semaphore to signal data available
+    semaphore_t not_full;  // Semaphore to signal space available
+} message_queue_t;
+
+void msg_queue_init(message_queue_t* queue);
+int msg_queue_send(message_queue_t* queue, void* message, uint32_t timeout_ms);
+int msg_queue_receive(message_queue_t* queue, void** message, uint32_t timeout_ms);
+
+#endif // MESSAGE_QUEUE_H

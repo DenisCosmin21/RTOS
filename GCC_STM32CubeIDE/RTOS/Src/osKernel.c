@@ -2,6 +2,7 @@
 #include "task.h"
 #include "globals.h"
 #include "rtos.h"
+#include "uart.h"
 #include "rms_scheduler.h"
 #include "timebase.h"
 #include "stm32u5xx.h"
@@ -24,7 +25,7 @@ uint32_t MILIS_PRESCALER;
 static void os_idle_thread(void) {
     while(1) {
 
-      // __asm("wfi");
+     // __asm("wfi");
     }
 }
 
@@ -130,7 +131,14 @@ void osKernelInit(void){
 	    __ISB();
 	SystemCoreClockUpdate();
 	MILIS_PRESCALER = (SystemCoreClock / 1000);
+    
+    // Enable DWT for timing measurement
+    CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+    DWT->CYCCNT = 0;
+    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
+
 	rtos_init();
+
 
 	os_idle_tcb = init_task(4, 126	, 0, 0, "idle");
 
@@ -156,7 +164,12 @@ void osKernelLaunch(uint32_t quanta){
 
 	SysTick->CTRL |= CTRL_TICKINT;
 
-	start_scheduler();
+	int isSchedulable = start_scheduler();
+	if(!isSchedulable){
+		uart_printf("Tasks aren't schedulable, utilization too low or too high");
+		return;
+	}
+
 
 
 	//running_task = scheduler_get_task();
@@ -199,6 +212,12 @@ void SysTick_Handler(void){
 __attribute__((naked)) void PendSV_Handler(void){
 	__asm("CPSID	I");
 
+    // --- Instrumentation Start ---
+    // Read DWT->CYCCNT (0xE0001004) into R12
+    __asm("LDR R0, =0xE0001004"); 
+    __asm("LDR R12, [R0]"); 
+    // -----------------------------
+
 	__asm("PUSH  {R4-R11}");
 
 	__asm("LDR R0, =running_task");
@@ -220,11 +239,30 @@ __attribute__((naked)) void PendSV_Handler(void){
 
 	__asm("POP {R4-R11}");
 
+
+    //DWT->CYCCNT
+    __asm("LDR R0, =0xE0001004");
+    __asm("LDR R1, [R0]");
+
+    __asm("SUB R1, R1, R12");
+    
+
+    __asm("LSR R1, R1, #2");
+
+
+    __asm("LDR R2, =max_context_switch_time_us");
+    __asm("LDR R3, [R2]");
+    
+    __asm("CMP R1, R3");
+    __asm("IT HI");
+    __asm("STRHI R1, [R2]");
+
 	__asm("CPSIE I");
 
 	__asm("BX LR");
 
 }
+
 
 
 

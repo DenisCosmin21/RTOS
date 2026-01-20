@@ -1,0 +1,65 @@
+#include "servo.h"
+#include "stm32u5xx.h"
+
+// D5 = PE11 (TIM1_CH2)
+// 50Hz PWM, SystemCoreClock = 4MHz
+// PSC=39, ARR=1999 1 tick = 10us
+
+void servo_init(void) {
+  RCC->AHB2ENR1 |= RCC_AHB2ENR1_GPIOEEN;
+  RCC->APB2ENR |= RCC_APB2ENR_TIM1EN;
+
+  // 2. Configure PE11 as Alternate Function (AF1 for TIM1)
+  // Mode = 10
+  GPIOE->MODER &= ~(3U << (11 * 2));
+  GPIOE->MODER |= (2U << (11 * 2));
+
+  // AFR[1] for pins 8-15. PE11 -> AF1 (0001) at pos (11-8)*4=12
+  GPIOE->AFR[1] &= ~(0xF << 12);
+  GPIOE->AFR[1] |= (1U << 12);
+
+  // 3. Configure TIM1
+  // Target: 1 tick = 10us (100kHz)
+  // PSC = (SystemCoreClock / 100000) - 1
+  // ARR = 1999 -> 20ms period
+  // Safely handle clock. If SystemCoreClock < 100kHz, this fails, but unlikely.
+  extern uint32_t SystemCoreClock; // Defined in system_stm32u5xx.c usually
+  uint32_t psc_val = (SystemCoreClock / 100000);
+  if (psc_val > 0)
+    psc_val--;
+
+  TIM1->PSC = psc_val;
+  TIM1->ARR = 1999;
+
+  // 4. Configure CCMR1 (CH2)
+  // PWM Mode 1 (110) in OC2M. Preload Enable (OC2PE).
+  TIM1->CCMR1 &= ~TIM_CCMR1_OC2M;
+  TIM1->CCMR1 |= (6U << TIM_CCMR1_OC2M_Pos);
+  TIM1->CCMR1 |= TIM_CCMR1_OC2PE;
+
+  // 5. Enable Output (CCER)
+  // Set CC2E
+  TIM1->CCER |= TIM_CCER_CC2E;
+
+  // 6. Advanced Timer Requirement: Main Output Enable (MOE)
+  TIM1->BDTR |= TIM_BDTR_MOE;
+
+  // 7. Enable Counter
+  TIM1->CR1 |= TIM_CR1_CEN;
+
+  // Initial Pos 90 deg (1.5ms = 150 ticks)
+  TIM1->CCR2 = 150;
+}
+
+void servo_set_angle(int angle) {
+  if (angle < 0)
+    angle = 0;
+  if (angle > 180)
+    angle = 180;
+
+  // Map 0-180 to 0.5ms-2.0ms (50-200 ticks)
+  // Range = 150 ticks
+  // ticks = 50 + (angle * 150 / 180)
+  int ticks = 100 + ((angle * 150) / 180);
+  TIM1->CCR2 = ticks;
+}

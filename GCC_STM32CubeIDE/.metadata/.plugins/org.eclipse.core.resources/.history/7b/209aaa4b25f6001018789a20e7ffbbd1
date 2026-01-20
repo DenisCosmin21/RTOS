@@ -1,0 +1,61 @@
+#include "semaphore.h"
+#include "rms_scheduler.h"
+#include "globals.h"
+
+void semaphore_init(semaphore_t *sem, size_t initial) {
+    sem->size = initial;
+    queue_init(&sem->queue);
+}
+
+void semaphore_up(semaphore_t *sem) {
+    MEASURE_LATENCY_START();
+    __disable_irq();
+
+    sem->size++;
+
+    if(!queue_is_empty(&sem->queue)) {
+        TCB_t *task = dequeue(&sem->queue);
+        scheduler_add_task(task);
+        
+        // Priority Inversion / Preemption Check
+        if(task->priority > running_task->priority) {
+             scheduler_add_task(running_task);
+             next_task = scheduler_get_task();
+             context_switch();
+        }
+    }
+
+    MEASURE_LATENCY_STOP();
+    __enable_irq();
+}
+
+void semaphore_down(semaphore_t *sem) {
+    MEASURE_LATENCY_START();
+    __disable_irq();
+
+
+    if(sem->size > 0) {
+        sem->size--;
+        MEASURE_LATENCY_STOP();
+        __enable_irq();
+        return;
+    }
+
+    enqueue(&sem->queue, running_task);
+    next_task = scheduler_get_task();
+    context_switch();
+    
+    // Trigger the switch!
+    MEASURE_LATENCY_STOP();
+    __enable_irq(); 
+}
+
+void semaphore_clear(semaphore_t *sem) {
+    MEASURE_LATENCY_START();
+    __disable_irq();
+    sem->size = 0;
+    MEASURE_LATENCY_STOP();
+    __enable_irq();
+}
+
+

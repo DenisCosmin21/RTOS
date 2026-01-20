@@ -1,6 +1,6 @@
-../Src/queue.c:10:6:queue_init	1
-../Src/queue.c:16:5:queue_is_empty	1
-../Src/queue.c:20:6:enqueue	1
+../Src/queue.c:9:6:queue_init	1
+../Src/queue.c:15:5:queue_is_empty	1
+../Src/queue.c:17:6:enqueue	2
 ../Src/queue.c:29:8:dequeue	2
 ../Src/queue.c:45:8:peek	2
 ../Src/queue.c:52:6:print_queue	2

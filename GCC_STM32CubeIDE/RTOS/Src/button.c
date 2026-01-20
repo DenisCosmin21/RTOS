@@ -1,0 +1,38 @@
+#include "button.h"
+
+
+
+void button_init(void) {
+
+  RCC->AHB2ENR1|= RCC_AHB2ENR1_GPIOCEN;
+
+  GPIOC->MODER&= ~(3U << (BUTTON_PIN * 2));
+
+  GPIOC->PUPDR&= ~(3U << (BUTTON_PIN * 2));
+  GPIOC->PUPDR|= (2U << (BUTTON_PIN * 2));
+}
+
+int button_read(void) {
+  if (GPIOC->IDR & (1U << BUTTON_PIN)) {
+    return 1; // Pressed
+  } else {
+    return 0; // Released
+  }
+}
+
+void button_exti_init(void) {
+  RCC->APB3ENR |= RCC_APB3ENR_SYSCFGEN;
+
+  EXTI->EXTICR[3] &= ~EXTI_EXTICR4_EXTI13;
+  EXTI->EXTICR[3] |= EXTI_EXTICR4_EXTI13_0;
+
+
+  EXTI->IMR1 |= (1U << BUTTON_PIN);
+
+  EXTI->RTSR1 |= (1U << BUTTON_PIN);
+  EXTI->FTSR1 &= ~(1U << BUTTON_PIN);
+
+
+  NVIC_SetPriority(EXTI13_IRQn, 10);
+  NVIC_EnableIRQ(EXTI13_IRQn);
+}

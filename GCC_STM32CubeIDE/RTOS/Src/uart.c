@@ -71,7 +71,7 @@ void dma_init(void) {
 
 void uart_tx_init(void)
 {
-    semaphore_init(&uart_sem, 1);
+   // semaphore_init(&uart_sem, 1);
 
     RCC->AHB2ENR1 |= GPIOAEN;
 
@@ -128,19 +128,21 @@ static void uart_send_dma_wait(void) {
 */
 
 void uart_printf(const char *format, ...) {
-   // semaphore_down(&uart_sem); // Wait until previous DMA is done
+    while( !(GPDMA1_Channel0->CSR & GPDMA_CSR_IDLEF) );
+
     va_list args;
     va_start(args, format);
     int len = vsnprintf((char*)dma_buffer, UART_BUFFER_SIZE, format, args);
+
     va_end(args);
     if(len> 0) {
        if(len >UART_BUFFER_SIZE)
         len = UART_BUFFER_SIZE;
+
         uart_send_dma(dma_buffer, (uint16_t)len);
-    } else {
-        //semaphore_up(&uart_sem); // Release if nothing to send
-    }
+    } 
 }
+
 
 // aici o sa vina logica de semafor
 void GPDMA1_CH0_IRQHandler(void) {
@@ -148,7 +150,7 @@ void GPDMA1_CH0_IRQHandler(void) {
 
     if(status & ((1U << 8) | (1U << 9))) {
        GPDMA1_Channel0->CFCR = 0xFFFFFFFF;
-       semaphore_up(&uart_sem); // Signal transfer complete
+     //  semaphore_up(&uart_sem);
     }
 }
 int __io_putchar(int ch){

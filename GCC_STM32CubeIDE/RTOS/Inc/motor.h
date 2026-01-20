@@ -1,0 +1,11 @@
+#ifndef MOTOR_H
+#define MOTOR_H
+
+#include "stm32u5xx.h"
+#include <stdlib.h>
+
+void motor_init(void);
+
+void motor_set_speed(int speed);
+
+#endif

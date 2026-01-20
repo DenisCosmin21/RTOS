@@ -3,6 +3,11 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="false"/>
 	<list key="searchhistory">
+		<item value="temporary_prio"/>
+		<item value="temporary"/>
+		<item value="tempora"/>
+		<item value="priority"/>
+		<item value="swap"/>
 		<item value="osKernel"/>
 		<item value="uart_send"/>
 		<item value="USART2"/>

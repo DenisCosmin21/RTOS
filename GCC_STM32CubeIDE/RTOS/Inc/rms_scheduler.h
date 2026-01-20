@@ -3,10 +3,10 @@
 
 #define NUM_PRIORITY_LEVELS 4
 
-#include "rtos_config.h"
-#include "task.h"
 #include "binary_heap_queue.h"
 #include "queue.h"
+#include "rtos_config.h"
+#include "task.h"
 
 #define MAX_PRIORITY_COUNT 32
 
@@ -16,13 +16,15 @@
 #endif
 
 typedef struct {
-    heap_priority_queue_t tasks;
+  heap_priority_queue_t tasks;
 } rms_task_templates_t;
 
 typedef struct {
-    queue_t queues[NUM_PRIORITY_LEVELS];
-    heap_priority_queue_t pending;
-    unsigned long bitmap; //Bitmap to specify if there is a task on a specific priority. bit for speicif cpriority 1 if exists else 0
+  queue_t queues[NUM_PRIORITY_LEVELS];
+  heap_priority_queue_t pending;
+  unsigned long
+      bitmap; // Bitmap to specify if there is a task on a specific priority.
+              // bit for speicif cpriority 1 if exists else 0
 } scheduler_t;
 
 void scheduler_init(void);
