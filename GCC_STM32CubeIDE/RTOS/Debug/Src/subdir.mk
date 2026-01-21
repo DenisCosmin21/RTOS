@@ -7,6 +7,7 @@
 C_SRCS += \
 ../Src/binary_heap_queue.c \
 ../Src/button.c \
+../Src/demos.c \
 ../Src/globals.c \
 ../Src/led.c \
 ../Src/main.c \
@@ -33,6 +34,7 @@ C_SRCS += \
 OBJS += \
 ./Src/binary_heap_queue.o \
 ./Src/button.o \
+./Src/demos.o \
 ./Src/globals.o \
 ./Src/led.o \
 ./Src/main.o \
@@ -59,6 +61,7 @@ OBJS += \
 C_DEPS += \
 ./Src/binary_heap_queue.d \
 ./Src/button.d \
+./Src/demos.d \
 ./Src/globals.d \
 ./Src/led.d \
 ./Src/main.d \
@@ -90,7 +93,7 @@ Src/%.o Src/%.su Src/%.cyclo: ../Src/%.c Src/subdir.mk
 clean: clean-Src
 
 clean-Src:
-	-$(RM) ./Src/binary_heap_queue.cyclo ./Src/binary_heap_queue.d ./Src/binary_heap_queue.o ./Src/binary_heap_queue.su ./Src/button.cyclo ./Src/button.d ./Src/button.o ./Src/button.su ./Src/globals.cyclo ./Src/globals.d ./Src/globals.o ./Src/globals.su ./Src/led.cyclo ./Src/led.d ./Src/led.o ./Src/led.su ./Src/main.cyclo ./Src/main.d ./Src/main.o ./Src/main.su ./Src/memory_pool.cyclo ./Src/memory_pool.d ./Src/memory_pool.o ./Src/memory_pool.su ./Src/message_queue.cyclo ./Src/message_queue.d ./Src/message_queue.o ./Src/message_queue.su ./Src/motor.cyclo ./Src/motor.d ./Src/motor.o ./Src/motor.su ./Src/mutex.cyclo ./Src/mutex.d ./Src/mutex.o ./Src/mutex.su ./Src/osKernel.cyclo ./Src/osKernel.d ./Src/osKernel.o ./Src/osKernel.su ./Src/priority_queue.cyclo ./Src/priority_queue.d ./Src/priority_queue.o ./Src/priority_queue.su ./Src/py_demo.cyclo ./Src/py_demo.d ./Src/py_demo.o ./Src/py_demo.su ./Src/queue.cyclo ./Src/queue.d ./Src/queue.o ./Src/queue.su ./Src/rms_scheduler.cyclo ./Src/rms_scheduler.d ./Src/rms_scheduler.o ./Src/rms_scheduler.su ./Src/rtos.cyclo ./Src/rtos.d ./Src/rtos.o ./Src/rtos.su ./Src/semaphore.cyclo ./Src/semaphore.d ./Src/semaphore.o ./Src/semaphore.su ./Src/servo.cyclo ./Src/servo.d ./Src/servo.o ./Src/servo.su ./Src/seven_segment.cyclo ./Src/seven_segment.d ./Src/seven_segment.o ./Src/seven_segment.su ./Src/syscalls.cyclo ./Src/syscalls.d ./Src/syscalls.o ./Src/syscalls.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su ./Src/task.cyclo ./Src/task.d ./Src/task.o ./Src/task.su ./Src/timebase.cyclo ./Src/timebase.d ./Src/timebase.o ./Src/timebase.su ./Src/uart.cyclo ./Src/uart.d ./Src/uart.o ./Src/uart.su ./Src/ultrasonic.cyclo ./Src/ultrasonic.d ./Src/ultrasonic.o ./Src/ultrasonic.su
+	-$(RM) ./Src/binary_heap_queue.cyclo ./Src/binary_heap_queue.d ./Src/binary_heap_queue.o ./Src/binary_heap_queue.su ./Src/button.cyclo ./Src/button.d ./Src/button.o ./Src/button.su ./Src/demos.cyclo ./Src/demos.d ./Src/demos.o ./Src/demos.su ./Src/globals.cyclo ./Src/globals.d ./Src/globals.o ./Src/globals.su ./Src/led.cyclo ./Src/led.d ./Src/led.o ./Src/led.su ./Src/main.cyclo ./Src/main.d ./Src/main.o ./Src/main.su ./Src/memory_pool.cyclo ./Src/memory_pool.d ./Src/memory_pool.o ./Src/memory_pool.su ./Src/message_queue.cyclo ./Src/message_queue.d ./Src/message_queue.o ./Src/message_queue.su ./Src/motor.cyclo ./Src/motor.d ./Src/motor.o ./Src/motor.su ./Src/mutex.cyclo ./Src/mutex.d ./Src/mutex.o ./Src/mutex.su ./Src/osKernel.cyclo ./Src/osKernel.d ./Src/osKernel.o ./Src/osKernel.su ./Src/priority_queue.cyclo ./Src/priority_queue.d ./Src/priority_queue.o ./Src/priority_queue.su ./Src/py_demo.cyclo ./Src/py_demo.d ./Src/py_demo.o ./Src/py_demo.su ./Src/queue.cyclo ./Src/queue.d ./Src/queue.o ./Src/queue.su ./Src/rms_scheduler.cyclo ./Src/rms_scheduler.d ./Src/rms_scheduler.o ./Src/rms_scheduler.su ./Src/rtos.cyclo ./Src/rtos.d ./Src/rtos.o ./Src/rtos.su ./Src/semaphore.cyclo ./Src/semaphore.d ./Src/semaphore.o ./Src/semaphore.su ./Src/servo.cyclo ./Src/servo.d ./Src/servo.o ./Src/servo.su ./Src/seven_segment.cyclo ./Src/seven_segment.d ./Src/seven_segment.o ./Src/seven_segment.su ./Src/syscalls.cyclo ./Src/syscalls.d ./Src/syscalls.o ./Src/syscalls.su ./Src/sysmem.cyclo ./Src/sysmem.d ./Src/sysmem.o ./Src/sysmem.su ./Src/task.cyclo ./Src/task.d ./Src/task.o ./Src/task.su ./Src/timebase.cyclo ./Src/timebase.d ./Src/timebase.o ./Src/timebase.su ./Src/uart.cyclo ./Src/uart.d ./Src/uart.o ./Src/uart.su ./Src/ultrasonic.cyclo ./Src/ultrasonic.d ./Src/ultrasonic.o ./Src/ultrasonic.su
 
 .PHONY: clean-Src
 

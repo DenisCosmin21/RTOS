@@ -212,11 +212,8 @@ void SysTick_Handler(void){
 __attribute__((naked)) void PendSV_Handler(void){
 	__asm("CPSID	I");
 
-    // --- Instrumentation Start ---
-    // Read DWT->CYCCNT (0xE0001004) into R12
     __asm("LDR R0, =0xE0001004"); 
     __asm("LDR R12, [R0]"); 
-    // -----------------------------
 
 	__asm("PUSH  {R4-R11}");
 

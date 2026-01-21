@@ -1,5 +1,6 @@
 "./Src/binary_heap_queue.o"
 "./Src/button.o"
+"./Src/demos.o"
 "./Src/globals.o"
 "./Src/led.o"
 "./Src/main.o"

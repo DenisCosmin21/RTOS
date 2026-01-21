@@ -1,0 +1,25 @@
+#ifndef DEMOS_H
+#define DEMOS_H
+
+// Demo Definitions
+#define DEMO_BASELINE 0
+#define DEMO_PRIORITY_INVERSION 1   // PI Disabled
+#define DEMO_PRIORITY_INHERITANCE 2 // PI Enabled
+#define DEMO_PRODUCER_CONSUMER 3
+#define DEMO_TIMER 4
+#define DEMO_YIELD 5
+
+// Select the Active Demo Here
+#define CURRENT_DEMO DEMO_BASELINE
+
+// Function Prototypes
+void run_selected_demo(int demo_id);
+
+// Individual Demo Setup (Can be called directly if needed)
+void demo_baseline(void);
+void demo_priority_inversion(int enable_pi);
+void demo_producer_consumer(void);
+void demo_timer(void);
+void demo_yield(void);
+
+#endif // DEMOS_H

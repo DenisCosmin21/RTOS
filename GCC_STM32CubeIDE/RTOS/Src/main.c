@@ -1,91 +1,22 @@
+#include "demos.h"
 #include "globals.h"
 #include "mutex.h"
 #include "osKernel.h"
 #include "rtos.h"
 #include "uart.h"
 #include <stdio.h>
-#include "button.h"
-#include "led.h"
-#include "motor.h"
-#include "servo.h"
-#include "seven_segment.h"
-#include "ultrasonic.h"
+
+// DEMO_BASELINE
+// DEMO_PRIORITY_INVERSION
+// DEMO_PRIORITY_INHERITANCE
+// DEMO_PRODUCER_CONSUMER
+// DEMO_TIMER
+// DEMO_YIELD
+#define ACTIVE_DEMO DEMO_YIELD
 
 mutex_t print_mutex;
-volatile int pi_enabled = 0;
-
-void display_task(void) {
-  int counter = 0;
-  int sub_count = 0;
-
-  seven_seg_init();
-
-  while(1) {
-    static int mux_state = 0;
-
-    sub_count++;
-    if(sub_count >= 250) {
-      counter++;
-      if(counter > 99)
-        counter = 0;
-      sub_count = 0;
-    }
-
-    if(mux_state == 0) {
-      seven_seg_display_digit(1, (counter / 10) % 10);
-      mux_state = 1;
-    } else {
-      seven_seg_display_digit(2, counter % 10);
-      mux_state = 0;
-    }
-    rtos_task_wait();
-  }
-}
-
-
-void led_button_task(void) {
-  led_init();
-  button_init();
-
-  while (1) {
-    if (button_read()) {
-      led_on();
-      mutex_lock(&print_mutex);
-      uart_printf("[BTN] Pressed! LED ON\r\n");
-      mutex_unlock(&print_mutex);
-    } else {
-      led_off();
-    }
-    rtos_task_wait();
-  }
-}
-
-void actuator_task(void) {
-  motor_init();
-  servo_init();
-
-  int speed = 0;
-  int angle = 0;
-  int direction = 1;
-
-  while (1) {
-    servo_set_angle(angle);
-    angle += 50;
-    if (angle > 180)
-      angle = 0;
-    motor_set_speed(speed);
-    speed += (20 * direction);
-    if (speed > 100 || speed < -100) {
-      direction *= -1;
-    }
-    mutex_lock(&print_mutex);
-    uart_printf("[PWM] Servo: %d deg, Motor:%d%%\r\r\n", angle, speed);
-    mutex_unlock(&print_mutex);
-
-    rtos_task_wait();
-  }
-}
-
+volatile int pi_enabled =
+    0;
 void busy_wait(int loops) {
   for (volatile int i = 0; i < loops; i++)
     ;
@@ -101,13 +32,174 @@ int main(void) {
 
   uart_printf("SystemCoreClock: %lu Hz\r\n", SystemCoreClock);
 
+  run_selected_demo(ACTIVE_DEMO);
 
-  rtos_task_create(display_task, 2, 10, 1024, "DISP");
-  rtos_task_create(led_button_task, 1, 50, 1024, "BTN");
-  rtos_task_create(actuator_task, 5, 1000, 1024, "ACT");
-
-  uart_printf("Starting Scheduler...\r\n");
+  uart_printf("Starting Scheduler\r\n");
   rtos_start();
 
   return 0;
 }
+
+
+
+
+/*
+
+#include "demos.h"
+#include "button.h"
+#include "globals.h"
+#include "led.h"
+#include "message_queue.h"
+#include "motor.h"
+#include "mutex.h"
+#include "osKernel.h"
+#include "rtos.h"
+#include "semaphore.h"
+#include "servo.h"
+#include "seven_segment.h"
+#include "uart.h"
+#include <stdio.h>
+
+
+
+volatile int pi_enabled = 0;
+volatile int start_low = 0;
+volatile int extra_load = 0;
+
+mutex_t demo_mutex;
+mutex_t uart_mutex;
+
+void busy_wait(int loops) {
+    for (volatile int i = 0; i < loops + extra_load; i++);
+}
+
+
+void task_high(void) {
+	int angle = 0;
+	int counter_deadline_misses=0;
+    while (1) {
+        uint32_t t_start = rtos_now();
+        servo_set_angle(angle);
+           angle += 90;
+           if (angle > 180)
+             angle = 0;
+
+        mutex_lock(&demo_mutex);
+        motor_set_speed(50);
+        busy_wait(1000); // ~4–5 ms (sub deadline)
+        mutex_unlock(&demo_mutex);
+        motor_set_speed(0);
+
+        uint32_t t_end = rtos_now();
+        mutex_lock(&uart_mutex);
+        if((t_end - t_start) > 20) {
+
+        	counter_deadline_misses++;
+            uart_printf("[H] DEADLINE MISS! dt=%d ms\r\n", t_end - t_start);
+            seven_seg_display_digit(1, (counter_deadline_misses) % 10);
+            led_on();
+        } else {
+            uart_printf("[H] OK dt=%d ms\r\n", t_end - t_start);
+            led_off();
+        }
+        mutex_unlock(&uart_mutex);
+
+        rtos_task_wait();
+    }
+}
+
+
+void task_med(void) {
+    while(1) {
+        mutex_lock(&uart_mutex);
+        uart_printf("[M] Run\r\n");
+        mutex_unlock(&uart_mutex);
+
+        busy_wait(8000); // ~8–10 ms
+        rtos_task_wait();
+    }
+}
+
+
+void task_low(void) {
+    while(1) {
+        if(!start_low) {
+            rtos_task_wait();
+            continue;
+        }
+
+        mutex_lock(&uart_mutex);
+        uart_printf("[L] Trying mutex\r\n");
+        mutex_unlock(&uart_mutex);
+
+
+        mutex_lock(&demo_mutex);
+        busy_wait(6000);   // ~6 ms
+        mutex_unlock(&demo_mutex);
+        uart_printf("[L] Done\r\n");
+
+        mutex_lock(&uart_mutex);
+        uart_printf("[L] Done\r\n");
+        mutex_unlock(&uart_mutex);
+
+        rtos_task_wait();
+    }
+}
+
+void task_controller(void) {
+    static int sec = 0;
+
+    while (1) {
+        mutex_lock(&uart_mutex);
+
+        if (sec == 0) {
+            uart_printf("\n1: High ann Low running\r\n");
+        }
+        else if (sec == 2) {
+            uart_printf("\n2:Priority Inversion OFF\r\n");
+            start_low = 1;
+        }
+        else if (sec == 4) {
+            uart_printf("\n3: Priority Inversion ON\r\n");
+            pi_enabled = 1;
+        }
+        else if (sec == 6) {
+            uart_printf("\n4:Increase load\r\n");
+            extra_load = 4000;
+        }
+
+        sec++;
+        mutex_unlock(&uart_mutex);
+        rtos_task_wait();
+    }
+}
+
+
+
+int main(void) {
+    uart_tx_init();
+    led_init();
+    motor_init();
+    servo_init();
+    seven_seg_init();
+
+
+    mutex_init(&demo_mutex);
+    mutex_init(&uart_mutex);
+
+    osKernelInit();
+
+    uart_printf("Booting RTOS Tick rate = 1000 Hz\r\n");
+
+
+
+    rtos_task_create(task_high,  2,   25,   1024, "HIGH");
+    rtos_task_create(task_med,   10,   30,   1024, "MED");
+    rtos_task_create(task_low,   5,   90,   1024, "LOW");
+    rtos_task_create(task_controller, 2, 1000, 1024, "CTRL");
+
+    rtos_start();
+    return 0;
+}
+
+*/
