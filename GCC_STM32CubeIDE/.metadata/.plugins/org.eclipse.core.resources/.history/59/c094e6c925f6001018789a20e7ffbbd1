@@ -1,0 +1,12 @@
+#ifndef MOTOR_H
+#define MOTOR_H
+
+#include "stm32u5xx.h"
+#include <stdlib.h> // for abs
+
+void motor_init(void);
+
+// Speed range: -100 (Full Reverse) to 100 (Full Forward)
+void motor_set_speed(int speed);
+
+#endif

@@ -1,0 +1,5 @@
+/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include/core_cm33.h:2390:22:__NVIC_EnableIRQ	2
+/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include/core_cm33.h:2587:22:__NVIC_SetPriority	2
+../Src/button.c:5:6:button_init	1
+../Src/button.c:15:5:button_read	2
+../Src/button.c:23:6:button_exti_init	1

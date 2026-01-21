@@ -1,0 +1,347 @@
+#include "demos.h"
+#include "button.h"
+#include "globals.h"
+#include "led.h"
+#include "message_queue.h"
+#include "motor.h"
+#include "mutex.h"
+#include "osKernel.h"
+#include "rtos.h"
+#include "semaphore.h"
+#include "servo.h"
+#include "seven_segment.h"
+#include "uart.h"
+#include <stdio.h>
+
+static mutex_t shared_mutex;
+static message_queue_t log_queue;
+static int demo_pi_enabled = 0;
+
+
+static void busy_wait_delay(int loops) {
+  for (volatile int i = 0; i < loops; i++) {
+    __asm("nop");
+  }
+}
+
+
+static void display_task(void) {
+  int counter = 0;
+  int sub_count = 0;
+  seven_seg_init();
+  while (1) {
+    static int mux_state = 0;
+    sub_count++;
+    if (sub_count >= 250) {
+      counter++;
+      if (counter > 99)
+        counter = 0;
+      sub_count = 0;
+    }
+    if (mux_state == 0) {
+      seven_seg_display_digit(1, (counter / 10) % 10);
+      mux_state = 1;
+    } else {
+      seven_seg_display_digit(2, counter % 10);
+      mux_state = 0;
+    }
+    rtos_task_wait();
+  }
+}
+
+static void led_button_task(void) {
+  led_init();
+  button_init();
+  while (1) {
+    if (button_read()) {
+      led_on();
+      mutex_lock(&shared_mutex);
+      uart_printf("[BTN] Pressed! LED ON\r\n");
+      mutex_unlock(&shared_mutex);
+    } else {
+      led_off();
+    }
+    rtos_task_wait();
+  }
+}
+
+static void actuator_task(void) {
+  motor_init();
+  servo_init();
+  int speed = 0;
+  int angle = 0;
+  while (1) {
+    servo_set_angle(angle);
+    angle += 90;
+    if (angle > 180)
+      angle = 0;
+    motor_set_speed(80);
+
+    mutex_lock(&shared_mutex);
+    uart_printf("[PWM] Servo: %d deg, Motor:%d%%\r\r\n", angle, speed);
+    mutex_unlock(&shared_mutex);
+    rtos_task_wait();
+  }
+}
+
+void demo_baseline(void) {
+  uart_printf("Starting Demo 0: Baseline\r\n");
+  mutex_init(&shared_mutex);
+  rtos_task_create(display_task, 2, 10, 1024, "DISP");
+  rtos_task_create(led_button_task, 1, 50, 1024, "BTN");
+  rtos_task_create(actuator_task, 5, 1000, 1024, "ACT");
+}
+
+// --- Demo 1 & 2: Priority Inversion / Inheritance ---
+
+// Task L (Low): Button -> Lock -> Heavy Load -> Unlock
+static void task_low_load(void) {
+  button_init();
+  uart_printf("Low Priority Task Started\r\n");
+  while (1) {
+    if (button_read()) {
+      uart_printf("[L] Button Pressed. Acquiring Mutex...\r\n");
+      mutex_lock(&shared_mutex);
+      uart_printf("[L] Mutex Acquired. Starting Heavy Load.\r\n");
+
+      // Simulating heavy processing (critical section)
+      // This blocks High priority if Medium preempts us
+      busy_wait_delay(5000000);
+
+      uart_printf("[L] Heavy Load Finished. Releasing Mutex.\r\n");
+      mutex_unlock(&shared_mutex);
+    }
+    rtos_task_wait();
+  }
+}
+
+// Task M (Medium): Periodic Interference
+static void task_medium_interference(void) {
+  uart_printf("Medium Priority Task Started\r\n");
+  while (1) {
+    // Just burn CPU to preempt Low
+    // uart_printf("[M] Interfering...\r\n"); // Commented out to reduce UART
+    // spam
+    busy_wait_delay(100000);
+    rtos_task_wait();
+  }
+}
+
+// Task H (High): Critical 7-Seg Update
+static void task_high_critical(void) {
+  seven_seg_init();
+  uart_printf("High Priority Task Started\r\n");
+  int counter = 0;
+  while (1) {
+    // Attempt to lock mutex before updating display (simulating resource
+    // contention)
+    mutex_lock(&shared_mutex);
+
+    // Critical Section: Update Display
+    counter++;
+    if (counter > 99)
+      counter = 0;
+
+    // Flash display quickly
+    seven_seg_display_digit(1, (counter / 10) % 10);
+    busy_wait_delay(5000);
+    seven_seg_display_digit(2, counter % 10);
+    busy_wait_delay(5000);
+
+    mutex_unlock(&shared_mutex);
+
+    // Run frequently (every 20ms period typically, defined in create)
+    rtos_task_wait();
+  }
+}
+
+void demo_priority_inversion(int enable_pi) {
+  extern volatile int pi_enabled;
+  pi_enabled = enable_pi;
+
+  if (enable_pi)
+    uart_printf("Starting Demo 2: Priority Inheritance ENABLED\r\n");
+  else
+    uart_printf("Starting Demo 1: Priority Inheritance DISABLED (Inversion "
+                "expected)\r\n");
+
+  mutex_init(&shared_mutex);
+
+  // Priorities: Low > Medium > High (Numerically High=Lower Priority usually in
+  // most RTOS, BUT checking rtos.c/osKernel.c: 'priority' field. Usually 0 is
+  // highest or lowest. Checking mutex.c: `existent_task->priority <
+  // task_to_add->priority`. If scheduler is RM/EDF, usually Period determines
+  // priority. Let's assume standard fixed priority for this demo where we
+  // manually set execution times/periods to enforce effective priority if RM is
+  // used, OR valid priority fields.
+
+  // Based on `rtos_task_create`, parameters are (func, exec_time, period,
+  // stack, name). RMS Scheduler assigns priority based on Period (Shorter
+  // Period = Higher Priority).
+
+  // High Priority Task: Period 20 (Fastest)
+  rtos_task_create(task_high_critical, 5, 20, 1024, "HIGH");
+
+  // Medium Priority Task: Period 40 (Medium)
+  rtos_task_create(task_medium_interference, 10, 40, 1024, "MED");
+
+  // Low Priority Task: Period 300 (Slowest)
+  rtos_task_create(task_low_load, 10, 300, 1024, "LOW");
+}
+
+// --- Demo 3: Producer / Consumer (Logger + 7-Seg) ---
+
+static void logger_consumer_task(void) {
+  char *msg;
+  uart_printf("Logger Task Started\r\n");
+  while (1) {
+    if (msg_queue_receive(&log_queue, (void **)&msg, 100)) {
+      if(msg){// Timeout 100ms
+      uart_printf("[LOG]: %s\r\n", msg);
+      }
+    }
+    rtos_task_wait();
+  }
+}
+
+static void producer_button_task(void) {
+  button_init();
+  int last_state = 0;
+  while (1) {
+    int current_state = button_read();
+    if (current_state && !last_state) {
+      msg_queue_send(&log_queue, "Button Pressed!", 0);
+    }
+    last_state = current_state;
+    rtos_task_wait();
+  }
+}
+
+static void producer_sensor_task(void) {
+  static int dummy_sensor = 0;
+  while (1) {
+    dummy_sensor++;
+    msg_queue_send(&log_queue, "Sensor Update", 0);
+    rtos_task_wait();
+  }
+}
+
+static void display_task_simple(void) {
+  seven_seg_init();
+  int counter = 0;
+  while (1) {
+    counter++;
+    seven_seg_display_digit(1, (counter / 10) % 10);
+    // busy_wait_delay(1000);
+    seven_seg_display_digit(2, counter % 10);
+    rtos_task_wait();
+  }
+}
+
+void demo_producer_consumer(void) {
+  uart_printf("Starting Demo 3: Producer/Consumer\r\n");
+  msg_queue_init(&log_queue);
+
+  // Logger (Consumer) - High Priority to clear buffer? Or low?
+  rtos_task_create(logger_consumer_task, 5, 50, 1024, "LOGGER");
+
+  // Producers
+  rtos_task_create(producer_button_task, 2, 60, 1024, "BTN_PROD");
+  rtos_task_create(producer_sensor_task, 2, 200, 1024, "SENS_PROD");
+
+  // Display running too
+  rtos_task_create(display_task_simple, 2, 20, 1024, "DISP");
+}
+
+// --- Demo 4: Time Services (Timer) ---
+
+static void motor_start_callback(void) {
+  uart_printf("[TIMER] 10s Elapsed! Starting Motor...\r\n");
+  motor_init();
+  motor_set_speed(50);
+}
+
+static void timer_button_task(void) {
+  button_init();
+  int timer_started = 0;
+  uart_printf("Press Button to start 10s Timer...\r\n");
+
+  while (1) {
+    if (button_read() && !timer_started) {
+      uart_printf("[BTN] Pressed. Timer started for 10s.\r\n");
+      rtos_timer_start(10000, motor_start_callback);
+      timer_started = 1; // Block multiple starts for demo
+    }
+    rtos_task_wait();
+  }
+}
+
+static void heartbeat_task(void) {
+  uart_printf("System Running...\r\n");
+  while (1) {
+    uart_printf("Time: %lu\r\n", rtos_now());
+    rtos_task_wait();
+  }
+}
+
+void demo_timer(void) {
+  uart_printf("Starting Demo 4: Timer Service\r\n");
+
+  rtos_task_create(timer_button_task, 2, 50, 1024, "BTN_TMR");
+  rtos_task_create(heartbeat_task, 2, 1000, 1024, "HBEAT");
+}
+
+// --- Demo 5: Yield ---
+
+static void task_yield_a(void) {
+  while (1) {
+    uart_printf("Task A running... Yielding.\r\n");
+    rtos_task_yeld();
+    uart_printf("Task A resumed.\r\n");
+    rtos_task_wait();
+  }
+}
+
+static void task_yield_b(void) {
+  while (1) {
+    uart_printf("Task B running... Yielding.\r\n");
+    rtos_task_yeld();
+    uart_printf("Task B resumed.\r\n");
+    rtos_task_wait();
+  }
+}
+
+void demo_yield(void) {
+  uart_printf("Starting Demo 5: Yield\r\n");
+  rtos_task_create(task_yield_a, 5, 20, 1024, "YIELD_A");
+  rtos_task_create(task_yield_b, 5, 20, 1024, "YIELD_B");
+}
+
+// --- Main Dispatcher ---
+
+void run_selected_demo(int demo_id) {
+  switch (demo_id) {
+  case DEMO_BASELINE:
+    demo_baseline();
+    break;
+  case DEMO_PRIORITY_INVERSION:
+    demo_priority_inversion(0); // Disable PI
+    break;
+  case DEMO_PRIORITY_INHERITANCE:
+    demo_priority_inversion(1); // Enable PI
+    break;
+  case DEMO_PRODUCER_CONSUMER:
+    demo_producer_consumer();
+    break;
+  case DEMO_TIMER:
+    demo_timer();
+    break;
+  case DEMO_YIELD:
+    demo_yield();
+    break;
+  default:
+    uart_printf("Invalid Demo ID. Defaulting to Baseline.\r\n");
+    demo_baseline();
+    break;
+  }
+}

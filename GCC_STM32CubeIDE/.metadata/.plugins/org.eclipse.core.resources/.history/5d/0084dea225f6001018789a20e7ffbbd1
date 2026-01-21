@@ -1,0 +1,65 @@
+#include "motor.h"
+#include "stm32u5xx.h"
+
+
+void motor_init(void) {
+  RCC->AHB2ENR1 |= RCC_AHB2ENR1_GPIODEN;
+  RCC->APB1ENR1 |= RCC_APB1ENR1_TIM4EN;
+
+  GPIOD->MODER &= ~(3U << (14 * 2));
+  GPIOD->MODER |= (2U << (14 * 2));
+
+  GPIOD->MODER &= ~(3U << (15 * 2));
+  GPIOD->MODER |= (2U << (15 * 2));
+
+  GPIOD->AFR[1] &= ~(0xF << 24);
+  GPIOD->AFR[1] |= (2U << 24);
+
+  GPIOD->AFR[1] &= ~(0xF << 28);
+  GPIOD->AFR[1] |= (2U << 28);
+
+  extern uint32_t SystemCoreClock;
+  uint32_t psc_val = (SystemCoreClock / 1000000);
+  if (psc_val > 0)
+    psc_val--;
+
+  TIM4->PSC = psc_val;
+  TIM4->ARR = 999;
+
+  TIM4->CCMR2 &= ~TIM_CCMR2_OC3M;
+  TIM4->CCMR2 |= (6U << TIM_CCMR2_OC3M_Pos);
+  TIM4->CCMR2 |= TIM_CCMR2_OC3PE;
+
+  TIM4->CCMR2 &= ~TIM_CCMR2_OC4M;
+  TIM4->CCMR2 |= (6U << TIM_CCMR2_OC4M_Pos);
+  TIM4->CCMR2 |= TIM_CCMR2_OC4PE;
+
+  TIM4->CCER |= TIM_CCER_CC3E | TIM_CCER_CC4E;
+
+  TIM4->CR1 |= TIM_CR1_CEN;
+
+
+  TIM4->CCR3 = 0;
+  TIM4->CCR4 = 0;
+}
+
+void motor_set_speed(int speed) {
+  if (speed > 100)
+    speed = 100;
+  if (speed < -100)
+    speed = -100;
+
+  int pwm_val = (abs(speed) * 999) / 100;
+
+  if (speed > 0) {
+    TIM4->CCR3 = pwm_val;
+    TIM4->CCR4 = 0;
+  } else if (speed < 0) {
+    // Reverse: CH3 0, CH4 active
+    TIM4->CCR3 = 0;
+    TIM4->CCR4 = pwm_val;
+  } else {
+    TIM4->CCR3 = 0;
+    TIM4->CCR4 = 0;
+  }
+}

@@ -1,0 +1,70 @@
+#include "stm32u5xx.h"
+#include <stdint.h>
+
+/* Pins: PA9 - TX, PA10 - RX */
+#define GPIOAEN    (1U<<0)
+#define USART1EN   (1U<<14)
+
+#define SYS_FREQ       4000000UL   // Assuming HSI 16 MHz
+#define UART_BAUDRATE  115200
+
+#define CR1_TE   (1U<<3)
+
+#define CR1_RE   (1U<<2)
+
+#define CR1_UE   (1U<<0)
+
+#define ISR_TXE  (1U<<7)
+
+/* Forward declarations */
+static uint16_t compute_uart_bd(uint32_t periph_clk, uint32_t baudrate);
+static void uart_set_baudrate(uint32_t periph_clk, uint32_t baudrate);
+static void uart_write(int ch);
+
+/* Redirect printf to UART */
+int __io_putchar(int ch){
+    uart_write(ch);
+    return ch;
+}
+
+/* Initialize UART1 for TX only */
+void uart_tx_init(void)
+{
+    /* 1. Enable GPIOA clock */
+    RCC->AHB2ENR1 |= GPIOAEN;
+
+    /* 2. Set PA9 (TX) to alternate function mode */
+    GPIOA->MODER &= ~(1U<<18);
+    GPIOA->MODER |= (1U<<19);
+
+    /* 3. Set alternate function AF7 (USART1) for PA9 */
+    GPIOA->AFR[1] &= ~(0xF << 4); // Clear AFRH9
+    GPIOA->AFR[1] |=  0x7 << 4;   // AF7
+
+    /* 4. Enable USART1 clock */
+    RCC->APB2ENR |= USART1EN;
+
+    /* 5. Configure baudrate */
+    uart_set_baudrate(SYS_FREQ, UART_BAUDRATE);
+
+    /* 6. Enable transmitter and USART */
+    USART1->CR1 |= CR1_TE | CR1_UE;
+}
+
+/* Write one character to UART */
+static void uart_write(int ch){
+    /* Wait until TXE is set */
+    while(!(USART1->ISR & ISR_TXE)) {}
+    USART1->TDR = (ch & 0xFF);
+}
+
+/* Set baudrate */
+static void uart_set_baudrate(uint32_t periph_clk, uint32_t baudrate){
+    USART1->BRR = compute_uart_bd(periph_clk, baudrate);
+}
+
+/* Compute UART BRR register value (oversampling by 16) */
+static uint16_t compute_uart_bd(uint32_t periph_clk, uint32_t baudrate)
+{
+    return (uint16_t)((periph_clk + (baudrate/2U))/baudrate);
+}

@@ -1,0 +1,16 @@
+#include <stdint.h>
+#include "led.h"
+#include "uart.h"
+
+
+
+int main(void)
+{
+led_init();
+uart_tx_init();
+
+while(1){
+	printf("RTOS Testing......\n\r");
+}
+
+}

@@ -1,0 +1,4 @@
+../Src/semaphore.c:5:6:semaphore_init	16	static
+../Src/semaphore.c:10:6:semaphore_up	32	static,ignoring_inline_asm
+../Src/semaphore.c:31:6:semaphore_down	40	static,ignoring_inline_asm
+../Src/semaphore.c:52:6:semaphore_clear	32	static,ignoring_inline_asm

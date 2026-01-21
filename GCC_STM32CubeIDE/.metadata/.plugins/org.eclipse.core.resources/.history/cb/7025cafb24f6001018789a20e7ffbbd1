@@ -1,0 +1,79 @@
+#include "seven_segment.h"
+
+// J1: AA(A0), AB(A1), AC(A2), AD(A3)
+// J2: AE(A4), AF(A5), AG(D11), CAT(D12)
+
+const uint8_t segment_map[10] = {
+    0b00111111, // 0
+    0b00000110, // 1
+    0b01011011, // 2
+    0b01001111, // 3
+    0b01100110, // 4
+    0b01101101, // 5
+    0b01111101, // 6
+    0b00000111, // 7
+    0b01111111, // 8
+    0b01101111  // 9
+};
+
+static void set_pin(GPIO_TypeDef *port, int pin, int state) {
+  if (state)
+    port->BSRR = (1U << pin);
+  else
+    port->BSRR = (1U << (pin + 16));
+}
+
+static void config_pin_output(GPIO_TypeDef *port, int pin) {
+  port->MODER &= ~(3U << (pin * 2));
+  port->MODER |= (1U << (pin * 2));
+}
+
+void seven_seg_init(void) {
+  RCC->AHB2ENR1 |= RCC_AHB2ENR1_GPIOAEN | RCC_AHB2ENR1_GPIOBEN | RCC_AHB2ENR1_GPIOCEN | RCC_AHB2ENR1_GPIOFEN | RCC_AHB2ENR1_GPIOEEN;
+
+  config_pin_output(GPIOA, 3);
+  config_pin_output(GPIOE, 13);
+  config_pin_output(GPIOC, 3);
+  config_pin_output(GPIOF, 12);
+  config_pin_output(GPIOE, 9);
+  config_pin_output(GPIOF, 13);
+  config_pin_output(GPIOA, 7);
+
+  config_pin_output(GPIOB, 9);
+
+  seven_seg_clear();
+}
+
+void seven_seg_clear(void) {
+  set_pin(GPIOA, 3, 0);
+  set_pin(GPIOE, 13, 0);
+  set_pin(GPIOC, 3, 0);
+  set_pin(GPIOF, 12, 0);
+  set_pin(GPIOE, 9, 0);
+  set_pin(GPIOF, 13, 0);
+  set_pin(GPIOA, 7, 0);
+  set_pin(GPIOB, 9, 1);
+}
+
+void seven_seg_display_digit(int digit, int number) {
+  if (number < 0 || number > 9)
+    return;
+  if (digit < 1 || digit > 2)
+    return;
+
+  if (digit == 1) {
+    set_pin(GPIOB, 9, 1);
+  } else {
+    set_pin(GPIOB, 9, 0);
+  }
+
+  uint8_t pattern = segment_map[number];
+
+  set_pin(GPIOA, 3, (pattern >> 0) & 1);
+  set_pin(GPIOE, 13, (pattern >> 1) & 1);
+  set_pin(GPIOC, 3, (pattern >> 2) & 1);
+  set_pin(GPIOF, 12, (pattern >> 3) & 1);
+  set_pin(GPIOE, 9, (pattern >> 4) & 1);
+  set_pin(GPIOF, 13, (pattern >> 5) & 1); // F (D7)
+  set_pin(GPIOA, 7, (pattern >> 6) & 1);  // G
+}

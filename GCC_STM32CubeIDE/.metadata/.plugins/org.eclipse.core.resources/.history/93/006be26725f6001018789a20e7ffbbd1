@@ -1,0 +1,58 @@
+#include "button.h"
+
+// PC13 is connected to AHB2 bus via GPIOC
+
+void button_init(void) {
+  // Enable GPIOC Clock
+  RCC->AHB2ENR1 |= RCC_AHB2ENR1_GPIOCEN;
+
+  // Set PC13 as Input mode (00)
+  GPIOC->MODER &= ~(3U << (BUTTON_PIN * 2));
+
+  // Configure Pull-up/Pull-down if needed
+  // Nucleo User Button B1 is usually connected to VDD or has external pull.
+  // Usually it's floating or pulled down.
+  // Let's assume No Pull (00) as per standard Nucleo setup (external pull-down
+  // usually present or internal needed). Actually, on Nucleo-144, B1 is
+  // connected to PC13. When pressed, it connects to VDD? Verify: User Manual
+  // UM2861. PC13 - User Button. "High level when pressed". So Input Floating is
+  // fine if there is external PD. If not, enable PD. Let's enable Pull-Down to
+  // be safe: PUPDR bits = 10 (Pull-down)
+  GPIOC->PUPDR &= ~(3U << (BUTTON_PIN * 2));
+  GPIOC->PUPDR |= (2U << (BUTTON_PIN * 2));
+}
+
+int button_read(void) {
+  if (GPIOC->IDR & (1U << BUTTON_PIN)) {
+    return 1; // Pressed
+  } else {
+    return 0; // Released
+  }
+}
+
+void button_exti_init(void) {
+  // 1. Enable SYSCFG Clock (APB3) for EXTICR
+  RCC->APB3ENR |= RCC_APB3ENR_SYSCFGEN;
+
+  // 2. Configure EXTI13 to map to PC13
+  // EXTICR[3] controls EXTI12-15.
+  // Position for 13 is bits 4-7.
+  // Map to GPIOC (0x2)
+  EXTI->EXTICR[3] &= ~EXTI_EXTICR4_EXTI13;
+  EXTI->EXTICR[3] |= EXTI_EXTICR4_EXTI13_0;
+
+  // 3. Configure EXTI Line 13
+  // Unmask interrupt
+  EXTI->IMR1 |= (1U << BUTTON_PIN);
+
+  // Trigger on Rising Edge (Button Press)
+  EXTI->RTSR1 |= (1U << BUTTON_PIN);
+  // Disable Falling Edge
+  EXTI->FTSR1 &= ~(1U << BUTTON_PIN);
+
+  // 4. Enable NVIC Interrupt
+  // EXTI13 is on EXTI13_IRQn ? On U5, check vector table.
+  // EXTI15_10_IRQn usually.
+  NVIC_SetPriority(EXTI13_IRQn, 10);
+  NVIC_EnableIRQ(EXTI13_IRQn);
+}

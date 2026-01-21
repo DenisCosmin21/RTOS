@@ -1,0 +1,1398 @@
+00:02:58 **** Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/binary_heap_queue.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/binary_heap_queue.d" -MT"Src/binary_heap_queue.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/binary_heap_queue.o"
+arm-none-eabi-gcc "../Src/button.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/button.d" -MT"Src/button.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/button.o"
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+arm-none-eabi-gcc "../Src/globals.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/globals.d" -MT"Src/globals.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/globals.o"
+arm-none-eabi-gcc "../Src/led.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/led.d" -MT"Src/led.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/led.o"
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc "../Src/memory_pool.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/memory_pool.d" -MT"Src/memory_pool.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/memory_pool.o"
+arm-none-eabi-gcc "../Src/message_queue.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/message_queue.d" -MT"Src/message_queue.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/message_queue.o"
+arm-none-eabi-gcc "../Src/motor.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/motor.d" -MT"Src/motor.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/motor.o"
+arm-none-eabi-gcc "../Src/mutex.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/mutex.d" -MT"Src/mutex.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/mutex.o"
+arm-none-eabi-gcc "../Src/osKernel.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/osKernel.d" -MT"Src/osKernel.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/osKernel.o"
+arm-none-eabi-gcc "../Src/priority_queue.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/priority_queue.d" -MT"Src/priority_queue.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/priority_queue.o"
+arm-none-eabi-gcc "../Src/py_demo.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/py_demo.d" -MT"Src/py_demo.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/py_demo.o"
+arm-none-eabi-gcc "../Src/queue.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/queue.d" -MT"Src/queue.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/queue.o"
+arm-none-eabi-gcc "../Src/rms_scheduler.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/rms_scheduler.d" -MT"Src/rms_scheduler.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/rms_scheduler.o"
+arm-none-eabi-gcc "../Src/rtos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/rtos.d" -MT"Src/rtos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/rtos.o"
+../Src/memory_pool.c: In function 'c_malloc':
+../Src/memory_pool.c:79:54: warning: suggest parentheses around '+' inside '<<' [-Wparentheses]
+   79 |                    OCUPY_BLOCK(current_element, size + sizeof(uint32_t));
+      |                                                 ~~~~~^~~~~~~~~~~~~~~~~~
+../Src/memory_pool.c:35:24: note: in definition of macro 'OCUPY_BLOCK'
+   35 |     memory_block[0] = (new_size << 1) >> 8; \
+      |                        ^~~~~~~~
+../Src/memory_pool.c:79:54: warning: suggest parentheses around '+' inside '<<' [-Wparentheses]
+   79 |                    OCUPY_BLOCK(current_element, size + sizeof(uint32_t));
+      |                                                 ~~~~~^~~~~~~~~~~~~~~~~~
+../Src/memory_pool.c:36:24: note: in definition of macro 'OCUPY_BLOCK'
+   36 |     memory_block[1] = (new_size << 1) | 0x01;
+      |                        ^~~~~~~~
+../Src/memory_pool.c:83:43: warning: suggest parentheses around '+' inside '<<' [-Wparentheses]
+   83 |         OCUPY_BLOCK(current_element, size + sizeof(uint32_t));
+      |                                      ~~~~~^~~~~~~~~~~~~~~~~~
+../Src/memory_pool.c:35:24: note: in definition of macro 'OCUPY_BLOCK'
+   35 |     memory_block[0] = (new_size << 1) >> 8; \
+      |                        ^~~~~~~~
+../Src/memory_pool.c:83:43: warning: suggest parentheses around '+' inside '<<' [-Wparentheses]
+   83 |         OCUPY_BLOCK(current_element, size + sizeof(uint32_t));
+      |                                      ~~~~~^~~~~~~~~~~~~~~~~~
+../Src/memory_pool.c:36:24: note: in definition of macro 'OCUPY_BLOCK'
+   36 |     memory_block[1] = (new_size << 1) | 0x01;
+      |                        ^~~~~~~~
+../Src/memory_pool.c:85:58: warning: suggest parentheses around '-' inside '<<' [-Wparentheses]
+   85 |         INITIALIZE_BLOCK(block_to_initialize, block_size - (size + sizeof(uint32_t)));
+      |                                               ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Src/memory_pool.c:40:24: note: in definition of macro 'INITIALIZE_BLOCK'
+   40 |     memory_block[0] = (size << 1) >> 8; \
+      |                        ^~~~
+../Src/memory_pool.c:85:58: warning: suggest parentheses around '-' inside '<<' [-Wparentheses]
+   85 |         INITIALIZE_BLOCK(block_to_initialize, block_size - (size + sizeof(uint32_t)));
+      |                                               ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Src/memory_pool.c:41:23: note: in definition of macro 'INITIALIZE_BLOCK'
+   41 |     memory_block[1] = size << 1;
+      |                       ^~~~
+../Src/memory_pool.c: In function 'c_free':
+../Src/memory_pool.c:105:33: warning: comparison of distinct pointer types lacks a cast
+  105 |     if(!(ptr - sizeof(uint32_t) >= memory_pool && ptr < memory_pool + HEAP_SIZE))
+      |                                 ^~
+../Src/memory_pool.c:105:55: warning: comparison of distinct pointer types lacks a cast
+  105 |     if(!(ptr - sizeof(uint32_t) >= memory_pool && ptr < memory_pool + HEAP_SIZE))
+      |                                                       ^
+../Src/memory_pool.c:49:67: warning: suggest parentheses around '+' inside '<<' [-Wparentheses]
+   49 |     INITIALIZE_BLOCK(memory_block1, GET_BLOCK_SIZE(memory_block1) + GET_BLOCK_SIZE(memory_block2)) \
+      |                                                                   ^
+../Src/memory_pool.c:40:24: note: in definition of macro 'INITIALIZE_BLOCK'
+   40 |     memory_block[0] = (size << 1) >> 8; \
+      |                        ^~~~
+../Src/memory_pool.c:114:9: note: in expansion of macro 'MERGE_BLOCKS'
+  114 |         MERGE_BLOCKS(element_to_free, next_block);
+      |         ^~~~~~~~~~~~
+../Src/memory_pool.c:49:67: warning: suggest parentheses around '+' inside '<<' [-Wparentheses]
+   49 |     INITIALIZE_BLOCK(memory_block1, GET_BLOCK_SIZE(memory_block1) + GET_BLOCK_SIZE(memory_block2)) \
+      |                                                                   ^
+../Src/memory_pool.c:41:23: note: in definition of macro 'INITIALIZE_BLOCK'
+   41 |     memory_block[1] = size << 1;
+      |                       ^~~~
+../Src/memory_pool.c:114:9: note: in expansion of macro 'MERGE_BLOCKS'
+  114 |         MERGE_BLOCKS(element_to_free, next_block);
+      |         ^~~~~~~~~~~~
+../Src/memory_pool.c:49:67: warning: suggest parentheses around '+' inside '<<' [-Wparentheses]
+   49 |     INITIALIZE_BLOCK(memory_block1, GET_BLOCK_SIZE(memory_block1) + GET_BLOCK_SIZE(memory_block2)) \
+      |                                                                   ^
+../Src/memory_pool.c:40:24: note: in definition of macro 'INITIALIZE_BLOCK'
+   40 |     memory_block[0] = (size << 1) >> 8; \
+      |                        ^~~~
+../Src/memory_pool.c:126:5: note: in expansion of macro 'MERGE_BLOCKS'
+  126 |     MERGE_BLOCKS(ant, element_to_free);
+      |     ^~~~~~~~~~~~
+../Src/memory_pool.c:49:67: warning: suggest parentheses around '+' inside '<<' [-Wparentheses]
+   49 |     INITIALIZE_BLOCK(memory_block1, GET_BLOCK_SIZE(memory_block1) + GET_BLOCK_SIZE(memory_block2)) \
+      |                                                                   ^
+../Src/memory_pool.c:41:23: note: in definition of macro 'INITIALIZE_BLOCK'
+   41 |     memory_block[1] = size << 1;
+      |                       ^~~~
+../Src/memory_pool.c:126:5: note: in expansion of macro 'MERGE_BLOCKS'
+  126 |     MERGE_BLOCKS(ant, element_to_free);
+      |     ^~~~~~~~~~~~
+../Src/rms_scheduler.c:7: warning: "SET_BIT" redefined
+    7 | #define SET_BIT(number, position) number |= (1 << position);
+      | 
+arm-none-eabi-gcc "../Src/semaphore.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/semaphore.d" -MT"Src/semaphore.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/semaphore.o"
+In file included from ../Inc/globals.h:6,
+                 from ../Src/rms_scheduler.c:4:
+/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include/stm32u5xx.h:173: note: this is the location of the previous definition
+  173 | #define SET_BIT(REG, BIT)     ((REG) |= (BIT))
+      | 
+../Src/rms_scheduler.c: In function 'rms_task_templates_add':
+../Src/rms_scheduler.c:102:16: warning: unused variable 'p' [-Wunused-variable]
+  102 |   volatile int p = task->period;
+      |                ^
+../Src/rms_scheduler.c:101:16: warning: unused variable 'w' [-Wunused-variable]
+arm-none-eabi-gcc "../Src/servo.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/servo.d" -MT"Src/servo.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/servo.o"
+  101 |   volatile int w = task->worst_case_execution_time;
+      |                ^
+../Src/demos.c:19:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   19 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+../Src/rtos.c: In function 'rtos_task_create':
+../Src/rtos.c:33:9: warning: implicit declaration of function 'uart_printf' [-Wimplicit-function-declaration]
+   33 |         uart_printf("LOG: Task %s added with %d EC, %d Period and %d BSS \r\n", name, execution_time, period, base_stack_size);
+      |         ^~~~~~~~~~~
+../Src/rms_scheduler.c: In function 'scheduler_update_task_priority':
+../Src/rms_scheduler.c:247:9: warning: implicit declaration of function 'queue_remove_task' [-Wimplicit-function-declaration]
+  247 |     if (queue_remove_task(&scheduler->queues[task->priority], task)) {
+      |         ^~~~~~~~~~~~~~~~~
+../Src/rtos.c: In function 'rtos_task_delay':
+../Src/rtos.c:81:9: warning: implicit declaration of function 'scheduler_dequeue_prio' [-Wimplicit-function-declaration]
+   81 |         scheduler_dequeue_prio(running_task->priority);
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+../Src/rtos.c: In function 'rtos_start':
+../Src/rtos.c:41:1: warning: control reaches end of non-void function [-Wreturn-type]
+   41 | }
+      | ^
+arm-none-eabi-gcc "../Src/seven_segment.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/seven_segment.d" -MT"Src/seven_segment.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/seven_segment.o"
+arm-none-eabi-gcc "../Src/syscalls.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/syscalls.d" -MT"Src/syscalls.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/syscalls.o"
+arm-none-eabi-gcc "../Src/sysmem.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/sysmem.d" -MT"Src/sysmem.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/sysmem.o"
+arm-none-eabi-gcc "../Src/task.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/task.d" -MT"Src/task.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/task.o"
+arm-none-eabi-gcc "../Src/timebase.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/timebase.d" -MT"Src/timebase.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/timebase.o"
+arm-none-eabi-gcc "../Src/uart.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/uart.d" -MT"Src/uart.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/uart.o"
+arm-none-eabi-gcc "../Src/ultrasonic.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/ultrasonic.d" -MT"Src/ultrasonic.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/ultrasonic.o"
+../Src/uart.c: In function 'uart_printf':
+../Src/uart.c:139:8: warning: this 'if' clause does not guard... [-Wmisleading-indentation]
+  139 |        if(len >UART_BUFFER_SIZE)
+      |        ^~
+../Src/uart.c:142:9: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+  142 |         uart_send_dma(dma_buffer, (uint16_t)len);
+      |         ^~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+/home/traian/st/stm32cubeide_1.19.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.linux64_1.0.0.202410170706/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/bin/ld: ./Src/py_demo.o:/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/Debug/../Src/py_demo.c:13: multiple definition of `pi_enabled'; ./Src/main.o:/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/Debug/../Src/main.c:20: first defined here
+/home/traian/st/stm32cubeide_1.19.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.linux64_1.0.0.202410170706/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/bin/ld: ./Src/py_demo.o: in function `busy_wait':
+/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/Debug/../Src/py_demo.c:20: multiple definition of `busy_wait'; ./Src/main.o:/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/Debug/../Src/main.c:23: first defined here
+/home/traian/st/stm32cubeide_1.19.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.linux64_1.0.0.202410170706/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/bin/ld: ./Src/py_demo.o: in function `main':
+/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/Debug/../Src/py_demo.c:117: multiple definition of `main'; ./Src/main.o:/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/Debug/../Src/main.c:28: first defined here
+collect2: error: ld returned 1 exit status
+make: *** [makefile:63: RTOS.elf] Error 1
+"make -j16 all" terminated with exit code 2. Build might be incomplete.
+00:06:43 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc "../Src/py_demo.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/py_demo.d" -MT"Src/py_demo.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/py_demo.o"
+../Src/demos.c:19:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   19 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18377	     96	  35624	  54097	   d351	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:06:43 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-size  RTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18377	     96	  35624	  54097	   d351	RTOS.elf
+Finished building: default.size.stdout
+ 
+00:07:52 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:19:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   19 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18377	     96	  35624	  54097	   d351	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:08:38 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18377	     96	  35624	  54097	   d351	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:11:22 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:19:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   19 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18369	     96	  35624	  54089	   d349	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:11:58 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:19:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   19 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18377	     96	  35624	  54097	   d351	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:14:45 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:19:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   19 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18437	     96	  35624	  54157	   d38d	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:16:15 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18437	     96	  35624	  54157	   d38d	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:18:19 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:19:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   19 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18437	     96	  35624	  54157	   d38d	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:18:50 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18437	     96	  35624	  54157	   d38d	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:21:09 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:19:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   19 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18437	     96	  35624	  54157	   d38d	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:21:53 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18437	     96	  35624	  54157	   d38d	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:27:24 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:19:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   19 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18461	     96	  35656	  54213	   d3c5	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:28:20 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:19:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   19 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18453	     96	  35656	  54205	   d3bd	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:28:53 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18453	     96	  35656	  54205	   d3bd	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:30:17 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:19:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   19 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18453	     96	  35656	  54205	   d3bd	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:30:45 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:19:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   19 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18453	     96	  35656	  54205	   d3bd	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:31:16 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:19:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   19 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18453	     96	  35656	  54205	   d3bd	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:31:39 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18453	     96	  35656	  54205	   d3bd	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:33:23 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:19:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   19 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18453	     96	  35656	  54205	   d3bd	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:34:20 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:19:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   19 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18453	     96	  35656	  54205	   d3bd	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:37:04 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  14199	     96	  35432	  49727	   c23f	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:37:18 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-size  RTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  14199	     96	  35432	  49727	   c23f	RTOS.elf
+Finished building: default.size.stdout
+ 
+00:38:02 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  14199	     96	  35432	  49727	   c23f	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:41:20 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc "../Src/mutex.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/mutex.d" -MT"Src/mutex.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/mutex.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  14203	     96	  35432	  49731	   c243	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:42:28 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/globals.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/globals.d" -MT"Src/globals.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/globals.o"
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  14199	     96	  35432	  49727	   c23f	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:43:18 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/globals.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/globals.d" -MT"Src/globals.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/globals.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  14199	     96	  35432	  49727	   c23f	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:43:39 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/globals.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/globals.d" -MT"Src/globals.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/globals.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  14199	     96	  35432	  49727	   c23f	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:47:54 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:19:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   19 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+/home/traian/st/stm32cubeide_1.19.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.linux64_1.0.0.202410170706/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/bin/ld: ./Src/main.o:/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/Debug/../Src/main.c:65: multiple definition of `start_low'; ./Src/demos.o:/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/Debug/../Src/demos.c:106: first defined here
+/home/traian/st/stm32cubeide_1.19.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.linux64_1.0.0.202410170706/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/bin/ld: ./Src/main.o:/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/Debug/../Src/main.c:66: multiple definition of `extra_load'; ./Src/demos.o:/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/Debug/../Src/demos.c:107: first defined here
+collect2: error: ld returned 1 exit status
+make: *** [makefile:63: RTOS.elf] Error 1
+"make -j16 all" terminated with exit code 2. Build might be incomplete.
+00:49:12 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18417	    100	  35752	  54269	   d3fd	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:49:12 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-size  RTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18417	    100	  35752	  54269	   d3fd	RTOS.elf
+Finished building: default.size.stdout
+ 
+00:51:53 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:19:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   19 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18409	    100	  35752	  54261	   d3f5	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:54:56 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:110:14: error: redefinition of 'start_low'
+  110 | volatile int start_low = 1; // Start immediately or controlled
+      |              ^~~~~~~~~
+../Src/demos.c:21:14: note: previous definition of 'start_low' with type 'int'
+   21 | volatile int start_low = 0;
+      |              ^~~~~~~~~
+../Src/demos.c:111:14: error: redefinition of 'extra_load'
+  111 | volatile int extra_load = 0;
+      |              ^~~~~~~~~~
+../Src/demos.c:22:14: note: previous definition of 'extra_load' with type 'int'
+   22 | volatile int extra_load = 0;
+      |              ^~~~~~~~~~
+make: *** [Src/subdir.mk:91: Src/demos.o] Error 1
+"make -j16 all" terminated with exit code 2. Build might be incomplete.
+00:55:06 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+/home/traian/st/stm32cubeide_1.19.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.linux64_1.0.0.202410170706/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/bin/ld: ./Src/main.o:/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/Debug/../Src/main.c:20: multiple definition of `pi_enabled'; ./Src/demos.o:/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/Debug/../Src/demos.c:20: first defined here
+collect2: error: ld returned 1 exit status
+make: *** [makefile:63: RTOS.elf] Error 1
+"make -j16 all" terminated with exit code 2. Build might be incomplete.
+00:55:25 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c: In function 'task_button_controller':
+../Src/demos.c:184:21: error: 'pi_enabled' undeclared (first use in this function)
+  184 |                     pi_enabled = 1;
+      |                     ^~~~~~~~~~
+../Src/demos.c:184:21: note: each undeclared identifier is reported only once for each function it appears in
+make: *** [Src/subdir.mk:91: Src/demos.o] Error 1
+"make -j16 all" terminated with exit code 2. Build might be incomplete.
+00:56:44 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+/home/traian/st/stm32cubeide_1.19.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.linux64_1.0.0.202410170706/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/bin/ld: ./Src/main.o:/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/Debug/../Src/main.c:20: multiple definition of `pi_enabled'; ./Src/demos.o:/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/Debug/../Src/demos.c:20: first defined here
+collect2: error: ld returned 1 exit status
+make: *** [makefile:63: RTOS.elf] Error 1
+"make -j16 all" terminated with exit code 2. Build might be incomplete.
+00:57:42 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18457	    100	  35752	  54309	   d425	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+00:57:42 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-size  RTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18457	    100	  35752	  54309	   d425	RTOS.elf
+Finished building: default.size.stdout
+ 
+00:58:54 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18457	     96	  35752	  54305	   d421	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:00:01 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+/home/traian/st/stm32cubeide_1.19.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.linux64_1.0.0.202410170706/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/bin/ld: ./Src/main.o:/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/Debug/../Src/main.c:64: multiple definition of `pi_enabled'; ./Src/demos.o:/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/Debug/../Src/demos.c:20: first defined here
+/home/traian/st/stm32cubeide_1.19.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.linux64_1.0.0.202410170706/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/bin/ld: ./Src/main.o:/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/Debug/../Src/main.c:65: multiple definition of `start_low'; ./Src/demos.o:/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/Debug/../Src/demos.c:109: first defined here
+/home/traian/st/stm32cubeide_1.19.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.linux64_1.0.0.202410170706/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/bin/ld: ./Src/main.o:/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/Debug/../Src/main.c:66: multiple definition of `extra_load'; ./Src/demos.o:/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/Debug/../Src/demos.c:110: first defined here
+collect2: error: ld returned 1 exit status
+make: *** [makefile:63: RTOS.elf] Error 1
+"make -j16 all" terminated with exit code 2. Build might be incomplete.
+01:00:28 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:19:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   19 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  14199	     96	  35432	  49727	   c23f	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:00:28 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-size  RTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  14199	     96	  35432	  49727	   c23f	RTOS.elf
+Finished building: default.size.stdout
+ 
+01:01:46 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+/home/traian/st/stm32cubeide_1.19.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.linux64_1.0.0.202410170706/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/bin/ld: ./Src/demos.o: in function `demo_priority_inversion':
+/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/Debug/../Src/demos.c:188:(.text.demo_priority_inversion+0x68): undefined reference to `pi_enabled'
+/home/traian/st/stm32cubeide_1.19.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.linux64_1.0.0.202410170706/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/bin/ld: ./Src/mutex.o: in function `locked_mutex':
+/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/Debug/../Src/mutex.c:43:(.text.locked_mutex+0x84): undefined reference to `pi_enabled'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:63: RTOS.elf] Error 1
+"make -j16 all" terminated with exit code 2. Build might be incomplete.
+01:03:46 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:19:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   19 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+/home/traian/st/stm32cubeide_1.19.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.linux64_1.0.0.202410170706/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/bin/ld: ./Src/demos.o: in function `demo_priority_inversion':
+/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/Debug/../Src/demos.c:195:(.text.demo_priority_inversion+0x68): undefined reference to `pi_enabled'
+/home/traian/st/stm32cubeide_1.19.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.linux64_1.0.0.202410170706/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/bin/ld: ./Src/mutex.o: in function `locked_mutex':
+/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/Debug/../Src/mutex.c:43:(.text.locked_mutex+0x84): undefined reference to `pi_enabled'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:63: RTOS.elf] Error 1
+"make -j16 all" terminated with exit code 2. Build might be incomplete.
+01:04:01 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18377	     96	  35624	  54097	   d351	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:04:02 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-size  RTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18377	     96	  35624	  54097	   d351	RTOS.elf
+Finished building: default.size.stdout
+ 
+01:05:03 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18377	     96	  35624	  54097	   d351	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:06:07 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:19:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   19 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18377	     96	  35624	  54097	   d351	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:11:46 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:18:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   18 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18377	     96	  35624	  54097	   d351	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:14:30 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:18:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   18 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18409	     96	  35624	  54129	   d371	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:15:22 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/globals.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/globals.d" -MT"Src/globals.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/globals.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18409	     96	  35624	  54129	   d371	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:16:44 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:18:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   18 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18409	     96	  35624	  54129	   d371	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:18:02 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:18:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   18 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18409	     96	  35624	  54129	   d371	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:19:37 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:18:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   18 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18425	     96	  35624	  54145	   d381	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:21:07 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18425	     96	  35624	  54145	   d381	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:21:36 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-size  RTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18425	     96	  35624	  54145	   d381	RTOS.elf
+Finished building: default.size.stdout
+ 
+01:23:17 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18425	     96	  35624	  54145	   d381	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:24:51 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c: In function 'task_yield_b':
+../Src/demos.c:289:5: error: too few arguments to function 'seven_seg_display_digit'
+  289 |     seven_seg_display_digit(1);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~
+In file included from ../Src/demos.c:12:
+../Inc/seven_segment.h:9:6: note: declared here
+    9 | void seven_seg_display_digit(int digit, int number);
+      |      ^~~~~~~~~~~~~~~~~~~~~~~
+../Src/demos.c:291:5: error: too few arguments to function 'seven_seg_display_digit'
+  291 |     seven_seg_display_digit(0);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~
+../Inc/seven_segment.h:9:6: note: declared here
+    9 | void seven_seg_display_digit(int digit, int number);
+      |      ^~~~~~~~~~~~~~~~~~~~~~~
+../Src/demos.c: At top level:
+../Src/demos.c:18:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   18 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+make: *** [Src/subdir.mk:91: Src/demos.o] Error 1
+"make -j16 all" terminated with exit code 2. Build might be incomplete.
+01:25:42 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:18:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   18 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18449	     96	  35624	  54169	   d399	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:25:42 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-size  RTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18449	     96	  35624	  54169	   d399	RTOS.elf
+Finished building: default.size.stdout
+ 
+01:27:31 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:18:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   18 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18457	     96	  35624	  54177	   d3a1	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:28:16 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18457	     96	  35624	  54177	   d3a1	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:28:47 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-size  RTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18457	     96	  35624	  54177	   d3a1	RTOS.elf
+Finished building: default.size.stdout
+ 
+01:29:08 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18457	     96	  35624	  54177	   d3a1	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:29:27 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-size  RTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18457	     96	  35624	  54177	   d3a1	RTOS.elf
+Finished building: default.size.stdout
+ 
+01:30:31 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/demos.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/demos.d" -MT"Src/demos.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/demos.o"
+../Src/demos.c:18:12: warning: 'demo_pi_enabled' defined but not used [-Wunused-variable]
+   18 | static int demo_pi_enabled = 0;
+      |            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18457	     96	  35624	  54177	   d3a1	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:30:58 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18457	     96	  35624	  54177	   d3a1	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:34:44 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  15565	     96	  35432	  51093	   c795	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:35:17 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/globals.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/globals.d" -MT"Src/globals.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/globals.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  15565	     96	  35432	  51093	   c795	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:39:11 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  15653	     96	  35432	  51181	   c7ed	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:40:49 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  15645	     96	  35432	  51173	   c7e5	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:42:41 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+../Src/main.c: In function 'task_high':
+../Src/main.c:86:25: error: 'angle' undeclared (first use in this function)
+   86 |         servo_set_angle(angle);
+      |                         ^~~~~
+../Src/main.c:86:25: note: each undeclared identifier is reported only once for each function it appears in
+make: *** [Src/subdir.mk:91: Src/main.o] Error 1
+"make -j16 all" terminated with exit code 2. Build might be incomplete.
+01:43:07 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  15661	     96	  35432	  51189	   c7f5	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:43:07 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-size  RTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  15661	     96	  35432	  51189	   c7f5	RTOS.elf
+Finished building: default.size.stdout
+ 
+01:44:56 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  15661	     96	  35432	  51189	   c7f5	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:45:29 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  15661	     96	  35432	  51189	   c7f5	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:46:34 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/mutex.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/mutex.d" -MT"Src/mutex.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/mutex.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  15653	     96	  35432	  51181	   c7ed	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:47:37 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/mutex.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/mutex.d" -MT"Src/mutex.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/mutex.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  15661	     96	  35432	  51189	   c7f5	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:48:06 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-size  RTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  15661	     96	  35432	  51189	   c7f5	RTOS.elf
+Finished building: default.size.stdout
+ 
+01:49:46 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+../Src/main.c:208:1: warning: "/*" within comment [-Wcomment]
+  208 | /*
+      |  
+../Src/main.c:50:1: error: unterminated comment
+   50 | /*
+      | ^
+make: *** [Src/subdir.mk:91: Src/main.o] Error 1
+"make -j16 all" terminated with exit code 2. Build might be incomplete.
+01:50:00 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+../Src/main.c:208:1: warning: "/*" within comment [-Wcomment]
+  208 | /*
+      |  
+../Src/main.c:50:1: error: unterminated comment
+   50 | /*
+      | ^
+make: *** [Src/subdir.mk:91: Src/main.o] Error 1
+"make -j16 all" terminated with exit code 2. Build might be incomplete.
+01:50:32 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18457	     96	  35624	  54177	   d3a1	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:50:32 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-size  RTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18457	     96	  35624	  54177	   d3a1	RTOS.elf
+Finished building: default.size.stdout
+ 
+01:51:22 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/globals.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/globals.d" -MT"Src/globals.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/globals.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18457	     96	  35624	  54177	   d3a1	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:52:32 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  15661	     96	  35432	  51189	   c7f5	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:52:55 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/globals.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/globals.d" -MT"Src/globals.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/globals.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  15661	     96	  35432	  51189	   c7f5	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:54:27 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+../Src/main.c:50:1: error: unterminated comment
+   50 | /*
+      | ^
+make: *** [Src/subdir.mk:91: Src/main.o] Error 1
+"make -j16 all" terminated with exit code 2. Build might be incomplete.
+01:54:59 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18457	     96	  35624	  54177	   d3a1	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:55:00 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-size  RTOS.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18457	     96	  35624	  54177	   d3a1	RTOS.elf
+Finished building: default.size.stdout
+ 
+01:55:21 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18457	     96	  35624	  54177	   d3a1	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:56:08 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18457	     96	  35624	  54177	   d3a1	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 
+01:58:37 **** Incremental Build of configuration Debug for project RTOS ****
+make -j16 all 
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m33 -std=gnu11 -g3 -DSTM32U575xx -c -I../Inc -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device -I/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Device/ST/STM32U5xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -o "Src/main.o"
+arm-none-eabi-gcc -o "RTOS.elf" @"objects.list"   -mcpu=cortex-m33 -T"/home/traian/RTOS/GCC_STM32CubeIDE/RTOS/STM32U575ZITXQ_FLASH.ld" --specs=nosys.specs -Wl,-Map="RTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: RTOS.elf
+ 
+arm-none-eabi-size  RTOS.elf 
+arm-none-eabi-objdump -h -S RTOS.elf  > "RTOS.list"
+   text	   data	    bss	    dec	    hex	filename
+  18457	     96	  35624	  54177	   d3a1	RTOS.elf
+Finished building: default.size.stdout
+ 
+Finished building: RTOS.list
+ 

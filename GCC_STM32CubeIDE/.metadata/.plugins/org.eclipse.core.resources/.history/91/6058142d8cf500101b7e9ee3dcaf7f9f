@@ -1,0 +1,81 @@
+#include "task.h"
+#include <stdio.h>
+#include <string.h>
+#include "memory_pool.h"
+#include "rms_scheduler.h"
+#include "rtos.h"
+#include "globals.h"
+#include "stm32u5xx.h"
+
+
+TCB_t *init_task(const unsigned long priority,const int stack_size, const int execution_time, const int period, const char *name) {
+    TCB_t *task = c_malloc(sizeof(TCB_t));
+    void *stack_pointer = c_malloc(stack_size * sizeof(int));
+    task->priority = priority;
+    task->stack_size = stack_size;
+    task->stack_pointer = stack_pointer;
+    task->base_stack_pointer = stack_pointer;
+    task->blocked_by = 0x00;
+    task->temporary_priority = MAX_PRIORITY_COUNT;
+    task->worst_case_execution_time = execution_time;
+    task->period = period;
+    task->next_release_time = 0;
+    task->budget_time = execution_time;
+    strcpy(task->name, name);
+    return task;
+}
+
+void destruct_task(TCB_t *task) {
+    c_free(task->base_stack_pointer);
+    c_free(task);
+}
+
+short task_is_ready(const TCB_t *task) {
+    return task->next_release_time >= current_time;
+}
+
+void reset_task(TCB_t *task) {
+    task->next_release_time = current_time + (task->period - (current_time % task->period));
+    task->went_to_sleep_time = current_time;
+  // task->temporary_priority = MAX_PRIORITY_COUNT;
+}
+
+void context_switch() {
+	SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
+}
+
+void should_switch() {
+
+    if(running_task == internal_idle_task) {
+        if(exists_any_task())
+            rtos_task_wait();
+        return;
+    }
+
+    running_task->budget_time--;
+
+    if(running_task->budget_time <= 0)
+        rtos_task_wait();
+
+    if(exists_higher_priority_task(running_task))
+        rtos_task_yeld();
+}
+
+void inheritate_priority(TCB_t *owner, TCB_t *requester) {
+    while (owner && owner->priority < requester->priority) {
+
+        if (owner->temporary_priority == MAX_PRIORITY_COUNT) {
+            owner->temporary_priority = owner->priority;
+        }
+        owner->priority = requester->priority;
+        if(!owner->blocked_by)
+            break;
+        mutex_t *m = owner->blocked_by;
+        requester = owner;
+        owner = m->current_task;
+    }
+}
+
+void print_task(const TCB_t *task) {
+	   printf("%s", task->name);
+}

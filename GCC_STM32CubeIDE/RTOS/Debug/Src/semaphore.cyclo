@@ -1,0 +1,4 @@
+../Src/semaphore.c:5:6:semaphore_init	1
+../Src/semaphore.c:10:6:semaphore_up	4
+../Src/semaphore.c:31:6:semaphore_down	4
+../Src/semaphore.c:52:6:semaphore_clear	2

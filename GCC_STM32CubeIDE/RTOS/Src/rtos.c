@@ -1,0 +1,113 @@
+//
+// Created by Denis on 11/22/2025.
+//
+#include "globals.h"
+#include "rtos.h"
+#include "rms_scheduler.h"
+#include "task.h"
+#include <stdio.h>
+#include "osKernel.h"
+#include "mutex.h"
+#include "stm32u5xx.h"
+#include <stdio.h>
+
+
+static int max_simulation_time = 40;
+
+
+void rtos_init(void) {
+    scheduler_init();
+}
+
+
+short rtos_task_create(void(*taskFunc)(void), const int execution_time, const int period, int base_stack_size ,const char *name) {
+  /*  TCB_t *task = init_task(0, BASE_TASK_STACK_SIZE, execution_time, period, name);
+    if(started) {
+        prepare_next_task(task);
+        if(is_schedulable()) {
+            add_next_task();
+            return 1;
+        }
+    }
+    rms_task_templates_add(task);*/
+	uart_printf("LOG: Task %s added with %d EC, %d Period and %d BSS \r\n", name, execution_time, period, base_stack_size);
+	osKernelAddThreads(taskFunc, execution_time, period, name, base_stack_size);
+    return 1;
+}
+
+short rtos_start(void) {
+    osKernelLaunch(QUANTA);
+    uart_printf("LOG: RTOS started\r\r\n\n");
+}
+
+//Tell the kernel that current running task finished execution, and should switch
+void rtos_task_wait(void) {
+	__disable_irq();
+
+    next_task = scheduler_get_task();
+
+    if(running_task != 0x00 && running_task != internal_idle_task) {
+        reset_task(running_task);
+
+        scheduler_sleep_task(running_task);
+    }
+
+    context_switch();
+
+    __enable_irq();
+}
+
+//It stops the current running task to allow another task to run
+void rtos_task_yeld(void) {
+    MEASURE_LATENCY_START();
+	__disable_irq();
+    scheduler_add_task(running_task);
+    next_task = scheduler_get_task();
+    context_switch();
+    MEASURE_LATENCY_STOP();
+    __enable_irq();
+}
+
+
+//timeout is in ms
+void rtos_task_delay(uint16_t timeout){
+    MEASURE_LATENCY_START();
+	__disable_irq();
+	scheduler_add_task(running_task);
+	next_task = scheduler_get_task();
+    running_task->next_release_time = current_time + timeout;
+    running_task->went_to_sleep_time = current_time;
+    running_task->temporary_priority = MAX_PRIORITY_COUNT;
+	scheduler_dequeue_prio(running_task->priority);
+	scheduler_sleep_task(running_task);
+	context_switch();
+    MEASURE_LATENCY_STOP();
+    __enable_irq();
+
+}
+
+
+
+uint32_t rtos_now(){
+	return current_time;
+}
+
+void rtos_timer_start(uint32_t period, timer_callback_t function) {
+    rtos_timer.time = current_time + period;
+    rtos_timer.callback = function;
+}
+
+void simulate_rtos(void) {
+    running_task = scheduler_get_task();
+    for(;current_time < max_simulation_time;current_time++) {
+        printf("%lld", current_time);
+        print_task(running_task);
+        printf("\n");
+
+        //Would get called in systick handler
+        scheduler_release_tasks();
+
+        should_switch();
+        //
+    }
+}

@@ -1,0 +1,8 @@
+../Src/task.c:11:8:init_task	1
+../Src/task.c:29:6:destruct_task	1
+../Src/task.c:34:7:task_is_ready	1
+../Src/task.c:38:6:reset_task	1
+../Src/task.c:45:6:context_switch	1
+../Src/task.c:47:6:should_switch	5
+../Src/task.c:64:6:inheritate_priority	5
+../Src/task.c:82:6:print_task	1

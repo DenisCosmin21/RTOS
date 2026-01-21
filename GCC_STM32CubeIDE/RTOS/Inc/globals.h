@@ -1,0 +1,35 @@
+#ifndef GLOBALS_H
+#define GLOBALS_H
+#include "task.h"
+#include "rms_scheduler.h"
+#include <stdint.h>
+#include "stm32u5xx.h"
+
+extern TCB_t *running_task;
+extern TCB_t *next_task;
+extern uint64_t current_time;
+extern TCB_t *internal_idle_task;
+extern short started;
+extern uint32_t QUANTA;
+extern uint32_t Runtime_Task_Profiler;
+extern uint32_t max_context_switch_time_us;
+extern uint32_t max_interrupt_latency_us;
+
+extern volatile uint32_t latency_start_tick;
+
+#define MEASURE_LATENCY_START() \
+    { latency_start_tick = DWT->CYCCNT;}
+
+#define MEASURE_LATENCY_STOP() \
+    { \
+     uint32_t latency_end_tick = DWT->CYCCNT; \
+        uint32_t latency_diff = latency_end_tick - latency_start_tick; \
+        uint32_t latency_us = latency_diff / 4; \
+        if(latency_us > max_interrupt_latency_us) { \
+            max_interrupt_latency_us = latency_us; \
+        } \
+    }
+
+#endif //GLOBALS_H
+
+

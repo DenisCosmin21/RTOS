@@ -1,0 +1,46 @@
+#include "demos.h"
+#include "globals.h"
+#include "mutex.h"
+#include "osKernel.h"
+#include "rtos.h"
+#include "uart.h"
+#include <stdio.h>
+
+// Set the current demo here.
+// Available options:
+// DEMO_BASELINE
+// DEMO_PRIORITY_INVERSION
+// DEMO_PRIORITY_INHERITANCE
+// DEMO_PRODUCER_CONSUMER
+// DEMO_TIMER
+// DEMO_YIELD
+#define ACTIVE_DEMO DEMO_BASELINE
+
+mutex_t print_mutex;
+volatile int pi_enabled =
+    0; // Defined here for global access if needed, though handled in rtos/demos
+
+void busy_wait(int loops) {
+  for (volatile int i = 0; i < loops; i++)
+    ;
+}
+
+int main(void) {
+  SystemCoreClockUpdate();
+
+  uart_tx_init();
+
+  mutex_init(&print_mutex);
+  osKernelInit();
+
+  uart_printf("SystemCoreClock: %lu Hz\r\n", SystemCoreClock);
+
+  // Run the selected demo
+  // Note: Demos create their own tasks.
+  run_selected_demo(ACTIVE_DEMO);
+
+  uart_printf("Starting Scheduler...\r\n");
+  rtos_start();
+
+  return 0;
+}

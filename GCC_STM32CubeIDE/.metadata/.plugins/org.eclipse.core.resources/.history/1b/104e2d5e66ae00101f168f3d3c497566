@@ -1,0 +1,12 @@
+#include "osKernel.h"
+
+struct TCB{
+	int32_t *stackPt;
+	struct tcb *nextPt;
+};
+
+
+typedef struct TCB tcbtype;
+
+
+

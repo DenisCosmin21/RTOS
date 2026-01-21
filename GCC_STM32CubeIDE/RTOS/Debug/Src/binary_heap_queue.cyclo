@@ -1,0 +1,10 @@
+../Src/binary_heap_queue.c:16:6:h_init	1
+../Src/binary_heap_queue.c:18:13:swap_elements	1
+../Src/binary_heap_queue.c:24:13:shift_heap	3
+../Src/binary_heap_queue.c:33:6:h_enqueue	4
+../Src/binary_heap_queue.c:57:13:min_heapify	6
+../Src/binary_heap_queue.c:75:8:h_dequeue	3
+../Src/binary_heap_queue.c:100:8:h_peek	3
+../Src/binary_heap_queue.c:108:8:h_get_size	1
+../Src/binary_heap_queue.c:110:7:h_is_empty	1
+../Src/binary_heap_queue.c:114:6:h_print_queue	1

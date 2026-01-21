@@ -1,0 +1,3 @@
+../Src/message_queue.c:4:6:msg_queue_init	16	static
+../Src/message_queue.c:14:5:msg_queue_send	24	static
+../Src/message_queue.c:31:5:msg_queue_receive	24	static

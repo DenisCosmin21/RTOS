@@ -1,0 +1,12 @@
+/home/traian/RTOS/chip_headers/NUCLEO_CMSIS/Include/core_cm33.h:2587:22:__NVIC_SetPriority	16	static
+../Src/osKernel.c:25:13:os_idle_thread	4	static
+../Src/osKernel.c:36:6:SystemCoreClockUpdate	4	static
+../Src/osKernel.c:42:6:osSchedulerLaunch	4	static,ignoring_inline_asm
+../Src/osKernel.c:67:6:osKernelStackInit	32	static
+../Src/osKernel.c:101:9:osKernelAddThreads	40	static,ignoring_inline_asm
+../Src/osKernel.c:128:6:osKernelInit	16	static,ignoring_inline_asm
+../Src/osKernel.c:150:6:osKernelLaunch	24	static,ignoring_inline_asm
+../Src/osKernel.c:185:6:OsKernelCST	16	static,ignoring_inline_asm
+../Src/osKernel.c:196:6:task_runtime	4	static
+../Src/osKernel.c:202:6:SysTick_Handler	8	static
+../Src/osKernel.c:212:29:PendSV_Handler	0	static,ignoring_inline_asm
